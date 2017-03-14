@@ -1,0 +1,24 @@
+{
+  "name": "sistema-fge",
+  "version": "1.0.0",
+  "description": "Sistema de seguimiento de soporte tecnico en la Direccion de tecnologias de la informacion de la Fiscalia General del Estado de Guerrero",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "express-session": "^1.15.1",
+    "jade": "^1.11.0",
+    "method-override": "^2.3.7",
+    "mysql": "^2.13.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  }
+}

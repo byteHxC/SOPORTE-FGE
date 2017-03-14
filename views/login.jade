@@ -1,0 +1,54 @@
+doctype html
+html(lang="es")
+	head 
+		title Soporte Técnico - Fiscalia General del Estado de Guerrero
+		//- scripts de terceros
+		script(src="javascripts/jquery-3.1.1.js")
+		script(src="javascripts/materialize.js")
+		//- stylessheets de terceros
+		link(rel="stylesheet" type="text/css" href="stylesheets/materialize.css")
+		//- scripts de terceros
+		script(src="javascripts/common.js")
+		//- stylessheets de terceros
+		link(rel="stylesheet" type="text/css" href="stylesheets/common.css")
+		//- icons
+		link(rel="stylesheet" type="text/css" href="fonts/iconfont/material-icons.css")
+		
+		meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1")
+
+	body
+		div(class="navbar-fixed")
+			nav
+				div(class="nav-wrapper color-nav")
+					a(href="#" class="brand-logo center text-nav") Soporte Técnico - FGE
+		div(class="container")
+			if (message.length > 0)
+				input(type="hidden" id="message" value=message)
+				script().
+					toast($('#message').val());
+			div(class="row padding-top padding-bottom")
+				div(class="z-depth-3 white col s12 m12 l10 offset-l1")
+					form(action="/login" method="post")
+						div(class="center col s10 m10 l10 offset-s1 offset-m1 offset-l1 color-text")
+							img(src="images/logo.png" class="responsive-img logo")
+							h4(class="center") Inicio de sesión
+						div(class="input-field col s10 m8 l8 offset-s1 offset-m2 offset-l2")
+							i(class="material-icons prefix") account_circle
+							input(type="text" class="validate" id="usuario" name="usuario" required)
+							label(for="usuario") Usuario
+						div(class="input-field col s10 m8 l8 offset-s1 offset-m2 offset-l2")
+							i(class="material-icons prefix") lock
+							input(type="password" class="validate" id="password" name="password" required)
+							label(for="password") Password
+						div(class="input-field col s10 m8 l8 offset-s1 offset-m2 offset-l2 margin-top margin-bottom")
+							button(class="btn waves-effect waves-light right  color-back" type="submit") Ingresar
+								i(class="material-icons right") send
+
+
+
+
+
+
+
+
+
