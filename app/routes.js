@@ -6,20 +6,24 @@ module.exports = function(app, passport, express) {
 	// home page
 	router.get('/', isLoggedIn,function(req, res) {
         // console.log(req.user.id_permiso);
-        db.query("select cat_permiso.nombre from cat_permiso where id_permiso=?",[req.user.id_permiso], function(err, rows){
-            var permiso = JSON.parse(JSON.stringify(rows));
-            console.log(permiso);
-            if(permiso[0].nombre == 'recepcionista'){
+        db.query("select nombre from cat_rol where id_rol=?",[req.user.id_rol], function(err, rows){
+            var rol = JSON.parse(JSON.stringify(rows));
+            console.log(rol);
+            if(rol[0].nombre == 'recepcionista'){
 
-            }else if(permiso[0].nombre == 'administrador'){
+            }else if(rol[0].nombre == 'administrador'){
+        
                 res.render('administrador/index');
-            }else if(permiso[0].nombre == 'soporte'){
+            }else if(rol[0].nombre == 'soporte'){
 
             }
         });
     });
-
     // # END
+    // Informacion de empleado
+    router.get('/empleado', isLoggedIn, function(req, res){
+        res.render('administrador/empleado');
+    });
 
     // inicio de sesion de los usuarios
     router.route('/login')

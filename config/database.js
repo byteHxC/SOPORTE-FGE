@@ -4,6 +4,7 @@ module.exports = mysql.createConnection({
 	host: '127.0.0.1',
 	user: 'root',
 	password: 'sistemas123',
-	database: 'test_login',
+	database: 'soporte_fge_test',
 	port: 3306
 });
+

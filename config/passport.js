@@ -21,7 +21,7 @@ module.exports = function(passport){
 	},
 	function(req, usuario, password, done){
 		console.log('POST /login')
-		db.query("select * from usuario where usuario.usuario=?", [usuario], function(err, rows){
+		db.query("select * from usuario where usuario.nombre=?", [usuario], function(err, rows){
 			if(err) return done(err);
 			if(!rows.length)
 				return done(null, false, req.flash('loginMessage', 'Usuario no encontrado.'));
