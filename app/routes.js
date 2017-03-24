@@ -59,9 +59,23 @@ module.exports = function(app, passport, express) {
     	res.redirect('/login');
     });
     // # END
+    
 
     // set router in app
     app.use(router);
+
+    // API responde json
+    const api = express.Router();
+    api.route('/empleado/:num_empleado')
+        .get(isLoggedIn,isAdministrador, function(req, res){
+            console.log("num_empleado => " + req.params.num_empleado)
+            db.query('select *from empleado_info where num_empleado=?;',[req.params.num_empleado], function(err, rows){
+                var empleado = JSON.parse(JSON.stringify(rows));
+                res.status(200).json(empleado[0]);
+            });
+        });
+
+    app.use('/api', api);
 
     app.use(function(req, res){
         res.status(400);

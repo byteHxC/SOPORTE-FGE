@@ -29,7 +29,7 @@ block content
 						label(for="nombre") Nombre de usuario
 					div(class="input-field col s12 m12 l8 offset-l2")
 						i(class="material-icons prefix") lock
-						input(name="password" type="text" class="validate" required)
+						input(name="password" type="password" class="validate" required)
 						label(for="password") Contraseña
 
 					div(class="input-field col s12 m12 l3 offset-l2 margin-top")
@@ -53,27 +53,34 @@ block content
 	div(id="seleccionar_empleado" class="modal modal-fixed-footer")
 		div(class="modal-content")
 			h4 Seleccione un empleado
-			ul(class="collapsible" data-collapsible="accordion")
-				li
-					div(class="collapsible-header") 
-						i(class="material-icons left") account_circle
-						| 1 - Jose Mendiola Fernandez
-					div(class="collapsible-body")
-						strong CUIP: 
-						span BARM700906TU5
-						br
-						strong Numero empleado: 
-						span 31
-						br
-						strong Puesto: 
-						span Chofer
-						br
-						strong Adscripcion: 
-						span Chilpancingo
+			form(onsubmit="return getEmpleado(this);")
+				div(class="input-field z-depth-3")
+					input(id="search" name="num_empleado" type="search" required="true" placeholder="Ingrese el número empleado:")
+					label(class="label-icon" for="search")
+						i(class="material-icons left") search
+					i(class="material-icons") close
+
+			ul(class="collapsible" data-collapsible="accordion" id="empleados_list")
+				//- li
+				//- 	div(class="collapsible-header") 
+				//- 		i(class="material-icons left") account_circle
+				//- 		| 1 - Jose Mendiola Fernandez
+				//- 	div(class="collapsible-body")
+				//- 		strong CUIP: 
+				//- 		span BARM700906TU5
+				//- 		br
+				//- 		strong Numero empleado: 
+				//- 		span 31
+				//- 		br
+				//- 		strong Puesto: 
+				//- 		span Chofer
+				//- 		br
+				//- 		strong Adscripcion: 
+				//- 		span Chilpancingo
 
 
 		div(class="modal-footer")
-			a(class="modal-action modal-close waves-effect waves-green btn-flat") Agree
+			a(class="modal-action modal-close waves-effect waves-green btn-flat") Cerrar
 	
 
 
