@@ -16,4 +16,68 @@ block nav-phone
 			i(class="material-icons left") trending_up
 	
 block content
-	h1 hola
+	script(src="/../javascripts/seleccionar_empleado.js")
+	
+	div(class="container margin-top")
+		.row.z-depth-3
+			h5(class="condensed light center padding-top") Agregar un nuevo usuario al sistema
+			form(class="col l10 offset-l1 m12 s12 margin-top")
+				.row
+					div(class="input-field col s12 m12 l8 offset-l2")
+						i(class="material-icons prefix") account_circle
+						input(name="nombre" type="text" class="validate" required)
+						label(for="nombre") Nombre de usuario
+					div(class="input-field col s12 m12 l8 offset-l2")
+						i(class="material-icons prefix") lock
+						input(name="password" type="text" class="validate" required)
+						label(for="password") Contraseña
+
+					div(class="input-field col s12 m12 l3 offset-l2 margin-top")
+						
+						i(class="material-icons prefix color-text left" data-target="seleccionar_empleado") label
+						input(name="id_empleado" type="text" class="validate" required readonly)
+						label(for="id_empleado") ID empleado
+
+						
+					div(class="input-field col s12 m12 l5 margin-top")
+						select(name="rol")
+							each rol in roles
+								option(value=rol.id_rol)=rol.nombre
+						label(for="rol") Seleccione un rol
+					div(class="input-field col s12 m12 l2 offset-l8")
+						button(class="btn waves-effect waves-light green right" type="submit") Registrar
+							i(class="material-icons left") send
+				
+
+	//- modal: seleccionar usuario
+	div(id="seleccionar_empleado" class="modal modal-fixed-footer")
+		div(class="modal-content")
+			h4 Seleccione un empleado
+			ul(class="collapsible" data-collapsible="accordion")
+				li
+					div(class="collapsible-header") 
+						i(class="material-icons left") account_circle
+						| 1 - Jose Mendiola Fernandez
+					div(class="collapsible-body")
+						strong CUIP: 
+						span BARM700906TU5
+						br
+						strong Numero empleado: 
+						span 31
+						br
+						strong Puesto: 
+						span Chofer
+						br
+						strong Adscripcion: 
+						span Chilpancingo
+
+
+		div(class="modal-footer")
+			a(class="modal-action modal-close waves-effect waves-green btn-flat") Agree
+	
+
+
+
+
+
+

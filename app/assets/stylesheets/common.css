@@ -44,7 +44,9 @@ html, body{
 .input-field .prefix.active {
  color: #1976d2 ;
 }
+.button-back:focus{
 
+}
 /* label focus color */
 .input-field input[type=text]:focus + label {
  color: #1976d2 ;
@@ -87,3 +89,11 @@ a.it:hover{
 @media only screen and (min-width: 993px) {
 	
 }
+
+.waves-effect.waves-brown .waves-ripple {
+ /* The alpha value allows the text and background color
+ of the button to still show through. */
+  background-color: rgba(121, 85, 72, 0.65);
+}
+
+

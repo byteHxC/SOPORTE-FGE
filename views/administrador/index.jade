@@ -27,24 +27,32 @@ block content
 						label(class="label-icon" for="search")
 							i(class="material-icons left") search
 						i(class="material-icons") close
+			div(class="col l2 m12 s12")
+				div(class="input-field")
+						a(href="/empleado/" class="btn-floating btn-tiny waves-effect waves-light red")
+								i(class="material-icons") add
 			div(class="col l12 m12 s12")
 				table(class="highlight z-depth-3 centered")
 					thead
 						tr
 							th Nombre
+							th Rol
 							th Estado
 							th ID empleado
 					tbody
-						tr(class="row")
-							td FBlanco
-							td
-								div(class="input-field")
-									select()
-										option(value="activo") Activo
-										option(value="inactivo") Inactivo
-										option(value="baja") Baja
-							td
-								a(href="/empleado/") Ver empleado
+						each usuario in usuarios
+							- activo = ('activo' == usuario.estado) ? 'selected' : null; 
+							- inactivo = ('inactivo' == usuario.estado) ? 'selected' : null; 
+							tr(class="row")
+								td=usuario.nombre
+								td=usuario.rol
+								td
+									div(class="input-field")
+										select(name="estado")
+											option(value="activo" selected=activo) Activo
+											option(value="inactivo" selected=inactivo) Inactivo
+								td
+									a(href="/empleado/"+usuario.id_empleado) Ver empleado
 
 
 				//- a(class="btn-floating btn-large waves-effect waves-light red")
