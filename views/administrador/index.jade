@@ -16,6 +16,7 @@ block nav-phone
 			i(class="material-icons left") trending_up
 	
 block content
+	script(src="/../javascripts/indexAdministrador.js")
 	div(class="container")
 		div(class="row")
 			div(class="col l10 offset-l1 m12 s12 ")
@@ -48,7 +49,7 @@ block content
 								td=usuario.rol
 								td
 									div(class="input-field")
-										select(name="estado")
+										select(name="estado" onchange="return cambiarEstado(#{usuario.id_usuario}, #{usuario.estado});")
 											option(value="activo" selected=activo) Activo
 											option(value="inactivo" selected=inactivo) Inactivo
 								td

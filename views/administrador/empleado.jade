@@ -17,11 +17,10 @@ block nav-phone
 	
 block content
 	script(src="/../javascripts/seleccionar_empleado.js")
-	
 	div(class="container margin-top")
 		.row.z-depth-3
 			h5(class="condensed light center padding-top") Agregar un nuevo usuario al sistema
-			form(class="col l10 offset-l1 m12 s12 margin-top")
+			form(class="col l10 offset-l1 m12 s12 margin-top" method="post" action="")
 				.row
 					div(class="input-field col s12 m12 l8 offset-l2")
 						i(class="material-icons prefix") account_circle
@@ -33,12 +32,9 @@ block content
 						label(for="password") Contraseña
 
 					div(class="input-field col s12 m12 l3 offset-l2 margin-top")
-						
 						i(class="material-icons prefix color-text left" data-target="seleccionar_empleado") label
-						input(name="id_empleado" type="text" class="validate" required readonly)
+						input(name="id_empleado" id="id_empleado" type="text" required readonly placeholder="ID empleado")
 						label(for="id_empleado") ID empleado
-
-						
 					div(class="input-field col s12 m12 l5 margin-top")
 						select(name="rol")
 							each rol in roles
@@ -48,7 +44,6 @@ block content
 						button(class="btn waves-effect waves-light green right" type="submit") Registrar
 							i(class="material-icons left") send
 				
-
 	//- modal: seleccionar usuario
 	div(id="seleccionar_empleado" class="modal modal-fixed-footer")
 		div(class="modal-content")
@@ -61,23 +56,6 @@ block content
 					i(class="material-icons") close
 
 			ul(class="collapsible" data-collapsible="accordion" id="empleados_list")
-				//- li
-				//- 	div(class="collapsible-header") 
-				//- 		i(class="material-icons left") account_circle
-				//- 		| 1 - Jose Mendiola Fernandez
-				//- 	div(class="collapsible-body")
-				//- 		strong CUIP: 
-				//- 		span BARM700906TU5
-				//- 		br
-				//- 		strong Numero empleado: 
-				//- 		span 31
-				//- 		br
-				//- 		strong Puesto: 
-				//- 		span Chofer
-				//- 		br
-				//- 		strong Adscripcion: 
-				//- 		span Chilpancingo
-
 
 		div(class="modal-footer")
 			a(class="modal-action modal-close waves-effect waves-green btn-flat") Cerrar

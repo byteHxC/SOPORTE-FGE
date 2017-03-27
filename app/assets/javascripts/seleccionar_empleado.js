@@ -15,11 +15,14 @@ function getEmpleado(form){
 									account_circle
 								</i>
 								${data.nombre}
-								<i class="material-icons right">
+								<i class="material-icons right" onclick="seleccionarEmpleado(${data.id_empleado});">
 									add_circle
 								</i>
 							</div>
 							<div class="collapsible-body">
+								<strong> ID empleado: </strong>
+								<span>${data.id_empleado} </span>
+								<br>
 								<strong> CUIP: </strong>
 								<span>${data.cuip} </span>
 								<br>
@@ -38,4 +41,8 @@ function getEmpleado(form){
 		//alert("data => "+data);
 	});
 	return false;
+}
+function seleccionarEmpleado(id_empleado){
+	$('#id_empleado').val(id_empleado);
+	$('#seleccionar_empleado').modal('close');
 }

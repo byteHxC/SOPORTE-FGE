@@ -8,6 +8,7 @@ const express    = require('express'),
 	bodyParser   = require('body-parser'),
 	methodOverride = require('method-override'),
 	session      = require('express-session');
+	
 
 // Configuraciones iniciales de nodejs
 const configDB = require('./config/database.js');
