@@ -21,14 +21,14 @@ block content
 		div(class="row")
 			div(class="col l10 offset-l1 m12 s12 ")
 				h4(class="center bold") Usuarios del sistema
-			div(class="col l8 offset-l2 m12 s12")
-				form
+			div(class="col l8 offset-l2 m12 s10")
+				form(onsubmit="return buscarUsuario(this);")
 					div(class="input-field z-depth-3")
-						input(id="search" type="search" required="true" placeholder="Buscar usuario por nombre")
+						input(id="search" name="nombre" type="search" required="true" placeholder="Buscar usuario por nombre")
 						label(class="label-icon" for="search")
 							i(class="material-icons left") search
 						i(class="material-icons") close
-			div(class="col l2 m12 s12")
+			div(class="col l2 m12 s2")
 				div(class="input-field")
 						a(href="/empleado/" class="btn-floating btn-tiny waves-effect waves-light red")
 								i(class="material-icons") add
@@ -40,7 +40,7 @@ block content
 							th Rol
 							th Estado
 							th ID empleado
-					tbody
+					tbody(id="body_usuarios")
 						each usuario in usuarios
 							- activo = ('activo' == usuario.estado) ? 'selected' : null; 
 							- inactivo = ('inactivo' == usuario.estado) ? 'selected' : null; 
@@ -48,8 +48,9 @@ block content
 								td=usuario.nombre
 								td=usuario.rol
 								td
+
 									div(class="input-field")
-										select(name="estado" onchange="return cambiarEstado(#{usuario.id_usuario}, #{usuario.estado});")
+										select(name="estado" onchange="return cambiarEstado(#{usuario.id_usuario}, '#{usuario.estado}');")
 											option(value="activo" selected=activo) Activo
 											option(value="inactivo" selected=inactivo) Inactivo
 								td
