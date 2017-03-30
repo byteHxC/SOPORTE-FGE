@@ -2,25 +2,34 @@
 extends ../layout.jade
 block nav-desktop
 	li
-		a(class="thin it" href="#") Gestion de usuarios
+		a(class="thin it" href="/") Gestion de usuarios
 			i(class="material-icons right") group_add
 	li
 		a(class="thin it" href="#") Reportes
 			i(class="material-icons right") trending_up
 block nav-phone
 	li
-		a(class="" href="#") Gestion de usuarios
+		a(class="" href="/") Gestion de usuarios
 			i(class="material-icons left") group_add
 	li
 		a(class="" href="#") Reportes
 			i(class="material-icons left") trending_up
 	
 block content
+	script(src="/../javascripts/jquery.validate.min.js")
 	script(src="/../javascripts/seleccionar_empleado.js")
+	style().
+		div.error {
+		  color: red;
+		  margin-top: -15px;
+		  padding: 0;
+		  font-size: 0.9em;
+		  padding-left: 3.5em;
+		}
 	div(class="container margin-top")
 		.row.z-depth-3
 			h5(class="condensed light center padding-top") Agregar un nuevo usuario al sistema
-			form(class="col l10 offset-l1 m12 s12 margin-top" method="post" action="")
+			form(class="col l10 offset-l1 m12 s12 margin-top" method="post" action="" id="formValidate")
 				.row
 					div(class="input-field col s12 m12 l8 offset-l2")
 						i(class="material-icons prefix") account_circle
@@ -33,7 +42,7 @@ block content
 
 					div(class="input-field col s12 m12 l3 offset-l2 margin-top")
 						i(class="material-icons prefix color-text left" data-target="seleccionar_empleado") label
-						input(name="id_empleado" id="id_empleado" type="text" required readonly placeholder="ID empleado")
+						input(name="id_empleado" id="id_empleado" class="validate" type="text" required readonly placeholder="ID empleado")
 						label(for="id_empleado") ID empleado
 					div(class="input-field col s12 m12 l5 margin-top")
 						select(name="rol")
@@ -47,7 +56,6 @@ block content
 	//- modal: seleccionar usuario
 	div(id="seleccionar_empleado" class="modal modal-fixed-footer")
 		div(class="modal-content")
-			h4 Seleccione un empleado
 			form(onsubmit="return getEmpleado(this);")
 				div(class="input-field z-depth-3")
 					input(id="search" name="num_empleado" type="search" required="true" placeholder="Ingrese el número empleado:")

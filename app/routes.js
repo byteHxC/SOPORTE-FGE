@@ -1,5 +1,6 @@
 const db = require('../config/database');
 const validate = require("validate.js");
+var moment = require('moment');
 
 module.exports = function(app, passport, express) {
 	const router = express.Router();
@@ -10,7 +11,21 @@ module.exports = function(app, passport, express) {
             var rol = JSON.parse(JSON.stringify(rows));
             //console.log(rol);
             if(rol[0].nombre == 'recepcionista'){
-                res.send('hola recepcionista, aun no esta tu pagina :c');
+                data = {};
+                db.query("select auto_increment from information_schema.TABLES WHERE  table_name like 'solicitud';", function(err, rows){
+                    var id_solicitud = JSON.parse(JSON.stringify(rows))[0].auto_increment;
+                    data['solicitud'] = id_solicitud;
+                    data['fecha'] = moment().format("DD / MM / YYYY");
+                    db.query("select * from cat_tipo_solicitud;", function(err, rows){
+                        var tipos_solicitud = JSON.parse(JSON.stringify(rows));
+                        data['tipos_solicitud'] = tipos_solicitud;
+                        db.query("select *from cat_tipo_servicio", function(err, rows){
+                            var tipos_servicio = JSON.parse(JSON.stringify(rows));
+                            data['tipos_servicio'] = tipos_servicio;
+                            res.render('solicitud/solicitud_recepcionista', data);
+                        });
+                    })
+                });                
             }else if(rol[0].nombre == 'administrador'){
                 // vista principal del usuario administrador
                 console.log(req.user);
@@ -78,6 +93,7 @@ module.exports = function(app, passport, express) {
             }
             
         });
+        
     // cambiar de estado    
     router.put('/usuario/', isLoggedIn, isAdministrador, function(req, res){
         id_usuario = req.body.id_usuario;
@@ -128,6 +144,13 @@ module.exports = function(app, passport, express) {
             db.query('select *from empleado_info where num_empleado=?;',[req.params.num_empleado], function(err, rows){
                 var empleado = JSON.parse(JSON.stringify(rows));
                 res.status(200).json(empleado[0]);
+            });
+        });
+    api.route('/empleado/buscar/nombre/:nombre')
+        .get(isLoggedIn, function(req, res){
+            db.query('select *from empleado_info where nombre LIKE "%'+req.params.nombre+'%";', function(err, rows){
+                var empleados = JSON.parse(JSON.stringify(rows));
+                res.status(200).json(empleados);
             });
         });
 

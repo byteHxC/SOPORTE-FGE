@@ -1,0 +1,93 @@
+//- index Recepcionista
+extends layout.jade
+block nav-desktop
+	//- li
+	//- 	a(class="thin it" href="#") Gestion de usuarios
+	//- 		i(class="material-icons right") group_add
+	
+block nav-phone
+	//- li
+	//- 	a(class="" href="#") Gestion de usuarios
+	//- 		i(class="material-icons left") group_add
+	
+block content
+	script(src="/../javascripts/indexAdministrador.js")
+	div(class="container margin-top")
+		.row.z-depth-3
+			div(class="col l10 offset-l1 m12 s12 ")
+				h4(class="center bold") Bienvenido(a) Recepcionista
+			div(class="col l8 offset-l2 m12 s10")
+				h4(class="center bold") Generar Solicitud
+				form(class="col l10 offset-l1 m12 s12 margin-top" method="post" action="")
+				.row
+					div(class="input-field col s12 m12 l3 offset-l1")
+						input(name="id_solicitud" type="text" class="validate" required disabled = "true")
+						label(for="id_solicitud") Num Solicitud
+					div(class="input-field col s12 m12 l5 offset-l1")
+						input(name="fecha" type="text" class="validate" required disabled = "true")
+						label(for="fecha") Fecha
+					div(class="input-field col s10 m12 l8 offset-l1")
+						label(for="tipo_solicitud") Tipo de Solicitud:
+					div(class="input-field col s10 m12 l8 offset-l1")
+						input(name="telefono" type="radio" class="validate" required)
+						label(for="telefono") Via Telefonica           
+					div(class="input-field col s10 m12 13 offset-l1")
+						input(name="oficio" type="radio" class="validate" required)
+						label(for="oficio") Oficio
+					div(class="input-field col s10 m12 14 offset-l1")
+						input(name="personal" type="radio" class="validate" required)
+						label(for="personal") Personal
+					div(class="input-field col s12 m12 l8 offset-l1")
+						input(name="oficio" type="text" class="validate" required)
+						label(for="oficion") Num Oficio
+					div(class="input-field col s12 m12 l8 offset-l1")
+						input(name="id_solicitante" type="text" class="validate" required)
+						label(for="id_solicitante") Nombre Solicitante
+					div(class="input-field col s12 m12 l6 offset-l1")
+						input(name="adscripcion" type="text" class="validate" required)
+						label(for="adscripcion") Adscripcion
+					div(class="input-field col s10 m8 l1 offset-s1 offset-m2 offset-l2 margin-top margin-bottom")
+							button(class="waves-effect waves-light right btn color-back" type="submit") Editar
+					div(class="input-field col s10 m12 l8 offset-l1")
+						label(for="tipo_servicio") Tipo de Servicio: 
+					div(class="input-field col s10 m12 l0 offset-l1")
+						input(name="sistema" type="radio" class="validate" required)
+						label(for="sistema") Sistema          
+					div(class="input-field col s10 m12 l0 offset-l1")
+						input(name="internet" type="radio" class="validate" required)
+						label(for="internet") Internet
+					div(class="input-field col s10 m12 l0 offset-l1")
+						input(name="soporte_tecnico" type="radio" class="validate" required)
+						label(for="soporte_tecnico") Soporte Tecnico
+					div(class="input-field col s10 m12 l0 offset-l1")
+						input(name="redes" type="radio" class="validate" required)
+						label(for="redes") Redes
+					div(class="input-field col s10 m12 l0 offset-l1")
+						input(name="telefonia" type="radio" class="validate" required)
+						label(for="telefonia") Telefonia 
+					div(class="textarea.materialize-textarea col s12 m12 l8 offset-l1")
+						textarea(name="problema"  class="validate" rows="4" required)
+						label(for="problema") Descripcion del problema
+					div(class="select.browser-default col s12 m12 l6 offset-l1")
+						label(for="solucion_si") Solucion
+						select(name="solucion" type="text" class="validate" required)
+							option(value="si" selected=si) Si
+							option(value="no" selected=no) No
+					div(class="textarea.materialize-textarea col s12 m12 l8 offset-l1")
+						textarea(name="solucion_problema" class="validate" rows="4" required)
+						label(for="solucion_problema") Solucion del problema 
+					div(class="input-field col s10 m8 l8 offset-s1 offset-m2 offset-l2 margin-top margin-bottom")
+							button(class="waves-effect waves-light right btn color-back" type="submit") Registrar
+					div(class="select.browser-default col s12 m12 l6 offset-l1")
+						label(for="empleado") Empleado
+						select(name="empleado_encargado" type="text" class="validate" required)
+							option(value="juan" selected=juan) Juan
+							
+					div(class="select.browser-default col s12 m12 l6 offset-l1")
+						label(for="prioridad") Prioridad
+						select(name="nom_priorida" type="text" class="validate" required)
+							option(value="baja" selected=baja) Baja
+							option(value="media" selected=media) Media
+							option(value="alta" selected=alta) Alta
+					div(class="input-field col s10 m8 l8 offset-s1 offset-m2 offset-l2 margin-top margin-bottom")
+							button(class="waves-effect waves-light right btn color-back" type="submit") Enviar

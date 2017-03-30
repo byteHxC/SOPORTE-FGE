@@ -1,5 +1,5 @@
  $(document).ready(function(){
-    $('.modal').modal();
+    $('.modal').modal({opacity: .7});
 });
 
 $(document).ready(function(){
@@ -46,3 +46,43 @@ function seleccionarEmpleado(id_empleado){
 	$('#id_empleado').val(id_empleado);
 	$('#seleccionar_empleado').modal('close');
 }
+
+$().ready(function (){
+	$('#formValidate').validate({
+		rules:{
+			nombre: {
+				required: true,
+				minlength: 3
+			},
+			password: {
+				required: true,
+				minlength: 6
+			},
+			id_empleado: {
+				required: true
+			}
+		},
+		messages: {
+			nombre:{
+                required: "Ingrese un nombre de usuario",
+                minlength: "El tamaño minimo del nombre es de 3 caracteres"
+	        },
+	        password: {
+	        	required: "Ingrese una contraseña",
+	        	minlength: "El tamaño minimo de la contraseña es de 6 caracteres"
+	        },
+	        id_empleado:{
+	        	required: "El usuario debe estar ligado a un empleado"
+	        }
+		},
+		errorElement : "div",
+	    errorPlacement : function(error, element) {
+	      var placement = $(element).data('error');
+	      if (placement) {
+	        $(placement).append(error)
+	      } else {
+	        error.insertAfter(element);
+	      }
+	    }
+	});
+})
