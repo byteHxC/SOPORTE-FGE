@@ -33,20 +33,20 @@ block content
 								strong Numero de solicitud: #{solicitud}
 							div(class="col s12 m12 l4 offset-l5")
 								strong Fecha de solicitud: #{fecha}
-							div(class="input-field col s12 m12 l4 " style="margin-top: 4em;")
-								select(name="tipo_solicitud")
+							div(class="input-field col s12 m12 l5 offset-l1 " style="margin-top: 4em;")
+								select(name="tipo_solicitud" onchange=" tipoSolicitud(this);")
 									each solicitud in data.tipos_solicitud
-										option(value=solicitud.id_tipo_solicitud)=solicitud.nombre
+										option(value=solicitud.id_tipo_solicitud )=solicitud.nombre
 								label(for="tipo_solicitud") Tipo solicitud
-							div(class="input-field col s12 m12 l4" id="for_no_oficio")
+							div(class="input-field col s12 m12 l5 " id="for_no_oficio" style="margin-top: 4em;")
 						div(class="step-actions")
 							button(class="waves-effect waves-dark btn next-step") Seguiente
 								i(class="material-icons right") navigate_next
 				li(class="step")
 					div(class="step-title waves-effect") Datos solicitante
-					div(class="step-content")
+					div(class="step-content" style="overflow: hidden;")
 						div.row
-							div(class="col s12 m12 l10 offset-l1")
+							div(class="col s12 m12 l8 offset-l2")
 								form(onsubmit="return getEmpleado(this);")
 									div(class="input-field z-depth-3")
 										input(id="search" name="nombre_empleado" type="search" required="true" placeholder="Ingrese su nombre de empleado...")
@@ -54,21 +54,28 @@ block content
 											i(class="material-icons left") search
 										i(class="material-icons") close
 
-						div.row
-							ul(class="collapsible" data-collapsible="accordion" id="empleados_list")
-						//- div(class="step-actions")
-						//- 	button(class="waves-effect waves-dark btn next-step") Siguiente
-						//- 		i(class="material-icons right") navigate_next			
-				li(class="step")
-					div(class="step-title waves-effect") Seguimiento
-					div(class="step-content")
+						div(class="row " style="overflow: auto; height: 100%; width: 100%;") 
+							div(class="col s12 m12 l10 offset-l1")
+								ul(class="collapsible big-margin-bottom" data-collapsible="accordion" id="empleados_list")
+						div(class="step-actions")
+							button(class="waves-effect waves-dark btn next-step margin-bottom") Siguiente
+								i(class="material-icons right") navigate_next	
+								
+				li(class="step" )
+					div(class="step-title waves-effect" ) Seguimiento
+					div(class="step-content" style="overflow: hidden;")
 						.row
 							div(class="col s12 m12 l10 offset-l1")
 								p(class="center")
 									input(type="checkbox" class="filled-in" id="solucion" checked="checked")
 									label(for="solucion") ¿Se soluciono el problema?
-							div(class="col s12 m12 l10 offset-l1" id="opciones_solucion")
-								//- h5 ¿Se soluciono el problema?
+									label(id="descripcion_solucion")
+						div(class="row " style="overflow: auto; height: 100%; width: 100%;") 
+							div(class="col s12 m12 l10 offset-l1 input-field" id="opciones_solucion")
+								
+						div(class="step-actions")
+							button(class="waves-effect waves-dark btn margin-bottom") Enviar solicitud
+								i(class="material-icons right") navigate_next	
 
 
 

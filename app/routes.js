@@ -116,7 +116,7 @@ module.exports = function(app, passport, express) {
 
     // inicio de sesion de los usuarios
     router.route('/login')
-        .get(function(req, res){
+        .get(notIsLoggedIn, function(req, res){
             console.log('GET /login')
             res.render('login', {message: req.flash('loginMessage')});
         })
@@ -138,6 +138,7 @@ module.exports = function(app, passport, express) {
 
     // API responde json
     const api = express.Router();
+    // api empleados
     api.route('/empleado/:num_empleado')
         .get(isLoggedIn,isAdministrador, function(req, res){
             console.log("num_empleado => " + req.params.num_empleado)
@@ -151,6 +152,14 @@ module.exports = function(app, passport, express) {
             db.query('select *from empleado_info where nombre LIKE "%'+req.params.nombre+'%";', function(err, rows){
                 var empleados = JSON.parse(JSON.stringify(rows));
                 res.status(200).json(empleados);
+            });
+        });
+    // api /usuarios/
+    api.route('/usuarios/')
+        .get(isLoggedIn, function(req, res){
+            db.query("select usuario.id_usuario, usuario.nombre, usuario.estado, usuario.id_empleado,rol.id_rol, rol.nombre as rol from usuario join cat_rol as rol on usuario.id_rol = rol.id_rol where rol.nombre = 'soporte' and estado='activo';", function(err, rows){
+                var usuarios = JSON.parse(JSON.stringify(rows));
+                res.status(200).json(usuarios);
             });
         });
 
