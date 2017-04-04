@@ -29,6 +29,19 @@ app.set('view engine', 'jade'); // set up ejs for templating
 app.use(session({ secret: 'ppcdsalvc' })); // session secret
 app.use(passport.initialize()); // persistent login sessions
 app.use(passport.session());
+app.use(function(req,res,next){
+    if(req.user){
+    	res.locals.user_nombre = req.user.nombre;
+	    if(req.user.id_rol == 1){
+	        res.locals.user_rol = "Administrador";
+	    }else if(req.user.id_rol){
+	        res.locals.user_rol = "Recepcionista";
+	    }else if(req.user.id_rol){
+	        res.locals.user_rol = "Soporte"
+	    }
+    }
+    next();
+});
 app.use(flash());  //use connect-flash for flash messages stored in session
 require('./config/passport')(passport);
 

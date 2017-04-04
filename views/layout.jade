@@ -29,8 +29,13 @@ html(lang="es")
 				ul(class="right hide-on-med-and-down")
 					block nav-desktop
 					li
+						a.it.thin #{user_rol} - #{user_nombre} 
+							i.material-icons.right person
+						
+					li
 						a(class="red darken-2 bold" href="/logout/") Cerrar sesión
 							i(class="material-icons right") cancel
+
 				ul(class="side-nav side-width" id="phone-nav")
 					block nav-phone
 					li

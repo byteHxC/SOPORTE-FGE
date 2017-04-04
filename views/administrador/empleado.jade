@@ -27,6 +27,8 @@ block content
 		  padding-left: 3.5em;
 		}
 	div(class="container margin-top")
+		if(messages)
+			h1=messages
 		.row.z-depth-3
 			h5(class="condensed light center padding-top") Agregar un nuevo usuario al sistema
 			form(class="col l10 offset-l1 m12 s12 margin-top" method="post" action="" id="formValidate")

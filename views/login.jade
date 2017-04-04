@@ -5,8 +5,11 @@ html(lang="es")
 		//- scripts de terceros
 		script(src="javascripts/jquery-3.1.1.js")
 		script(src="javascripts/materialize.js")
+		script(src="javascripts/vanilla-notify.js")
 		//- stylessheets de terceros
 		link(rel="stylesheet" type="text/css" href="stylesheets/materialize.css")
+		link(rel="stylesheet" type="text/css" href="stylesheets/vanilla-notify.css")
+
 		//- scripts de terceros
 		script(src="javascripts/common.js")
 		//- stylessheets de terceros
@@ -25,7 +28,8 @@ html(lang="es")
 			if (message.length > 0)
 				input(type="hidden" id="message" value=message)
 				script().
-					toast($('#message').val());
+					error($('#message').val());
+					// toast($('#message').val());
 			div(class="row padding-top padding-bottom")
 				div(class="z-depth-3 white col s12 m12 l10 offset-l1")
 					form(action="/login" method="post")

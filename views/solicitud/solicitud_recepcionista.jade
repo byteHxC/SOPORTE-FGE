@@ -24,58 +24,82 @@ block content
 			div(class="col l10 offset-l1 m12 s12 ")
 				h4(class="center bold") Levantar solicitud
 		.row
-			ul(class="stepper horizontal z-depth-3")
-				li(class="step active")
-					div(class="step-title waves-effect") Crear solicitud
-					div(class="step-content")
-						div.row
-							div(class="col s12 m12 l3")
-								strong Numero de solicitud: #{solicitud}
-							div(class="col s12 m12 l4 offset-l5")
-								strong Fecha de solicitud: #{fecha}
-							div(class="input-field col s12 m12 l5 offset-l1 " style="margin-top: 4em;")
-								select(name="tipo_solicitud" onchange=" tipoSolicitud(this);")
-									each solicitud in data.tipos_solicitud
-										option(value=solicitud.id_tipo_solicitud )=solicitud.nombre
-								label(for="tipo_solicitud") Tipo solicitud
-							div(class="input-field col s12 m12 l5 " id="for_no_oficio" style="margin-top: 4em;")
-						div(class="step-actions")
-							button(class="waves-effect waves-dark btn next-step") Seguiente
-								i(class="material-icons right") navigate_next
-				li(class="step")
-					div(class="step-title waves-effect") Datos solicitante
-					div(class="step-content" style="overflow: hidden;")
-						div.row
-							div(class="col s12 m12 l8 offset-l2")
-								form(onsubmit="return getEmpleado(this);")
+			form(method="post" action="/solicitud/" name="solicitud" id="form_solicitud")
+				ul(class="stepper horizontal z-depth-3")
+					li(class="step active" id="uno")
+						div(class="step-title waves-effect") Tipo solicitud
+						div(class="step-content")
+							div.row
+								div(class="col s12 m12 l3")
+									strong Numero de solicitud: #{solicitud}
+								div(class="col s12 m12 l5 offset-l4")
+									strong.right Fecha de solicitud: #{fecha}
+								div(class="input-field col s12 m12 l5 offset-l1 " style="margin-top: 4em;")
+									select(name="tipo_solicitud" onchange=" tipoSolicitud(this);")
+										each solicitud in data.tipos_solicitud
+											option(value=solicitud.id_tipo_solicitud )=solicitud.nombre
+									label(for="tipo_solicitud") Tipo solicitud
+								div(class="input-field col s12 m12 l5 " id="for_no_oficio" style="margin-top: 4em;")
+							div(class="step-actions")
+								button(class="waves-effect waves-dark btn next-step blue darken-3") Siguiente
+									i(class="material-icons right") navigate_next
+					li(class="step")
+						div(class="step-title waves-effect") Datos solicitante
+						div(class="step-content" style="overflow: hidden;")
+							.row
+								.col.s12.m12.l10.offset-l1.thin.gray-text
+									p.grey-text  *Busque y seleccione el empleado solicitante.
+							div.row
+								div(class="col s12 m12 l7 offset-l1")
 									div(class="input-field z-depth-3")
-										input(id="search" name="nombre_empleado" type="search" required="true" placeholder="Ingrese su nombre de empleado...")
+										input(onsearch="getEmpleado(this);" id="search" name="nombre_empleado" type="search" placeholder="Ingrese su nombre de empleado...")
 										label(class="label-icon" for="search")
 											i(class="material-icons left") search
 										i(class="material-icons") close
+								div.col.s12.m12.l2.input-field
+									input(name="empleado_solicitante" id="empleado_solicitante" class="validate" type="number" required readonly placeholder="ID empleado")
+									label(for="empleado_solicitante") Empleado seleccionado
 
-						div(class="row " style="overflow: auto; height: 100%; width: 100%;") 
-							div(class="col s12 m12 l10 offset-l1")
-								ul(class="collapsible big-margin-bottom" data-collapsible="accordion" id="empleados_list")
-						div(class="step-actions")
-							button(class="waves-effect waves-dark btn next-step margin-bottom") Siguiente
-								i(class="material-icons right") navigate_next	
-								
-				li(class="step" )
-					div(class="step-title waves-effect" ) Seguimiento
-					div(class="step-content" style="overflow: hidden;")
-						.row
-							div(class="col s12 m12 l10 offset-l1")
-								p(class="center")
-									input(type="checkbox" class="filled-in" id="solucion" checked="checked")
-									label(for="solucion") ¿Se soluciono el problema?
-									label(id="descripcion_solucion")
-						div(class="row " style="overflow: auto; height: 100%; width: 100%;") 
-							div(class="col s12 m12 l10 offset-l1 input-field" id="opciones_solucion")
-								
-						div(class="step-actions")
-							button(class="waves-effect waves-dark btn margin-bottom") Enviar solicitud
-								i(class="material-icons right") navigate_next	
+							div(class="row " style="overflow: auto; height: 100%; width: 100%;") 
+								div(class="col s12 m12 l10 offset-l1 big-margin-bottom")
+									ul(class="collapsible big-margin-bottom" data-collapsible="accordion" id="empleados_list")
+							div(class="step-actions")
+								button(class="waves-effect waves-dark btn next-step margin-bottom blue darken-3") Siguiente
+									i(class="material-icons right") navigate_next
+									
+					li.step
+						.step-title.waves-effect Tipo de servicio
+						.step-content
+							.row
+								div(class="input-field col s12 m12 l5 offset-l1 " style="margin-top: 4em;")
+										select(name="tipo_servicio")
+											each servicio in data.tipos_servicio
+												option(value=servicio.id_tipo_servicio )=servicio.nombre
+										label(for="tipo_solicitud") Tipo de servicio que solicita
+								div(class="col s12 m12 l10 offset-l1 input-field")
+									textarea(name="descripcion_problema" class="materialize-textarea" data-length="500" required)
+									label(for="s") Descripción del problema
+
+							.step-actions
+								button(class="waves-effect waves-dark btn next-step margin-bottom blue darken-3") Siguiente
+									i(class="material-icons right") navigate_next	
+
+
+					li(class="step" )
+						div(class="step-title waves-effect" ) Seguimiento
+						div(class="step-content" style="overflow: hidden;")
+							.row
+								div(class="col s12 m12 l10 offset-l1")
+									p(class="center")
+										input(name="solucion" type="checkbox" class="filled-in" id="solucion" checked="checked")
+										label(for="solucion") ¿Se soluciono el problema?
+										label(id="descripcion_solucion")
+							div(class="row " style="overflow: auto; height: 100%; width: 100%;") 
+								div(class="col s12 m12 l10 offset-l1 input-field" id="opciones_solucion")
+									
+							div(class="step-actions")
+								button(class="waves-effect waves-dark btn margin-bottom blue darken-3" type="submit") Enviar solicitud
+									i(class="material-icons right") navigate_next
 
 
 
