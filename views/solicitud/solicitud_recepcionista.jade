@@ -19,12 +19,16 @@ block nav-phone
 	//- 		i(class="material-icons left") group_add
 	
 block content	
+
 	div(class="container")
 		.row
 			div(class="col l10 offset-l1 m12 s12 ")
 				h4(class="center bold") Levantar solicitud
+			if messages
+				p=messages
+
 		.row
-			form(method="post" action="/solicitud/" name="solicitud" id="form_solicitud")
+			form(method="post" action="/solicitud/" name="solicitud" id="form_solicitud" onsubmit="return registrarSolicitud(this);")
 				ul(class="stepper horizontal z-depth-3")
 					li(class="step active" id="uno")
 						div(class="step-title waves-effect") Tipo solicitud
@@ -93,6 +97,7 @@ block content
 									p(class="center")
 										input(name="solucion" type="checkbox" class="filled-in" id="solucion" checked="checked")
 										label(for="solucion") ¿Se soluciono el problema?
+										input(type="hidden" name="prioridad" id="prioridad")
 										label(id="descripcion_solucion")
 							div(class="row " style="overflow: auto; height: 100%; width: 100%;") 
 								div(class="col s12 m12 l10 offset-l1 input-field" id="opciones_solucion")
@@ -100,6 +105,28 @@ block content
 							div(class="step-actions")
 								button(class="waves-effect waves-dark btn margin-bottom blue darken-3" type="submit") Enviar solicitud
 									i(class="material-icons right") navigate_next
+
+	div#prioridad-modal.modal
+		form(onsubmit="return setPrioridad(this);")
+			.modal-content
+				h5.thin Seleccione una prioridad para el reporte
+				.row
+					.col.s12.m12.l12.left
+						p
+							input(name="set_prioridad" type="radio" id="alta" value="alta" checked="true")
+							label(for="alta" class="green-text") 
+								strong Alta
+						p
+							input(name="set_prioridad" type="radio" id="media" value="media")
+							label(for="media" class="yellow-text accent-4")
+								strong Media
+						p
+							input(name="set_prioridad" type="radio" id="baja" value="baja")
+							label(for="baja" class="red-text") 
+								strong Baja
+			.modal-footer
+				button(class="modal-action modal-close waves-effect waves-green btn-flat" ) Aceptar
+
 
 
 

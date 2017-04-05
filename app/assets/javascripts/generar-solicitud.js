@@ -1,5 +1,6 @@
  $(document).ready(function(){
     $('.collapsible').collapsible();
+    $('.modal').modal({opacity: 0.8});
 
  });
         
@@ -15,11 +16,27 @@ $(function(){
 	});
    	setSolucion(solucion.is(':checked'));
 });
+function setPrioridad(form){
+	$('#prioridad').val(form.set_prioridad.value);
+	return false;
+}
+
+function registrarSolicitud(form){
+	value = $('#prioridad').val() || null;
+	if(!form.solucion.checked ){
+		if(value == null)
+			$('#prioridad-modal').modal('open');
+		else 
+			form.submit();
+	}
+	return false;
+	
+}
 
 function tipoSolicitud(tipoSolicitud){
 	if(tipoSolicitud.value == 2){
 		$('#for_no_oficio').html(`
-				<input type="number" class="validate" required name="no_oficio">
+				<input type="number" class="validate" name="no_oficio" id="no_oficio" required >
 				<label for="no_oficio"> Número de oficio </label>
 			`);
 	}else{

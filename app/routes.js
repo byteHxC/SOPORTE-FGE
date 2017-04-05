@@ -69,6 +69,7 @@ module.exports = function(app, passport, express) {
     router.route('/solicitud/')
         .get(isLoggedIn, function(req, res){
             data = {};
+            data['messages'] = req.flash('messages') || false;
                 db.query("select auto_increment from information_schema.TABLES WHERE  table_name like 'solicitud';", function(err, rows){
                     var id_solicitud = JSON.parse(JSON.stringify(rows))[0].auto_increment;
                     data['solicitud'] = id_solicitud;
@@ -85,24 +86,47 @@ module.exports = function(app, passport, express) {
                 });  
         })
         .post(isLoggedIn, function(req, res){
-            id_usuario_encargado = req.user.id_usuario;
+            errores = [];
+            id_usuario_encargado = req.user.id_usuario || null;
 
-            id_tipo_solicitud = req.body.tipo_solicitud;
-            no_oficio = req.body.no_oficio;
+            id_tipo_solicitud = req.body.tipo_solicitud || null;
+            no_oficio = req.body.no_oficio || null;
 
-            id_empleado_solicitante = req.body.empleado_solicitante;
+            id_empleado_solicitante = req.body.empleado_solicitante || null;
 
-            id_tipo_servicio = req.body.tipo_servicio;
-            descripcion_problema = req.body.descripcion_problema;
+            id_tipo_servicio = req.body.tipo_servicio || null;
+            descripcion_problema = req.body.descripcion_problema || null;
 
-            solucion = req.body.solucion;
-            descripcion_solucion = req.body.descripcion_solucion;
+            solucion = req.body.solucion || null;
 
-            usuario_soporte = req.body.usuario_soporte
+            if(solucion == "on"){
+                solucion = "si";
+                prioridad = null;
+            }else{
+                solucion = "no";
+                usuario_soporte = req.body.usuario_soporte || null;
+                prioridad = req.body.prioridad || null;
+            }
 
-            res.send(':D');
+            descripcion_solucion = req.body.descripcion_solucion || null;
 
+
+            fields_solicitud = 'id_solicitud, fecha, descripcion_problema, prioridad, no_oficio, solucion, id_tipo_servicio,id_tipo_solicitud, id_empleado_solicitante, id_usuario_encargado';
+            
+
+            data = [descripcion_problema, prioridad, no_oficio, solucion, id_tipo_servicio, id_tipo_solicitud, id_empleado_solicitante, id_usuario_encargado];
+            db.query("insert into solicitud("+fields_solicitud+") values (default, default, ?, ?, ?, ?, ?, ?, ?, ?);", data, function(err, rows){
+                if(err){
+                    req.flash('messages', 'Error al registrar la solicitud.')
+                    console.log(err);
+                }
+                else{
+                    req.flash('messages', 'Solicitud registrada.')
+                }
+                res.redirect('/');
+            });
         })
+
     // inicio de sesion de los usuarios
     router.route('/login')
         .get(notIsLoggedIn, function(req, res){
