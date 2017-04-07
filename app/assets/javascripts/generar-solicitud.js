@@ -28,6 +28,8 @@ function registrarSolicitud(form){
 			$('#prioridad-modal').modal('open');
 		else 
 			form.submit();
+	}else{
+		form.submit();
 	}
 	return false;
 	

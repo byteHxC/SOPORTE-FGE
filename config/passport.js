@@ -1,4 +1,3 @@
-const User = require('../app/models/usuario');
 const db = require('./database');
 const LocalStrategy = require('passport-local').Strategy;
 
