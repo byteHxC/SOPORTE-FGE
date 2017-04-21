@@ -1,0 +1,52 @@
+//- index soporte
+extends ../layout.jade
+
+block nav-desktop
+	li
+		a(class="thin it" href="/solicitud") Agregar solicitud
+			i(class="material-icons right") event_available
+	li
+		a(class="thin it" href="/") Ver reportes
+			i(class="material-icons right") assignment_turned_in
+	li
+		a(class="thin it" href="/") Ver solicitudes 
+			span(class="badge red white-text" data-badge-caption="pendientes") 4
+
+	
+block nav-phone
+	li
+		a(class="" href="/solicitud") Agregar solicitud
+			i(class="material-icons left") event_available
+	li
+		a(class="thin it" href="/") Ver solicitudes
+			i(class="material-icons left") event_note
+			span(class="badge red white-text" data-badge-caption="pendientes") 4	
+	li
+		a(class="thin it" href="/") Ver reportes
+			i(class="material-icons left") assignment_turned_in
+	
+block content
+	.container
+		.row
+			.col.s12.m12.l10.offset-l1
+				h4.center.bold Solicitudes pendientes
+			.col.s12.m12.l8.offset-l2
+				form(onsubmit="buscarSolicitud(this);")
+					.input-field.z-depth-3
+						input(type="search" name="value_solicitud" placeholder="Buscar solicitud por numero...")
+						label.label-icon(for="search")
+							i.material-icons.left search
+						i.material-icons close
+			.col.s12.m12.l12
+				table.highlight.z-depth-3.centered.responsive-table
+					thead
+						tr
+							th Fecha
+							th Descripción problema
+							th Tipo servicio
+							th Tipo solicitud
+							th Empleado solicitante
+							th Prioridad
+					tbody(id="rows_solicitud")
+
+

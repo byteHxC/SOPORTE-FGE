@@ -2,6 +2,11 @@ const db = require('../../config/database');
 const moment = require('moment');
 var is = require( 'validator.js' ).Assert;
 var validator = require( 'validator.js' ).validator();
+
+exports.solicitudes = function (req, res){
+    console.log('GET /solicitudes/');
+    res.render('soporte/index');
+}
 // GET /solicitud/
 exports.solicitud = function(req, res){
 			console.log('GET /solicitud/');
@@ -19,7 +24,10 @@ exports.solicitud = function(req, res){
                     db.query("select *from cat_tipo_servicio", function(err, rows){
                         var tipos_servicio = JSON.parse(JSON.stringify(rows));
                         data['tipos_servicio'] = tipos_servicio;
-                        res.render('solicitud/solicitud_recepcionista', data);
+                        if(req.user.id_rol ==  2)
+                            res.render('solicitud/solicitud_recepcionista', data);
+                        else
+                            res.render('solicitud/solicitud_soporte', data)
                     });
                 })
             });  

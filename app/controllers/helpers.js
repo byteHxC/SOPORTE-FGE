@@ -17,7 +17,7 @@ exports.index = function(req, res) {
                     res.render('administrador/index', {usuarios: usuarios});
                 });
             }else if(rol[0].nombre == 'soporte'){
-                res.send('hola soporte, aun no esta tu pagina :c');
+                res.redirect('/solicitudes');
             }
         });
     }

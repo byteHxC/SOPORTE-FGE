@@ -34,9 +34,9 @@ app.use(function(req,res,next){
     	res.locals.user_nombre = req.user.nombre;
 	    if(req.user.id_rol == 1){
 	        res.locals.user_rol = "Administrador";
-	    }else if(req.user.id_rol){
+	    }else if(req.user.id_rol == 2){
 	        res.locals.user_rol = "Recepcionista";
-	    }else if(req.user.id_rol){
+	    }else if(req.user.id_rol == 3){
 	        res.locals.user_rol = "Soporte"
 	    }
     }

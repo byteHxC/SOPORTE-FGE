@@ -25,6 +25,10 @@ module.exports = function(app, passport, express) {
         .get(isLoggedIn,solicitudCtrl.solicitud)
         .post(isLoggedIn, solicitudCtrl.agregarSolicitud)
 
+
+    // ver solicitudes en usuario de soporte
+    router.get('/solicitudes/', solicitudCtrl.solicitudes);
+
     // inicio de sesion de los usuarios
     router.route('/login')
         .get(notIsLoggedIn, function(req, res){
