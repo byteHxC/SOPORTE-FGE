@@ -97,13 +97,24 @@ exports.agregarSolicitud = function(req, res){
                     // validar la solución
                     fields_solicitud = 'id_solicitud, fecha, descripcion_problema, no_oficio, solucion, id_tipo_servicio,id_tipo_solicitud, id_empleado_solicitante, id_usuario_encargado, descripcion_solucion';
                     data = [descripcion_problema,no_oficio, solucion, id_tipo_servicio, id_tipo_solicitud, id_empleado_solicitante, id_usuario_encargado, descripcion_solucion];
-                    db.query("insert into solicitud("+fields_solicitud+") values (default, default, ?, ?, ?, ?, ?, ?, ?, ?);", data, function(err, rows){
+                    db.query("insert into solicitud("+fields_solicitud+") values (default, default, ?, ?, ?, ?, ?, ?, ?, ?);", data, function(err, result, rows){
                         if(err){
                             req.flash('error', 'Error al registrar la solicitud.')
                             console.log(err);
-                        }
-                        else{
-                            req.flash('success', 'Solicitud registrada.')
+                        }else{
+                            if(solucion == "no"){
+                                db.query("insert into notificacion_solicitud(id_notificacion, prioridad, id_usuario_soporte, id_solicitud, atendida) values (default, ?, ?, ?, default)", [prioridad, id_usuario_soporte, result.insertId] ,function(err, rows){
+                                    if(err){
+                                        req.flash('error', 'Error al registrar la notificación solicitud.')
+                                        console.log(err);
+                                    }else{
+                                        req.flash('success', 'Solicitud registrada.')
+                                    }
+
+                                });
+                            }else{
+                                req.flash('success', 'Solicitud registrada.')
+                            }
                         }
                         res.redirect('/');
                     });
