@@ -5,7 +5,12 @@ var validator = require( 'validator.js' ).validator();
 
 exports.solicitudes = function (req, res){
     console.log('GET /solicitudes/');
-    res.render('soporte/index');
+    db.query("select * from listar_solicitudes where id_usuario_soporte=?", [req.user.id_usuario], function(err, rows){
+        var solicitudes = JSON.parse(JSON.stringify(rows));
+        res.render('soporte/index', {solicitudes: solicitudes});
+        //console.log(solicitudes);
+    });
+    
 }
 // GET /solicitud/
 exports.solicitud = function(req, res){

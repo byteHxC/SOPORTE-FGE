@@ -7,7 +7,7 @@ exports.index = function(req, res) {
             var rol = JSON.parse(JSON.stringify(rows));
             //console.log(rol);
             if(rol[0].nombre == 'recepcionista'){
-                res.redirect('/solicitud/');              
+                res.redirect('/solicitud/');           
             }else if(rol[0].nombre == 'administrador'){
                 // vista principal del usuario administrador
                 console.log(req.user);

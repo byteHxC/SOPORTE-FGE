@@ -27,7 +27,7 @@ module.exports = function(app, passport, express) {
 
 
     // ver solicitudes en usuario de soporte
-    router.get('/solicitudes/', solicitudCtrl.solicitudes);
+    router.get('/solicitudes/', isLoggedIn, solicitudCtrl.solicitudes);
 
     // inicio de sesion de los usuarios
     router.route('/login')

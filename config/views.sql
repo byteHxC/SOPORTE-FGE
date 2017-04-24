@@ -27,7 +27,7 @@ join cat_municipio as municipio on adscripcion.id_municipio = municipio.id_munic
 select *from adscripcion_municipio;
 
 -- View: vista para mostrar las solciitudes
-create view listar_solicitudes as 
-	select solicitud.fecha, solicitud.descripcion_problema, tipo_servicio.nombre as tipo_servicio, tipo_solicitud.nombre as tipo_solicitud, concat(cat_empleado.nombre,' ', cat_empleado.apellido_paterno, ' ',cat_empleado.apellido_materno) as empleado_solicitante, notificacion_solicitud.prioridad, notificacion_solicitud.atendida, notificacion_solicitud.id_usuario_soporte as id_usuario_soporte from solicitud join cat_tipo_servicio as tipo_servicio on solicitud.id_tipo_servicio = tipo_servicio.id_tipo_servicio join cat_tipo_solicitud as tipo_solicitud on tipo_solicitud.id_tipo_solicitud = solicitud.id_tipo_solicitud join notificacion_solicitud on notificacion_solicitud.id_solicitud = solicitud.id_solicitud join cat_empleado on solicitud.id_empleado_solicitante = cat_empleado.id_empleado;
+create or replace view listar_solicitudes as 
+	select date_format(solicitud.fecha,'%e/%m/%Y a las %r') as fecha, solicitud.descripcion_problema, tipo_servicio.nombre as tipo_servicio, tipo_solicitud.nombre as tipo_solicitud, concat(cat_empleado.nombre,' ', cat_empleado.apellido_paterno, ' ',cat_empleado.apellido_materno) as empleado_solicitante, notificacion_solicitud.prioridad, notificacion_solicitud.atendida, notificacion_solicitud.id_usuario_soporte as id_usuario_soporte from solicitud join cat_tipo_servicio as tipo_servicio on solicitud.id_tipo_servicio = tipo_servicio.id_tipo_servicio join cat_tipo_solicitud as tipo_solicitud on tipo_solicitud.id_tipo_solicitud = solicitud.id_tipo_solicitud join notificacion_solicitud on notificacion_solicitud.id_solicitud = solicitud.id_solicitud join cat_empleado on solicitud.id_empleado_solicitante = cat_empleado.id_empleado;
 
 select *from listar_solicitudes;

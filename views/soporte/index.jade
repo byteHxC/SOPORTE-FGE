@@ -10,7 +10,7 @@ block nav-desktop
 			i(class="material-icons right") assignment_turned_in
 	li
 		a(class="thin it" href="/") Ver solicitudes 
-			span(class="badge red white-text" data-badge-caption="pendientes") 4
+			span(class="badge red white-text" data-badge-caption="pendiente(s)")=solicitudes.length
 
 	
 block nav-phone
@@ -20,7 +20,7 @@ block nav-phone
 	li
 		a(class="thin it" href="/") Ver solicitudes
 			i(class="material-icons left") event_note
-			span(class="badge red white-text" data-badge-caption="pendientes") 4	
+			span(class="badge red white-text" data-badge-caption="pendientes")=solicitudes.length
 	li
 		a(class="thin it" href="/") Ver reportes
 			i(class="material-icons left") assignment_turned_in
@@ -48,5 +48,14 @@ block content
 							th Empleado solicitante
 							th Prioridad
 					tbody(id="rows_solicitud")
+						each solicitud in solicitudes
+							tr
+								td=solicitud.fecha
+								td=solicitud.descripcion_problema
+								td=solicitud.tipo_servicio
+								td=solicitud.tipo_solicitud
+								td=solicitud.empleado_solicitante
+								td=solicitud.prioridad
+
 
 

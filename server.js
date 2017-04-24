@@ -32,6 +32,8 @@ app.use(passport.session());
 app.use(function(req,res,next){
     if(req.user){
     	res.locals.user_nombre = req.user.nombre;
+    	res.locals.user_id = req.user.id_usuario;
+    	//console.log("->"+req.user.id_usuario)
 	    if(req.user.id_rol == 1){
 	        res.locals.user_rol = "Administrador";
 	    }else if(req.user.id_rol == 2){
