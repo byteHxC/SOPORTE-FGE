@@ -25,6 +25,18 @@ html(lang="es")
 		link(rel="stylesheet" type="text/css" href="/../fonts/iconfont/material-icons.css")
 		meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1")
 	body
+		//- dropdown user
+		ul#settings_user.dropdown-content(style='width:100em;')
+			li
+				a(href="#modal_change_password" class="indigo-text modal-trigger") Cambiar contraseña
+					i.material-icons.left update
+			li.divider
+		//- Modal para cambio de contraseña
+		#modal_change_password.modal
+			.modal-content
+				h4 Aqui va el contenido del modal
+			.modal-footer
+				button(class="modal-action modal-close waves-effect waves-green btn-flat") Cambiar
 		nav
 			div(class="nav-wrapper color-nav") 
 				img(class="responsive-img logo-nav brand-logo" src="/../images/logo.png")
@@ -33,9 +45,8 @@ html(lang="es")
 				ul(class="right hide-on-med-and-down")
 					block nav-desktop
 					li
-						a.it.thin #{user_rol} - #{user_nombre} 
-							i.material-icons.right account_circle
-						
+						a.it.thin.dropdown-button(data-activates="settings_user") #{user_rol} - #{user_nombre} 
+							i.material-icons.right arrow_drop_down_circle
 					li
 						a(class="red darken-2 bold" href="/logout/") Cerrar sesión
 							i(class="material-icons right") cancel
@@ -45,8 +56,15 @@ html(lang="es")
 					li
 						a(class="red darken-2 white-text" href="/logout/") Cerrar sesión
 							i(class="material-icons left") cancel
+		
 		block content	
+
 	script().
 			$(".button-collapse").sideNav();
+			$(".dropdown-button").dropdown();
+			$(document).ready(function(){
+			    $('.collapsible').collapsible();
+			    $('.modal').modal({opacity: 0.8});
+			});
 
 

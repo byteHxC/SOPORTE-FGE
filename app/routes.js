@@ -16,6 +16,8 @@ module.exports = function(app, passport, express) {
     router.route('/empleado/')
         .get(isLoggedIn,isAdministrador,empleadoCTRL.empleado)
         .post(isLoggedIn,isAdministrador, empleadoCTRL.agregarEmpleado);
+
+    router.get('/empleado_edit/:num_empleado', isLoggedIn, isAdministrador, empleadoCTRL.findById);
         
     // cambiar de estado    
     router.put('/usuario/', isLoggedIn, isAdministrador, usuarioCTRL.actualizarEstado);
@@ -28,6 +30,9 @@ module.exports = function(app, passport, express) {
 
     // ver solicitudes en usuario de soporte
     router.get('/solicitudes/', isLoggedIn, solicitudCtrl.solicitudes);
+
+    router.get('/solicitud/atender/:id_solciitud', isLoggedIn, solicitudCtrl.atender);
+    // reportes
 
     // inicio de sesion de los usuarios
     router.route('/login')
@@ -73,6 +78,7 @@ module.exports = function(app, passport, express) {
         res.status(400);
         res.render('404');
     });
+    
     
     // # END
     function isAdministrador(req, res, next) {

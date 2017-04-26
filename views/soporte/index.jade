@@ -4,7 +4,7 @@ extends ../layout.jade
 block nav-desktop
 	li
 		a(class="thin it" href="/solicitud") Agregar solicitud
-			i(class="material-icons right") event_available
+			i(class="material-icons right") playlist_add
 	li
 		a(class="thin it" href="/") Ver reportes
 			i(class="material-icons right") assignment_turned_in
@@ -16,11 +16,11 @@ block nav-desktop
 block nav-phone
 	li
 		a(class="" href="/solicitud") Agregar solicitud
-			i(class="material-icons left") event_available
+			i(class="material-icons left") playlist_add
 	li
 		a(class="thin it" href="/") Ver solicitudes
 			i(class="material-icons left") event_note
-			span(class="badge red white-text" data-badge-caption="pendientes")=solicitudes.length
+			span(class="badge red white-text" data-badge-caption="pendientes")=notificaciones.numero_solicitudes
 	li
 		a(class="thin it" href="/") Ver reportes
 			i(class="material-icons left") assignment_turned_in
@@ -41,21 +41,34 @@ block content
 				table.highlight.z-depth-3.centered.responsive-table
 					thead
 						tr
+							th Prioridad
 							th Fecha
 							th Descripción problema
 							th Tipo servicio
 							th Tipo solicitud
 							th Empleado solicitante
-							th Prioridad
+							th Acciones
+							
 					tbody(id="rows_solicitud")
 						each solicitud in solicitudes
 							tr
-								td=solicitud.fecha
-								td=solicitud.descripcion_problema
+								-color = 'red lighten-1';
+								if solicitud.prioridad == "media"
+									-color = 'red lighten-3'
+								if  solicitud.prioridad == "baja"
+									-color = 'red lighten-5'	
+
+								td(class=color)=solicitud.prioridad
+								td(style="font-size:x-small;")=solicitud.fecha
+								td(style="font-size: small" )=solicitud.descripcion_problema
+
 								td=solicitud.tipo_servicio
 								td=solicitud.tipo_solicitud
-								td=solicitud.empleado_solicitante
-								td=solicitud.prioridad
+								td(style="font-size: small")=solicitud.empleado_solicitante
+								td
+									a(href="/solicitud/atender/"+solicitud.id_solicitud) Atender
+										i.material-icons exit_to_app
+
 
 
 

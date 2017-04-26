@@ -1,15 +1,14 @@
-//- index admistrador
 extends ../layout.jade
 block nav-desktop
 	li
-		a(class="thin it" href="#") Gestion de usuarios
+		a(class="thin it" href="/") Gestion de usuarios
 			i(class="material-icons right") group_add
 	li
 		a(class="thin it" href="#") Reportes
 			i(class="material-icons right") trending_up
 block nav-phone
 	li
-		a(class="" href="#") Gestion de usuarios
+		a(class="" href="/") Gestion de usuarios
 			i(class="material-icons left") group_add
 	li
 		a(class="" href="#") Reportes
@@ -18,3 +17,34 @@ block nav-phone
 block content
 	div(class="container")
 		div(class="row")
+			div(class="col l10 offset-l1 m12 s12 ")
+				h2(class="center bold") Informacion del Empleado
+				
+			div(class="col l12 m12 s12")
+				table(class="highlight z-depth-3 centered")
+					thead
+						tr
+							th Datos 
+							th Informacion
+					tbody
+						tr
+							td <Strong> Id Empleado
+							td=info_emp.id_empleado
+						tr
+							td <Strong> Nombre
+							td=info_emp.nombre
+						tr
+							td <Strong> Cuip
+							td=info_emp.cuip
+						tr
+							td <Strong> Num. Empleado
+							td=info_emp.num_empleado
+						tr
+							td <Strong> Puesto
+							td=info_emp.puesto
+						tr
+							td <Strong> Adscripcion
+							td=info_emp.adscripcion
+						tr
+							td <Strong> Municipio
+							td=info_emp.municipio

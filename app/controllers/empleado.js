@@ -10,6 +10,14 @@ exports.empleado = function(req, res){
             });
         }
 
+exports.findById = function (req, res){
+    console.log('GET /empleado_edit/:id');
+    db.query('select * from empleado_info where id_empleado=?;', [req.params.num_empleado], function(err, data){
+        //res.status(200).json(data);
+        //var info_emp = JSON.parse(JSON.stringify(data));
+        res.render('administrador/empleado_edit', {info_emp : data[0]});
+    });
+}
 // POST /empleado
 exports.agregarEmpleado = function(req, res){
 			console.log('POST /empleado');

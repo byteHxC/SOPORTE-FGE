@@ -7,10 +7,19 @@ exports.solicitudes = function (req, res){
     console.log('GET /solicitudes/');
     db.query("select * from listar_solicitudes where id_usuario_soporte=?", [req.user.id_usuario], function(err, rows){
         var solicitudes = JSON.parse(JSON.stringify(rows));
-        res.render('soporte/index', {solicitudes: solicitudes});
+        getNumeroSolicitudes(req.user.id_usuario, function(row){
+            //console.log(row);
+            res.render('soporte/index', {solicitudes: solicitudes, notificaciones: row});
+        })
         //console.log(solicitudes);
     });
     
+}
+
+// GET /solicitud/atender/:id_solicitud
+exports.atender = function (req, res){
+    console.log('GET /solicitud/atender/:id_solicitud ');
+
 }
 // GET /solicitud/
 exports.solicitud = function(req, res){
@@ -29,10 +38,16 @@ exports.solicitud = function(req, res){
                     db.query("select *from cat_tipo_servicio", function(err, rows){
                         var tipos_servicio = JSON.parse(JSON.stringify(rows));
                         data['tipos_servicio'] = tipos_servicio;
-                        if(req.user.id_rol ==  2)
+                        if(req.user.id_rol ==  2){
                             res.render('solicitud/solicitud_recepcionista', data);
-                        else
-                            res.render('solicitud/solicitud_soporte', data)
+                        }
+                        else{
+                            getNumeroSolicitudes(req.user.id_usuario, function(row){
+                                console.log(row);
+                                data['notificaciones'] = row;
+                                res.render('solicitud/solicitud_soporte', data);
+                            })
+                        }
                     });
                 })
             });  
@@ -131,3 +146,12 @@ exports.agregarSolicitud = function(req, res){
             }
             
         }
+
+function getNumeroSolicitudes(id_usuario_soporte,callback){
+        db.query("select id_usuario_soporte,count(id_notificacion) as numero_solicitudes from notificacion_solicitud where id_usuario_soporte=? group by id_usuario_soporte;", [id_usuario_soporte], function(err, data){
+            if(err)
+                callback(err);
+            else
+                callback(JSON.parse(JSON.stringify(data)));
+        });
+    }
