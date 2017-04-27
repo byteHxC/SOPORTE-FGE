@@ -5,7 +5,7 @@ var validator = require( 'validator.js' ).validator();
 
 exports.solicitudes = function (req, res){
     console.log('GET /solicitudes/');
-    db.query("select * from listar_solicitudes where id_usuario_soporte=?", [req.user.id_usuario], function(err, rows){
+    db.query("select * from listar_solicitudes where id_usuario_soporte=? and atendida='no' order by case prioridad when 'alta' then 1 when 'media' then 2 when 'baja' then 3 end, fecha ", [req.user.id_usuario], function(err, rows){
         var solicitudes = JSON.parse(JSON.stringify(rows));
         getNumeroSolicitudes(req.user.id_usuario, function(row){
             //console.log(row);
@@ -19,8 +19,24 @@ exports.solicitudes = function (req, res){
 // GET /solicitud/atender/:id_solicitud
 exports.atender = function (req, res){
     console.log('GET /solicitud/atender/:id_solicitud ');
-
+    data = [];
+    db.query('select id_tipo_reparacion, nombre from cat_tipo_reparacion', function(err, rows){
+        if(err){
+            res.status(500).send("erorr en el servidor :c");
+        }else{
+            data['tipos_reparacion'] = JSON.parse(JSON.stringify(rows));
+            getNumeroSolicitudes(req.user.id_usuario, function(row){
+                data['notificaciones'] = row;
+                console.log(row);
+                res.render('soporte/reporte', data);
+            });
+        }
+    })
 }
+exports.agregarReporte = function(req, res){
+    console.log('POST /solicitud/atender/');
+}
+
 // GET /solicitud/
 exports.solicitud = function(req, res){
 			console.log('GET /solicitud/');
@@ -155,3 +171,34 @@ function getNumeroSolicitudes(id_usuario_soporte,callback){
                 callback(JSON.parse(JSON.stringify(data)));
         });
     }
+
+// API solicitud
+
+exports.APIBuscarSolicitud = function(req, res){
+    console.log('GET /api/solicitud/buscar/:filtro/:valor')
+    console.log('GET /api/solicitud/buscar/'+req.params.filtro+'/'+req.params.valor);
+    if(req.params.filtro == "empleado_solicitante"){
+        db.query('select * from listar_solicitudes where empleado_solicitante like "%'+req.params.valor+'%" and id_usuario_soporte=? and atendida="no" order by case prioridad when "alta" then 1 when "media" then 2 when "baja" then 3 end, fecha', [req.user.id_usuario], function(err, rows){
+            console.log('entraalv');
+            if(err){
+                res.status(500).json({error: 'Error al realizar la busqueda'});
+            }else{
+                var solicitudes = JSON.parse(JSON.stringify(rows));
+                res.status(200).json(solicitudes);
+            }
+            //console.log(solicitudes);
+        });
+    }else{
+        db.query("select * from listar_solicitudes where "+req.params.filtro+" =? and id_usuario_soporte=? and atendida='no' order by case prioridad when 'alta' then 1 when 'media' then 2 when 'baja' then 3 end, fecha", [req.params.valor, req.user.id_usuario], function(err, rows){
+            if(err){
+                res.status(500).json({error: 'Error al realizar la busqueda'});
+            }else{
+                var solicitudes = JSON.parse(JSON.stringify(rows));
+                res.status(200).json(solicitudes);
+            }
+            //console.log(solicitudes);
+        });
+    }
+    
+}
+

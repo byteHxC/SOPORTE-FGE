@@ -1,0 +1,107 @@
+//- index soporte
+extends ../layout.jade
+
+block scripts
+	script(src="/../javascripts/jquery.validate.min.js")
+	script(src="/../javascripts/materialize-stepper.min.js")
+block styles
+	link(rel="stylesheet" href="/../stylesheets/materialize-stepper.min.css")
+
+block scripts_self
+	script(src="/../javascripts/generarReporte.js")
+block nav-desktop
+	li
+		a(class="thin it" href="/solicitud") Agregar solicitud
+			i(class="material-icons right") playlist_add
+	li
+		a(class="thin it" href="/") Ver reportes
+			i(class="material-icons right") assignment_turned_in
+	li
+		a(class="thin it" href="/") Ver solicitudes 
+			span(class="badge red white-text" data-badge-caption="pendiente(s)")=notificaciones[0].numero_solicitudes
+
+	
+block nav-phone
+	li
+		a(class="" href="/solicitud") Agregar solicitud
+			i(class="material-icons left") playlist_add
+	li
+		a(class="thin it" href="/") Ver solicitudes
+			i(class="material-icons left") event_note
+			span(class="badge red white-text" data-badge-caption="pendientes")=notificaciones[0].numero_solicitudes
+	li
+		a(class="thin it" href="/") Ver reportes
+			i(class="material-icons left") assignment_turned_in
+	
+block content
+	.container
+		//- .row
+		//- 	div(class="col l10 offset-l1 m12 s12 ")
+		//- 		h4(class="center bold") Levantar solicitud
+		//- 	if error.length>0
+		//- 		input(type="hidden" id="error" value=error)
+		//- 		script().
+		//- 			error($('#error').val());
+		//- 	if success.length>0
+		//- 		input(type="hidden" id="success" value=success)
+		//- 		script().
+		//- 			success($('#success').val());
+		.row
+			form(method="post" action="/solicitud/atender/" name="form_reporte" id="form_reporte" onsubmit="return false;")
+				ul.stepper.horizontal.z-depth-3()
+					li.step.active
+						.step-title.waves-effect(data-step-label="Información del equipo") Datos equipo
+						.step-content(style="overflow: hidden;")
+							.row
+								.col.s12.m12.l3.offset-l1
+									//- strong Numero de folio #{reporte.numero_folio}
+									strong Numero de folio: FDF/127/1
+							.row
+								.col.s12.m12.l3.offset-l1
+									//- strong ID solicitud #{solicitud.id}
+									strong ID Solicitud: 12
+							.row(style="margin-top: 1em;")
+								.col.s12.m12.l10.offset-l1.thin.gray-text
+									//- p.grey-text  *Busque y seleccione el equipo correspondiente.
+									.chip.left(value='') Seleccione un equipo 
+										img(src="/images/bug.png" alt="Conputadora")
+							.row
+								.col.s12.m12.l2.offset-l1.input-field
+									select#buscar_por(name="filtro")
+										option(value="numero_serie") Numero de serie
+										option(value="clave_inventarial") Clave inventarial
+									label Buscar por
+								.col.s12.m12.l7()
+									div(class="input-field z-depth-3")
+										input(onsearch="getEquipo(this);" name="valor_equipo" type="search" id="search" placeholder="Ingrese el valor de la busqueda.")
+										label(class="label-icon" for="search")
+											i(class="material-icons left") search
+										i(class="material-icons") close
+								.col.s12.m12.l1
+									div(class="input-field right")
+										a(href="/equipo/" class="btn-floating btn-tiny waves-effect waves-light red")
+											i(class="material-icons") add
+							.row
+								.col.s12.m12.l10.offset-l1#lista_equipos
+
+							.step-actions
+								button(class="waves-effect waves-dark btn blue darken-3") Siguiente
+									i(class="material-icons right") arrow_forward
+
+					li.step
+						.step-title.waves-effect(data-step-label="Información soporte") Datos soporte
+						.step-content
+							.row
+								div(class="input-field col s12 m12 l5 offset-l1 " style="margin-top: 4em;")
+									select(name="tipo_reparacion")
+										each reparacion in data.tipos_reparacion
+											option(value=reparacion.id_tipo_reparacion)=reparacion.nombre
+									label(for="tipo_solicitud") Tipo de servicio que solicita
+							.row
+
+							.step-actions
+								button(class="waves-effect waves-dark btn next-step blue darken-3") Siguiente
+									i(class="material-icons right") arrow_forward
+
+
+

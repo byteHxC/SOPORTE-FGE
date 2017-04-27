@@ -1,4 +1,12 @@
-
+.color-palta{
+	background: #aa2f33;
+}
+.color-pmedia{
+	background: #e5c581;
+}
+.color-pbaja{
+	background: #3d9767;
+}
 html, body{
 	background: #f5f5f5;
 	padding: none;

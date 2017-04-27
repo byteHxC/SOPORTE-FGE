@@ -1,5 +1,6 @@
 const db = require('../../config/database');
 
+
 exports.actualizarEstado = function(req, res){
 		console.log(' PUT /usuario/');
         id_usuario = req.body.id_usuario;

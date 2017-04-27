@@ -21,7 +21,9 @@ module.exports = function(app, passport, express) {
         
     // cambiar de estado    
     router.put('/usuario/', isLoggedIn, isAdministrador, usuarioCTRL.actualizarEstado);
-
+    //
+    //router.put('/usuario/cambiar_password', isLoggedIn, usuarioCTRL.actualizarPassword);
+    
     // solicitud
     router.route('/solicitud/')
         .get(isLoggedIn,solicitudCtrl.solicitud)
@@ -32,6 +34,8 @@ module.exports = function(app, passport, express) {
     router.get('/solicitudes/', isLoggedIn, solicitudCtrl.solicitudes);
 
     router.get('/solicitud/atender/:id_solciitud', isLoggedIn, solicitudCtrl.atender);
+    router.post('/solicitud/atender/', isLoggedIn, solicitudCtrl.agregarReporte);
+
     // reportes
 
     // inicio de sesion de los usuarios
@@ -58,6 +62,10 @@ module.exports = function(app, passport, express) {
 
     // API responde json
     const api = express.Router();
+
+    // api solicitud
+    api.route('/solicitud/buscar/:filtro/:valor')
+        .get(isLoggedIn, solicitudCtrl.APIBuscarSolicitud);
     // api empleados
     api.route('/empleado/:num_empleado/')
         .get(isLoggedIn,isAdministrador, empleadoCTRL.APIBuscarPorNumEmpleado);

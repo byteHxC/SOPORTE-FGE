@@ -1,6 +1,9 @@
 //- index soporte
 extends ../layout.jade
 
+block scripts_self
+	script(src="/../javascripts/index_soporte.js")
+
 block nav-desktop
 	li
 		a(class="thin it" href="/solicitud") Agregar solicitud
@@ -20,54 +23,64 @@ block nav-phone
 	li
 		a(class="thin it" href="/") Ver solicitudes
 			i(class="material-icons left") event_note
-			span(class="badge red white-text" data-badge-caption="pendientes")=notificaciones.numero_solicitudes
+			span(class="badge red white-text" data-badge-caption="pendientes")=solicitudes.length
 	li
 		a(class="thin it" href="/") Ver reportes
 			i(class="material-icons left") assignment_turned_in
 	
 block content
-	.container
+	.row
+		.col.s12.m12.l10.offset-l1
+			h4.center.bold Solicitudes pendientes
 		.row
-			.col.s12.m12.l10.offset-l1
-				h4.center.bold Solicitudes pendientes
-			.col.s12.m12.l8.offset-l2
-				form(onsubmit="buscarSolicitud(this);")
-					.input-field.z-depth-3
-						input(type="search" name="value_solicitud" placeholder="Buscar solicitud por numero...")
-						label.label-icon(for="search")
-							i.material-icons.left search
-						i.material-icons close
-			.col.s12.m12.l12
-				table.highlight.z-depth-3.centered.responsive-table
-					thead
+			form(onsubmit="return buscarSolicitud(this);")
+				.col.s12.m12.l2.offset-l2
+					.input-field
+						select#buscar_por(name="filtro")
+							option(value="id_solicitud") ID solicitud
+							option(value="tipo_servicio") Tipo servicio
+							option(value="tipo_solicitud") Tipo solicitud
+							option(value="empleado_solicitante") Empleado solicitante
+						label Buscar por
+				.col.s12.m12.l6
+						.input-field
+							input#autocomplete-input(required type="search" name="valor" placeholder="Ingrese el valor de la busqueda..." class="autocomplete")
+							label.label-icon(for="search")
+								i.material-icons.left search
+							i.material-icons close
+				button(type="submit" style="visibility:hidden;")
+				//- input(type="submit" value="envia" style="")
+		.col.s12.m12.l12
+			table.highlight.z-depth-3.centered.responsive-table
+				thead
+					tr
+						th Prioridad
+						th Fecha
+						th Descripción problema
+						th Tipo servicio
+						th Tipo solicitud
+						th Empleado solicitante
+						th Acciones
+						
+				tbody(id="rows_solicitud")
+					each solicitud in solicitudes
 						tr
-							th Prioridad
-							th Fecha
-							th Descripción problema
-							th Tipo servicio
-							th Tipo solicitud
-							th Empleado solicitante
-							th Acciones
-							
-					tbody(id="rows_solicitud")
-						each solicitud in solicitudes
-							tr
-								-color = 'red lighten-1';
-								if solicitud.prioridad == "media"
-									-color = 'red lighten-3'
-								if  solicitud.prioridad == "baja"
-									-color = 'red lighten-5'	
+							-color = 'red darken-1';
+							if solicitud.prioridad == "media"
+								-color = 'yellow lighten-1'
+							if  solicitud.prioridad == "baja"
+								-color = 'green lighten-1'	
 
-								td(class=color)=solicitud.prioridad
-								td(style="font-size:x-small;")=solicitud.fecha
-								td(style="font-size: small" )=solicitud.descripcion_problema
+							td(class=color)=solicitud.prioridad
+							td()=solicitud.fecha
+							td(style="font-size: small" )=solicitud.descripcion_problema
 
-								td=solicitud.tipo_servicio
-								td=solicitud.tipo_solicitud
-								td(style="font-size: small")=solicitud.empleado_solicitante
-								td
-									a(href="/solicitud/atender/"+solicitud.id_solicitud) Atender
-										i.material-icons exit_to_app
+							td(style="font-size:x-small;")=solicitud.tipo_servicio
+							td(style="font-size:x-small;")=solicitud.tipo_solicitud
+							td(style="font-size: small")=solicitud.empleado_solicitante
+							td
+								a(class="left-align" href="/solicitud/atender/"+solicitud.id_solicitud ) Atender
+									i.material-icons.left exit_to_app
 
 
 
