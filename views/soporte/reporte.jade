@@ -10,6 +10,7 @@ block styles
 block scripts_self
 	script(src="/../javascripts/generarReporte.js")
 block nav-desktop
+
 	li
 		a(class="thin it" href="/solicitud") Agregar solicitud
 			i(class="material-icons right") playlist_add
@@ -35,17 +36,6 @@ block nav-phone
 	
 block content
 	.container
-		//- .row
-		//- 	div(class="col l10 offset-l1 m12 s12 ")
-		//- 		h4(class="center bold") Levantar solicitud
-		//- 	if error.length>0
-		//- 		input(type="hidden" id="error" value=error)
-		//- 		script().
-		//- 			error($('#error').val());
-		//- 	if success.length>0
-		//- 		input(type="hidden" id="success" value=success)
-		//- 		script().
-		//- 			success($('#success').val());
 		.row
 			form(method="post" action="/solicitud/atender/" name="form_reporte" id="form_reporte" onsubmit="return false;")
 				ul.stepper.horizontal.z-depth-3()
@@ -63,7 +53,8 @@ block content
 							.row(style="margin-top: 1em;")
 								.col.s12.m12.l10.offset-l1.thin.gray-text
 									//- p.grey-text  *Busque y seleccione el equipo correspondiente.
-									.chip.left(value='') Seleccione un equipo 
+									input(type="hidden" id="id_equipo" value="")
+									.chip.left() Seleccione un equipo 
 										img(src="/images/bug.png" alt="Conputadora")
 							.row
 								.col.s12.m12.l2.offset-l1.input-field
@@ -79,16 +70,16 @@ block content
 										i(class="material-icons") close
 								.col.s12.m12.l1
 									div(class="input-field right")
-										a(href="/equipo/" class="btn-floating btn-tiny waves-effect waves-light red")
+										a(href="/equipo" class="btn-floating btn-tiny waves-effect waves-light red")
 											i(class="material-icons") add
 							.row
 								.col.s12.m12.l10.offset-l1#lista_equipos
 
 							.step-actions
-								button(class="waves-effect waves-dark btn blue darken-3") Siguiente
+								button(class="waves-effect waves-dark btn blue darken-3 next-step" onclick="validarEquipo();" disabled) Siguiente
 									i(class="material-icons right") arrow_forward
 
-					li.step
+					li(class="activate-after step" )
 						.step-title.waves-effect(data-step-label="Información soporte") Datos soporte
 						.step-content
 							.row
@@ -100,7 +91,7 @@ block content
 							.row
 
 							.step-actions
-								button(class="waves-effect waves-dark btn next-step blue darken-3") Siguiente
+								button(class="waves-effect waves-dark btn next-step blue darken-3" ) Siguiente
 									i(class="material-icons right") arrow_forward
 
 

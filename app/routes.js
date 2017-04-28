@@ -6,6 +6,7 @@ const empleadoCTRL = require('./controllers/empleado');
 const usuarioCTRL = require('./controllers/usuario');
 const solicitudCtrl = require('./controllers/solicitud');
 const helpersCTRL = require('./controllers/helpers');
+const equipoCTRL = require('./controllers/equipo');
 
 module.exports = function(app, passport, express) {
 	const router = express.Router();
@@ -37,6 +38,13 @@ module.exports = function(app, passport, express) {
     router.post('/solicitud/atender/', isLoggedIn, solicitudCtrl.agregarReporte);
 
     // reportes
+
+
+    // equipo
+    router.route('/equipo')
+        .get(isLoggedIn, equipoCTRL.equipo)
+        .post(isLoggedIn, equipoCTRL.agregarEquipo);
+
 
     // inicio de sesion de los usuarios
     router.route('/login')
