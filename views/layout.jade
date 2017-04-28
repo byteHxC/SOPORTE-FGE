@@ -32,11 +32,27 @@ html(lang="es")
 					i.material-icons.left update
 			li.divider
 		//- Modal para cambio de contraseña
-		#modal_change_password.modal
-			.modal-content
-				h4 Aqui va el contenido del modal
-			.modal-footer
-				button(class="modal-action modal-close waves-effect waves-green btn-flat") Cambiar
+		#modal_change_password.modal.modal-fixed-footer
+			form(class="col l10 offset-l1 m12 s12 margin-top" method="post" action="/usuario/change_password?_method=put" id="formValidate" onsubmit='return validarPassword(this)'  )
+				.modal-content
+					h4(class="condensed light center " style="color: rgb(33,171,74);" ) <b>Cambiar Contraseña</b>
+							.row(style="margin-top:1.5em;")
+								div(class="input-field col s12 m12 l8 offset-l2")
+									i(class="material-icons prefix") lock
+									input(name="password_old" type="password" class="validate" required)
+									label(for="password_old") Contraseña Actual
+								div(class="input-field col s12 m12 l8 offset-l2")
+									i(class="material-icons prefix") vpn_key
+									input(name="password_new" type="password" class="validate" required)
+									label(for="password_new") Contraseña Nueva
+								div(class="input-field col s12 m12 l8 offset-l2")
+									i(class="material-icons prefix") vpn_key
+									input(name="password_new_2" type="password" class="validate" required)
+									label(for="password_new_2") Repetir Contraseña Nueva
+								div(class="col l10 offset-l1 m12 s12 " id="mensaje" name="mensaje")
+				.modal-footer
+					button(class="modal-action waves-effect waves-green btn-flat" type='submit') Cambiar
+				
 		nav
 			div(class="nav-wrapper color-nav") 
 				img(class="responsive-img logo-nav brand-logo" src="/../images/logo.png")
@@ -66,5 +82,20 @@ html(lang="es")
 			    $('.collapsible').collapsible();
 			    $('.modal').modal({opacity: 0.8});
 			});
+			function validarPassword(form){		
+				if(form.password_old.value != "" || form.password_new.value != "" || form.password_new_2.value != "" )
+					{
+						if (form.password_new.value != form.password_new_2.value){
+							
+							$('#mensaje').html('<h6 style="color:red"><b>Contrasenias no coinciden</b></h6>');
+						}else{
+							return true;
+						}
+
+					}else{
+						alert("Falta llenar campos");
+				}
+				return false;
+			}
 
 

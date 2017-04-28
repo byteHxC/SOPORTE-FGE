@@ -96,10 +96,10 @@ block content
 						.step-content
 							.row
 								div(class="input-field col s12 m12 l5 offset-l1 " style="margin-top: 4em;")
-										select(name="tipo_reparacion")
-											each reparacion in data.tipos_reparacion
-												option(value=reparacion.id_tipo_reparacion)=reparacion.nombre
-										label(for="tipo_solicitud") Tipo de reparación que se lleva acabo.
+										select(name="tipo_servicio")
+											each servicio in data.tipos_servicio
+												option(value=servicio.id_tipo_servicio)=servicio.nombre
+										label(for="tipo_solicitud") Tipo de servicio que se llevara acabo.
 								div(class="col s12 m12 l10 offset-l1 input-field")
 									textarea(name="descripcion_problema" class="materialize-textarea" data-length="500" required)
 									label(for="s") Descripción del problema

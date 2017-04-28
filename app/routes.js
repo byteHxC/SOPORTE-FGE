@@ -23,7 +23,7 @@ module.exports = function(app, passport, express) {
     // cambiar de estado    
     router.put('/usuario/', isLoggedIn, isAdministrador, usuarioCTRL.actualizarEstado);
     //
-    //router.put('/usuario/cambiar_password', isLoggedIn, usuarioCTRL.actualizarPassword);
+    router.put('/usuario/change_password', isLoggedIn, usuarioCTRL.actualizarPassword);
     
     // solicitud
     router.route('/solicitud/')
