@@ -88,6 +88,11 @@ module.exports = function(app, passport, express) {
     api.route('/usuario/:nombre/')
         .get(isLoggedIn, isAdministrador, usuarioCTRL.APIBuscarPorNombre);
 
+
+    // api/equipos
+    api.route('/equipo/:filtro/:valor')
+        .get(isLoggedIn, equipoCTRL.buscarPor);
+
     app.use('/api', api);
 
     app.use(function(req, res){

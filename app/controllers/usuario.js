@@ -21,19 +21,19 @@ exports.actualizarPassword = function(req, res){
         id_usuario = req.user.id_usuario;
         contrasena_old = req.body.password_old;
         contrasena = req.body.password_new;
-        db.query('select * from usuario where id_usuario = ? and password = ?',[id_usuario, contrasena_old], function(err, data){
+        db.query('select * from usuario where id_usuario = ? and password = ?;',[id_usuario, contrasena_old], function(err, data){
           if(err){
                 console.log(err);
             }else{
                 console.log(data);
-
                 if(data == ""){
                     console.log('no coninciden las contra')
+                    res.status(505).json({error: 'No coinciden las contraseñas.'})
                 }else{
                     console.log('cambio de contra')
                  db.query('update usuario set password = ? where id_usuario = ?', [contrasena, id_usuario], function(err, data){
                     if (err) {
-                        console.log(err);
+                        res.status(505).json({error: 'Error al procesar cambio de contraseña'})
                     }else{
                           res.redirect('/logout');
                     }

@@ -37,8 +37,8 @@ block nav-phone
 block content
 	.container
 		.row
-			form(method="post" action="/solicitud/atender/" name="form_reporte" id="form_reporte" onsubmit="return false;")
-				ul.stepper.horizontal.z-depth-3()
+			form(method="post" action="/solicitud/atender/" name="form_reporte" id="form_reporte" )
+				ul.stepper.horizontal.z-depth-3(style="min-height: 700px;")
 					li.step.active
 						.step-title.waves-effect(data-step-label="Información del equipo") Datos equipo
 						.step-content(style="overflow: hidden;")
@@ -51,11 +51,12 @@ block content
 									//- strong ID solicitud #{solicitud.id}
 									strong ID Solicitud: 12
 							.row(style="margin-top: 1em;")
-								.col.s12.m12.l10.offset-l1.thin.gray-text
+								.col.s12.m12.l2.offset-l1
 									//- p.grey-text  *Busque y seleccione el equipo correspondiente.
-									input(type="hidden" id="id_equipo" value="")
-									.chip.left() Seleccione un equipo 
-										img(src="/images/bug.png" alt="Conputadora")
+									label(for="id_equipo") ID equipo
+									input(type="number" readonly id="id_equipo" name="id_equipo" required="true")
+									//- .chip.left() Seleccione un equipo 
+									//- 	img(src="/images/bug.png" alt="Conputadora")
 							.row
 								.col.s12.m12.l2.offset-l1.input-field
 									select#buscar_por(name="filtro")
@@ -64,7 +65,7 @@ block content
 									label Buscar por
 								.col.s12.m12.l7()
 									div(class="input-field z-depth-3")
-										input(onsearch="getEquipo(this);" name="valor_equipo" type="search" id="search" placeholder="Ingrese el valor de la busqueda.")
+										input(onsearch="getEquipo(this);" name="buscar_por" type="search" id="buscar_por" placeholder="Ingrese el valor de la busqueda.")
 										label(class="label-icon" for="search")
 											i(class="material-icons left") search
 										i(class="material-icons") close
@@ -72,11 +73,12 @@ block content
 									div(class="input-field right")
 										a(href="/equipo" class="btn-floating btn-tiny waves-effect waves-light red")
 											i(class="material-icons") add
-							.row
-								.col.s12.m12.l10.offset-l1#lista_equipos
+							.row(style="overflow: auto;height: 100%; width: 100%;")
+								.col.s12.m12.l10.offset-l1.big-margin-bottom
+									ul#lista_equipos(class="collapsible big-margin-bottom" data-collapsible="accordion") 
 
 							.step-actions
-								button(class="waves-effect waves-dark btn blue darken-3 next-step" onclick="validarEquipo();" disabled) Siguiente
+								button(class="waves-effect waves-dark btn blue darken-3 next-step" onclick="validarEquipo();") Siguiente
 									i(class="material-icons right") arrow_forward
 
 					li(class="step")
