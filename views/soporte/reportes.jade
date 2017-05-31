@@ -1,0 +1,110 @@
+//- index soporte
+extends ../layout.jade
+
+block scripts
+	script(src="/../javascripts/jquery.validate.min.js")
+	script(src="/../javascripts/materialize-stepper.min.js")
+	script(src="/../javascripts/jq-signature.min.js")
+	script(src="/../javascripts/jquery.barrating.min.js")
+block styles
+	link(rel="stylesheet" href="/../stylesheets/themes/fontawesome-stars.css")
+	link(rel="stylesheet" href="/../stylesheets/themes/css-stars.css")
+	link(rel="stylesheet" href="/../stylesheets/themes/bars-movie.css")
+	link(rel="stylesheet" href="/../stylesheets/materialize-stepper.min.css")
+block styles_self
+block scripts_self
+	script(src="/../javascripts/generarReporte.js")
+	script(src="/../javascripts/reportes.js")
+block nav-desktop
+	li
+		a(class="thin it" href="/solicitud") Agregar solicitud
+			i(class="material-icons right") playlist_add
+	li
+		a(class="thin it" href="/reportes") Ver reportes
+			i(class="material-icons right") assignment_turned_in
+	li
+		a(class="thin it" href="/") Ver solicitudes 
+			span(class="badge red white-text" data-badge-caption="pendiente(s)")=notificaciones[0].numero_solicitudes
+
+	
+block nav-phone
+	li
+		a(class="" href="/solicitud") Agregar solicitud
+			i(class="material-icons left") playlist_add
+	li
+		a(class="thin it" href="/") Ver solicitudes
+			i(class="material-icons left") event_note
+			span(class="badge red white-text" data-badge-caption="pendientes")=notificaciones[0].numero_solicitudes
+	li
+		a(class="thin it" href="/reportes") Ver reportes
+			i(class="material-icons left") assignment_turned_in
+	
+block content
+	.modal#detalle_solicitud(style="width: 80%; height: 100%;")
+		.modal-content#content-solicitud
+			
+		.modal-footer
+			a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#") Aceptar
+
+	.modal#detalle_equipo(style="width: 80%; height: 100%")
+		.modal-content#content-equipo
+
+		.modal-footer
+			a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#") Aceptar
+
+	.row
+		.col.s12.m12.l10.offset-l1
+			h4.center.bold Reportes
+		.col.s12.m12.l12
+			table.highlight.z-depth-3.centered.responsive-table
+				thead
+					tr
+						th ID solicitud
+						th ID equipo
+						th Diagnostico de equipo
+						th Reparado
+						th Tipo de reparación
+						th Acciones
+				tbody(id="rows_reportes")
+					each reporte in reportes
+						tr
+							td
+								//-link para ver los datos de la solicitud
+								a( href="#" onclick="modalDetalleSolicitud(#{reporte.id_solicitud});")=reporte.id_solicitud 
+							td
+								a(href="#" onclick="modalDetalleEquipo(#{reporte.id_equipo});")=reporte.id_equipo
+							//-link para ver la informacion del equipo
+							td=reporte.diagnostico_equipo
+							td=reporte.reparado
+							if reporte.nombre == 'En sitio'
+								td=reporte.nombre
+							else
+								if reporte.reparado == 'reparado'
+									td=reporte.nombre	
+								else 
+									td
+										a.btn.blue.darken-1(href="equipo/entrega/"+reporte.folio) Entrega equipo  
+											i(class="material-icons right") reply
+							
+							if reporte.reparado == 'reparado'
+								td 
+									a.margin-lados(href="/reporte/"+reporte.folio) 
+										i.material-icons visibility
+									a.margin-lados(href="/reporte_pdf/"+reporte.folio) 
+										i.material-icons print
+							else if reporte.reparado == 'no reparado'
+								if reporte.nombre == 'Dictamen de baja'
+									td
+										a.margin-lados(href="/reporte/"+reporte.folio) 
+											i.material.icons visibility
+										a.margin-lados(href="/reporte_pdf/"+reporte.folio) 
+											i.material.icons print
+
+
+	
+
+
+
+
+
+

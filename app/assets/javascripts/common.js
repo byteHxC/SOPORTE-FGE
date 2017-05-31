@@ -2,9 +2,17 @@ function toast(text) {
 	Materialize.toast(text, 4000, 'rounded');
 }
 function error(text) {
-	vNotify.error({text: JSON.stringify(text),
+	vNotify.error({
+	 text: JSON.stringify(text),
 	 title: 'Error: ',
 	 position: 'bottomRight'
+	});
+}
+function errorTop(text) {
+	vNotify.error({
+	 text: text,
+	 title: 'Error: ',
+	 position: 'topRight'
 	});
 }
 function success(text) {

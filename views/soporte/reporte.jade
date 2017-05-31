@@ -4,18 +4,22 @@ extends ../layout.jade
 block scripts
 	script(src="/../javascripts/jquery.validate.min.js")
 	script(src="/../javascripts/materialize-stepper.min.js")
+	script(src="/../javascripts/jq-signature.min.js")
+	script(src="/../javascripts/jquery.barrating.min.js")
 block styles
+	link(rel="stylesheet" href="/../stylesheets/themes/fontawesome-stars.css")
+	link(rel="stylesheet" href="/../stylesheets/themes/css-stars.css")
+	link(rel="stylesheet" href="/../stylesheets/themes/bars-movie.css")
 	link(rel="stylesheet" href="/../stylesheets/materialize-stepper.min.css")
-
+block styles_self
 block scripts_self
 	script(src="/../javascripts/generarReporte.js")
 block nav-desktop
-
 	li
 		a(class="thin it" href="/solicitud") Agregar solicitud
 			i(class="material-icons right") playlist_add
 	li
-		a(class="thin it" href="/") Ver reportes
+		a(class="thin it" href="/reportes") Ver reportes
 			i(class="material-icons right") assignment_turned_in
 	li
 		a(class="thin it" href="/") Ver solicitudes 
@@ -31,13 +35,24 @@ block nav-phone
 			i(class="material-icons left") event_note
 			span(class="badge red white-text" data-badge-caption="pendientes")=notificaciones[0].numero_solicitudes
 	li
-		a(class="thin it" href="/") Ver reportes
+		a(class="thin it" href="/reportes") Ver reportes
 			i(class="material-icons left") assignment_turned_in
 	
 block content
+	.modal#modal_rating
+		.modal-content.row
+			.col.s12.m12.l12
+				h4 Calificación del servicio
+			.col.s12.m12.l12
+				select#calificacion_servicio(name="calificacion_servicio" class="browser-default" required="true")
+					option(value="excelente") Excelente
+					option(value="bueno") Bueno
+					option(value="malo") Malo
+		.modal-footer
+			a.modal-action.modal-close.btn-flat.waves-effect.waves-green(href="#") Aceptar
 	.container
 		.row
-			form(method="post" action="/solicitud/atender/" name="form_reporte" id="form_reporte" )
+			form(method="post" action="/solicitud/atender/" name="form_reporte" id="form_reporte" onsubmit="return validarReporte(this);")
 				ul.stepper.horizontal.z-depth-3(style="min-height: 700px;")
 					li.step.active
 						.step-title.waves-effect(data-step-label="Información del equipo") Datos equipo
@@ -48,8 +63,9 @@ block content
 									strong Numero de folio: FDF/127/1
 							.row
 								.col.s12.m12.l3.offset-l1
-									//- strong ID solicitud #{solicitud.id}
-									strong ID Solicitud: 12
+									label(for="id_solicitud") ID solicitud
+									input(type="number" readonly id="id_solicitud" name="id_solicitud" required="true" value=data.notificacion_solicitud[0].id_solicitud)
+						
 							.row(style="margin-top: 1em;")
 								.col.s12.m12.l2.offset-l1
 									//- p.grey-text  *Busque y seleccione el equipo correspondiente.
@@ -83,18 +99,17 @@ block content
 
 					li(class="step")
 						.step-title.waves-effect(data-step-label="Información soporte") Datos soporte
-						.step-content
-							.row
-								div(class="input-field col s12 m12 l5 offset-l1 " style="margin-top: 4em;")
-									select(name="tipo_reparacion")
-										each reparacion in data.tipos_reparacion
-											option(value=reparacion.id_tipo_reparacion)=reparacion.nombre
-									label(for="tipo_solicitud") Tipo de servicio que solicita
-							.row
+						.step-content(style="overflow: hidden;")
+							.row(style="overflow: auto;height: 100%; width: 100%;")
+								.row
+									div(class="input-field col s10 offset-s1 m10 offset-m1  l5 offset-l1 " style="margin-top: 4em;")
+										select#tipo_reparacion(name="tipo_reparacion" onchange="handlerTipoReparacion();")
+											each reparacion in data.tipos_reparacion
+												option(value=reparacion.id_tipo_reparacion)=reparacion.nombre
+										label(for="tipo_solicitud") Tipo de reparación que se llevara acabo
+									input(type="hidden" name="calificacion" id="calificacion")
+								.row.col.s12.m12.l10.offset-l1#div_tipo_reparacion
 
 							.step-actions
-								button(class="waves-effect waves-dark btn next-step blue darken-3" ) Siguiente
+								button(class="waves-effect waves-dark btn blue darken-3" type="submit") Siguiente
 									i(class="material-icons right") arrow_forward
-
-
-

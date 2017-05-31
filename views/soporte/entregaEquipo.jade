@@ -1,0 +1,108 @@
+//- entrega de equipo de salida
+extends ../layout.jade
+
+block scripts
+	script(src="/../javascripts/jquery.validate.min.js")
+	script(src="/../javascripts/materialize-stepper.min.js")
+	script(src="/../javascripts/jq-signature.min.js")
+	script(src="/../javascripts/jquery.barrating.min.js")
+block styles
+	link(rel="stylesheet" href="/../stylesheets/themes/fontawesome-stars.css")
+	link(rel="stylesheet" href="/../stylesheets/themes/css-stars.css")
+	link(rel="stylesheet" href="/../stylesheets/themes/bars-movie.css")
+	link(rel="stylesheet" href="/../stylesheets/materialize-stepper.min.css")
+block styles_self
+block scripts_self
+	script(src="/../javascripts/entregaEquipo.js")
+block nav-desktop
+	li
+		a(class="thin it" href="/solicitud") Agregar solicitud
+			i(class="material-icons right") playlist_add
+	li
+		a(class="thin it" href="/reportes") Ver reportes
+			i(class="material-icons right") assignment_turned_in
+	li
+		a(class="thin it" href="/") Ver solicitudes 
+			span(class="badge red white-text" data-badge-caption="pendiente(s)")=notificaciones[0].numero_solicitudes
+
+	
+block nav-phone
+	li
+		a(class="" href="/solicitud") Agregar solicitud
+			i(class="material-icons left") playlist_add
+	li
+		a(class="thin it" href="/") Ver solicitudes
+			i(class="material-icons left") event_note
+			span(class="badge red white-text" data-badge-caption="pendientes")=notificaciones[0].numero_solicitudes
+	li
+		a(class="thin it" href="/reportes") Ver reportes
+			i(class="material-icons left") assignment_turned_in
+	
+block content
+	.modal#modal_rating
+		.modal-content.row
+			.col.s12.m12.l12
+				h4 Calificación del servicio
+			.col.s12.m12.l12.center
+				select#calificacion_servicio(name="calificacion_servicio" class="browser-default center" required="true")
+					option(value="excelente") Excelente
+					option(value="bueno") Bueno
+					option(value="malo") Malo
+		.modal-footer
+			a.modal-action.modal-close.btn-flat.waves-effect.waves-green(href="#") Aceptar
+	.container
+		.row
+			h5.center.thin(style="margin: 1em;") Diagnostico y entrega de equipo
+		.row
+			form(method="post" action="/equipo/entrega/" name="form_reporte" id="form_reporte" onsubmit="return validarEntrega(this);")
+				input(type="hidden" name="folio" id="folio" value=data.folio)
+				input(type="hidden" name="calificacion" id="calificacion")
+
+				ul.stepper.horizontal.z-depth-3(style="min-height: 500px;")
+					li.step.active
+						.step-title.waves-effect(data-step-label="Diagnostico del equipo") Diagnostico         
+						.step-content(style="overflow: hidden;")
+							.row
+								.input-field.col.s12.m12.l10.offset-l1
+									textarea(name="diagnostico_equipo" class="materialize-textarea" data-length="120" required="true")
+									label(for="diagnostico_equipo") Diagnostico del equipo
+								.col.s12.m12.l10.offset-l1
+									.row
+										p.input-field.col.s12.m12.l4
+											input(type="checkbox" name="respaldo" id="respaldo" onchange="carpetaRespaldo();")
+											label(for="respaldo") Se realizo respaldo.
+										.input-field.col.s12.m12.l8#div_carpeta_respaldo
+
+
+							.step-actions
+								button(class="waves-effect waves-dark btn blue darken-3 next-step") Siguiente
+									i(class="material-icons right") arrow_forward
+
+					li(class="step")
+						.step-title.waves-effect(data-step-label="Informacion de entrega de equipo") Entrega de equipo
+						.step-content(style="overflow: hidden;")
+							.row(style="overflow: auto;height: 100%; width: 100%;")
+								
+								p.input-field.col.s12.m12.l10.offset-l1.bold Fecha de entrega: 22 de enero 2017
+
+								p.input-field.col.s12.m12.l10.offset-l1
+									input(type="checkbox" name="reparado" id="reparado")
+									label(for="reparado") Equipo reparado
+								p.input-field.col.s12.m12.l10.offset-l1
+									input(type="checkbox" name="en_su_ubicacion" id="en_su_ubicacion")
+									label(for="en_su_ubicacion") El equipo se instalo en su ubicación
+								.col.s12.m12.l10.offset-l1(style="margin-top: 2em; margin-bottom: 2em;")
+									input(type="hidden" id="firma_img" name="firma_img" required="true")
+									p Firma de conformidad:
+									div(id="firma" style="margin-bottom: 3em;" class="left")
+									
+									div(class="js-signature center" data-width="700" data-height="200" data-border="1px solid black" data-line-color="#272b33" style="margin-bottom: 1em;")
+
+									button(type="button"  class="btn-floating waves-effect waves-light red lighten-1" onclick="clearCanvas();")
+										i(class="material-icons") delete
+									button(type="button" id="guardarFirma" class="btn-floating waves-effect waves-light color-back" onclick="saveSignature();")
+										i(class="material-icons") save
+							.step-actions
+								button(class="waves-effect waves-dark btn blue darken-3" type="submit") Finalizar entrega de equipo
+									i(class="material-icons right") arrow_forward
+

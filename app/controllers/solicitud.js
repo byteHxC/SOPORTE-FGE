@@ -1,7 +1,15 @@
-const db = require('../../config/database');
-const moment = require('moment');
+const db    = require('../../config/database'),
+    moment  = require('moment'),
+    multer  = require('multer'),
+    UPLOAD_PATH_SIGNATURE = '../signatures',
+    fs = require('fs'),
+    base64Img = require('base64-img');
+
+
 var is = require( 'validator.js' ).Assert;
 var validator = require( 'validator.js' ).validator();
+
+var upload_signature = multer({dest: `${UPLOAD_PATH_SIGNATURE}`}).single('firma_img');
 
 exports.solicitudes = function (req, res){
     console.log('GET /solicitudes/');
@@ -18,23 +26,100 @@ exports.solicitudes = function (req, res){
 
 // GET /solicitud/atender/:id_solicitud
 exports.atender = function (req, res){
-    console.log('GET /solicitud/atender/:id_solicitud ');
+    console.log('GET /solicitud/atender/:id_solicitud');
     data = [];
-    db.query('select id_tipo_reparacion, nombre from cat_tipo_reparacion', function(err, rows){
+    console.log(req.params.id_solicitud)
+    db.query('select * from notificacion_solicitud where id_solicitud = ?;', [req.params.id_solicitud], function(err, rows){
         if(err){
-            res.status(500).send("erorr en el servidor :c");
+            res.status(500).send("erorr al encontrar solicitud:c");
         }else{
-            data['tipos_reparacion'] = JSON.parse(JSON.stringify(rows));
-            getNumeroSolicitudes(req.user.id_usuario, function(row){
-                data['notificaciones'] = row;
-                console.log(row);
-                res.render('soporte/reporte', data);
-            });
+            data['notificacion_solicitud'] = JSON.parse(JSON.stringify(rows));
+            console.log(JSON.parse(JSON.stringify(rows)));
+            db.query('select id_tipo_reparacion, nombre from cat_tipo_reparacion', function(err, rows){
+                if(err){
+                    res.status(500).send("erorr en el servidor :c");
+                }else{
+                    data['tipos_reparacion'] = JSON.parse(JSON.stringify(rows));
+                    getNumeroSolicitudes(req.user.id_usuario, function(row){
+                        data['notificaciones'] = row;
+                        console.log(row);
+                        res.render('soporte/reporte', data);
+                    });
+                }
+            })
         }
-    })
+    });
 }
-exports.agregarReporte = function(req, res){
+exports.atenderSolicitud = function(req, res){
     console.log('POST /solicitud/atender/');
+    id_tipo_reparacion = req.body.tipo_reparacion;
+    // console.log(id_tipo_reparacion)
+    switch (id_tipo_reparacion) {
+        case '1': // en sitio
+            id_solicitud = req.body.id_solicitud;
+            id_equipo = req.body.id_equipo;
+            diagnostico_equipo = req.body.diagnostico_equipo;
+            image = req.body.firma_img;
+            calificacion_servicio = req.body.calificacion;
+            firma_conformidad = 'firma_conformidad_'+id_solicitud+'.png';
+            
+            params_en_sitio = [id_solicitud, id_equipo, id_tipo_reparacion, diagnostico_equipo, firma_conformidad, calificacion_servicio, 'reparado']
+            db.query('insert into reporte (id_solicitud, id_equipo, id_tipo_reparacion, diagnostico_equipo, firma_conformidad, calificacion_servicio, reparado) values(?, ?, ?, ?, ?, ?, ?);', params_en_sitio, function(err, result, rows){
+                if(err){
+                    req.flash('error', 'Error al registrar e reporte.')
+                    console.log(err);
+                }else{
+                    data = image.replace(/^data:image\/\w+;base64,/, '');
+                    fs.writeFile('app/signatures/'+firma_conformidad, data, {encoding: 'base64'}, function(err){
+                        if(err){
+                            req.flash('error', 'Error al guardar la firma');
+                            console.log(err);
+                        }else{
+                            db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
+                                console.log('err -> '+err);
+                                console.log('result -> '+result);
+                                console.log('rows ->'+rows);
+                                res.redirect('/');
+                            }); 
+                        }
+                    });
+                }
+            });   
+        break;
+        case '2': // salida de equipo
+            id_solicitud = req.body.id_solicitud;
+            id_equipo = req.body.id_equipo;
+            image = req.body.firma_salida;
+            firma_salida = 'firma_salida_'+id_solicitud+'.png';
+            calificacion_servicio = req.body.calificacion;
+
+            params_salida_equipo = [id_solicitud, id_equipo, firma_salida, calificacion_servicio, id_tipo_reparacion, 'no reparado'];
+            db.query('insert into reporte (id_solicitud, id_equipo, firma_salida, calificacion_servicio, id_tipo_reparacion, reparado) values(?, ?, ?, ?, ?, ?);', params_salida_equipo, function(err, result, rows){
+                if(err){
+                    req.flash('error', 'Error al registrar e reporte.')
+                    console.log(err);
+                }else{
+                    data = image.replace(/^data:image\/\w+;base64,/, '');
+                    fs.writeFile('app/signatures/'+firma_salida, data, {encoding: 'base64'}, function(err){
+                        if(err){
+                            req.flash('error', 'Error al guardar la firma');
+                            console.log(err);
+                        }else{
+                            db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
+                                console.log('err -> '+err);
+                                console.log('result -> '+result);
+                                console.log('rows ->'+rows);
+                                res.redirect('/');
+                            }); 
+                        }
+                    });
+                }
+            }); 
+        break;
+        case '3': // dictamen de baja 
+
+        break;
+    }
 }
 
 // GET /solicitud/
@@ -164,7 +249,7 @@ exports.agregarSolicitud = function(req, res){
         }
 
 function getNumeroSolicitudes(id_usuario_soporte,callback){
-        db.query("select id_usuario_soporte,count(id_notificacion) as numero_solicitudes from notificacion_solicitud where id_usuario_soporte=? group by id_usuario_soporte;", [id_usuario_soporte], function(err, data){
+        db.query("select id_usuario_soporte,count(id_notificacion) as numero_solicitudes from notificacion_solicitud where id_usuario_soporte=? and atendida='no' group by id_usuario_soporte;", [id_usuario_soporte], function(err, data){
             if(err)
                 callback(err);
             else
@@ -200,5 +285,17 @@ exports.APIBuscarSolicitud = function(req, res){
         });
     }
     
+}
+
+// Atendio solicitud con año y mes
+exports.APISolicitudesPorFecha = function (req, res){
+    db.query("select count(solicitud.id_solicitud) as solicitudes_atendidas, solicitud.id_usuario_encargado, usuario.nombre from solicitud join usuario on solicitud.id_usuario_encargado=usuario.id_usuario WHERE YEAR(solicitud.fecha) = 2017 and MONTH(solicitud.fecha) = 4 group by solicitud.id_usuario_encargado; ", function(err, rows){
+        if(err){
+            res.status(500).json({error: 'Error al realizar la busqueda'});
+        }else{
+            var solicitudes = JSON.parse(JSON.stringify(rows));
+            res.status(200).json(solicitudes);
+        }
+    });
 }
 

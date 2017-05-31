@@ -8,7 +8,7 @@ const express    = require('express'),
 	bodyParser   = require('body-parser'),
 	methodOverride = require('method-override'),
 	session      = require('express-session');
-	
+
 
 // Configuraciones iniciales de nodejs
 const configDB = require('./config/database.js');
@@ -22,6 +22,7 @@ app.use(methodOverride());
 app.use(methodOverride("_method"));
 
 app.use(express.static('app/assets')); // assets statics
+app.use('/signatures', express.static('app/signatures')); // assets statics
 app.set('view engine', 'jade'); // set up ejs for templating
 
 

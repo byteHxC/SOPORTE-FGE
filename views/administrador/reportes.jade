@@ -1,0 +1,71 @@
+//- index admistrador
+extends ../layout.jade
+block scripts
+	script(src="/../javascripts/Chart.min.js")
+block nav-desktop
+	li
+		a(class="thin it" href="/") Gestion de usuarios
+			i(class="material-icons right") group_add
+	li
+		a(class="thin it" href="/reportes_graficos") Reportes
+			i(class="material-icons right") trending_up
+block nav-phone
+	li
+		a(class="" href="/") Gestion de usuarios
+			i(class="material-icons left") group_add
+	li
+		a(class="" href="/reportes_graficos") Reportes
+			i(class="material-icons left") trending_up
+	
+block content
+	.row
+		h1.center.thin Reportes
+	.row
+		.col.s12.m12.l10.offset-l1
+			.card
+				.card-image
+					canvas#bar-chart(width="800" height="450")
+
+				.card-content
+					span.card-title.grey-text.text-darken-4 Solicitudes por mes
+
+	script().
+		$.get('/../api/solicitudes/', function(json, status){
+			
+			labels = [];
+			data = [];
+			json.forEach(function(solicitud,index){
+				labels.push(solicitud.nombre);
+				data.push(solicitud.solicitudes_atendidas);
+			});
+			new Chart(document.getElementById("bar-chart"), {
+		    type: 'pie',
+		    data: {
+		      labels: labels,
+		      datasets: [
+		        {
+		          label: "Solicitudes atendidas",
+		          data: data,
+		           backgroundColor: [
+		                "#FF6384",
+		                "#36A2EB",
+		                "#FFCE56"
+		            ],
+		            hoverBackgroundColor: [
+		                "#FF6384",
+		                "#36A2EB",
+		                "#FFCE56"
+		            ]
+		        }
+		      ]
+		    },
+		    options: {
+		      legend: { display: true },
+		      title: {
+		        display: true,
+		        text: 'Solicitudes atendidas por cada empleado en el año 2017 mes Abril'
+		      }
+		    }
+		});
+		});
+		

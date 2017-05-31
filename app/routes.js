@@ -7,11 +7,13 @@ const usuarioCTRL = require('./controllers/usuario');
 const solicitudCtrl = require('./controllers/solicitud');
 const helpersCTRL = require('./controllers/helpers');
 const equipoCTRL = require('./controllers/equipo');
+const reporteCTRL = require('./controllers/reporte');
 
 module.exports = function(app, passport, express) {
 	const router = express.Router();
 	// home page
 	router.get('/', isLoggedIn, helpersCTRL.index);
+    router.get('/reportes_graficos', isLoggedIn, isAdministrador, helpersCTRL.reportes);
     // # END
     // Informacion de empleado
     router.route('/empleado/')
@@ -34,12 +36,19 @@ module.exports = function(app, passport, express) {
     // ver solicitudes en usuario de soporte
     router.get('/solicitudes/', isLoggedIn, solicitudCtrl.solicitudes);
 
-    router.get('/solicitud/atender/:id_solciitud', isLoggedIn, solicitudCtrl.atender);
-    router.post('/solicitud/atender/', isLoggedIn, solicitudCtrl.agregarReporte);
+    router.get('/solicitud/atender/:id_solicitud', isLoggedIn, solicitudCtrl.atender);
+
+    router.post('/solicitud/atender/', isLoggedIn, solicitudCtrl.atenderSolicitud);
 
     // reportes
-
-
+    router.get('/reporte/:folio/', isLoggedIn, reporteCTRL.reporte);
+    router.get('/reporte_pdf/:folio/', isLoggedIn, reporteCTRL.reportePDF);
+    
+    router.get('/reportes/', isLoggedIn, reporteCTRL.reportes);
+    router.get('/equipo/entrega/:folio', isLoggedIn, reporteCTRL.equipoEntrega);
+    
+    router.post('/equipo/entrega/', isLoggedIn, reporteCTRL.equipoEntregaRegistrar);
+    
     // equipo
     router.route('/equipo')
         .get(isLoggedIn, equipoCTRL.equipo)
@@ -74,6 +83,10 @@ module.exports = function(app, passport, express) {
     // api solicitud
     api.route('/solicitud/buscar/:filtro/:valor')
         .get(isLoggedIn, solicitudCtrl.APIBuscarSolicitud);
+
+    api.route('/solicitudes/:anio?/:mes?')
+        .get(solicitudCtrl.APISolicitudesPorFecha);
+
     // api empleados
     api.route('/empleado/:num_empleado/')
         .get(isLoggedIn,isAdministrador, empleadoCTRL.APIBuscarPorNumEmpleado);
@@ -92,6 +105,12 @@ module.exports = function(app, passport, express) {
     // api/equipos
     api.route('/equipo/:filtro/:valor')
         .get(isLoggedIn, equipoCTRL.buscarPor);
+    
+    api.get('/equipo/:id_equipo/', isLoggedIn, equipoCTRL.detallesEquipo);
+
+    // api/reportes
+    api.route('/reporte/:id_solicitud')
+        .get(isLoggedIn, reporteCTRL.APIDetalleSolicitud);
 
     app.use('/api', api);
 

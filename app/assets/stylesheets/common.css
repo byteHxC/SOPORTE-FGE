@@ -112,4 +112,9 @@ ul.stepper.horizontal {
 	min-width: 15em; 
 }
 
+.margin-lados{
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
 
