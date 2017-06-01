@@ -88,17 +88,17 @@ block content
 							
 							if reporte.reparado == 'reparado'
 								td 
-									a.margin-lados(href="/reporte/"+reporte.folio) 
+									a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Ver reporte" href="/reporte/"+reporte.folio) 
 										i.material-icons visibility
-									a.margin-lados(href="/reporte_pdf/"+reporte.folio) 
-										i.material-icons print
+									a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Imprimir reporte" href="/reporte_pdf/"+reporte.folio) 
+										i.material-icons picture_as_pdf
 							else if reporte.reparado == 'no reparado'
 								if reporte.nombre == 'Dictamen de baja'
 									td
-										a.margin-lados(href="/reporte/"+reporte.folio) 
+										a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Ver reporte" href="/reporte/"+reporte.folio) 
 											i.material.icons visibility
-										a.margin-lados(href="/reporte_pdf/"+reporte.folio) 
-											i.material.icons print
+										a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Imprimir reporte" href="/reporte_pdf/"+reporte.folio) 
+											i.material.icons picture_as_pdf
 
 
 	

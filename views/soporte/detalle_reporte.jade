@@ -1,0 +1,167 @@
+//- index soporte
+extends ../layout.jade
+
+block scripts
+	script(src="/../javascripts/jquery.validate.min.js")
+	script(src="/../javascripts/materialize-stepper.min.js")
+	script(src="/../javascripts/jq-signature.min.js")
+	script(src="/../javascripts/jquery.barrating.min.js")
+block styles
+	link(rel="stylesheet" href="/../stylesheets/themes/fontawesome-stars.css")
+	link(rel="stylesheet" href="/../stylesheets/themes/css-stars.css")
+	link(rel="stylesheet" href="/../stylesheets/themes/bars-movie.css")
+	link(rel="stylesheet" href="/../stylesheets/materialize-stepper.min.css")
+block styles_self
+	link(rel="stylesheet" href="/../stylesheets/ribbon-labels.css")
+block scripts_self
+	script(src="/../javascripts/generarReporte.js")
+block nav-desktop
+	li
+		a(class="thin it" href="/solicitud") Agregar solicitud
+			i(class="material-icons right") playlist_add
+	li
+		a(class="thin it" href="/reportes") Ver reportes
+			i(class="material-icons right") assignment_turned_in
+	li
+		a(class="thin it" href="/") Ver solicitudes 
+			span(class="badge red white-text" data-badge-caption="pendiente(s)")=notificaciones[0].numero_solicitudes
+
+	
+block nav-phone
+	li
+		a(class="" href="/solicitud") Agregar solicitud
+			i(class="material-icons left") playlist_add
+	li
+		a(class="thin it" href="/") Ver solicitudes
+			i(class="material-icons left") event_note
+			span(class="badge red white-text" data-badge-caption="pendientes")=notificaciones[0].numero_solicitudes
+	li
+		a(class="thin it" href="/reportes") Ver reportes
+			i(class="material-icons left") assignment_turned_in
+	
+block content
+	//- header
+	.row(style="margin-top: 2em;")
+		.col.s4.m4.l2.center.valign-wrapper
+			img(src="../../images/logo.png" class="responsive-img logo-reporte")
+		.col.s8.m8.l10.left 
+			h5.center-align DIRECCIÓN GENERAL DE TECNOLOGIAS DE LA INFORMACIÓN
+			h6.center-align AREA DE SOPORTE TÉCNICO
+			h6.center-align FORMATO: DGTI-DTV-1.0
+	.row.z-depth-1.hoverable(style="margin: 2em;")
+		.col.s12.m12.l4()
+			label() Folio: 
+			input(type="text" readonly value="#{reporte.folio}") 
+		.col.s12.m12.l4
+			label() Fecha solicitud: 
+			input(type="text" readonly value="#{reporte.fecha_solicitud}") 
+		.col.s12.m12.l4
+			label() Oficio relacionado: 
+			input(type="text" readonly value="#{reporte.no_oficio}") 
+		.col.s12.m12.l4 
+			label() Tipo de solicitud
+			input(type="text" readonly value="#{reporte.tipo_solicitud}")
+	.row.z-depth-1.hoverable(style="margin: 2em;")
+		h2 Datos del solicitante
+		.col.s12.m12.l6()
+			label() Nombre: 
+			input(type="text" readonly value="#{reporte.nombre}") 
+		.col.s12.m12.l5.offset-l1
+			label() Telefono
+			input(type="text" readonly value="#{reporte.telefono}") 
+		.col.s12.m12.l6()
+			label() Adscripción: 
+			input(type="text" readonly value="#{reporte.adscripcion}") 
+		.col.s12.m12.l5.offset-l1
+			label() Correo:
+			input(type="text" readonly value="#{reporte.email}") 
+		.col.s12.m12.l5
+			label() Servicio que solicita:
+			input(type="text" readonly value="#{reporte.servicio_solicita}") 
+		.col.s12.m12.l10.offset-l1
+			label() Descripción breve de la falla:
+			textarea(class="materialize-textarea" readonly data-length="120")=reporte.descripcion_problema
+	.row.z-depth-1.hoverable(style="margin: 2em;")
+		.row
+			h2 Datos del equipo
+			.col.s12.m12.l6()
+				label() Nombre del equipo: 
+				input(type="text" readonly value="#{reporte.nombre_equipo}") 
+			.col.s12.m12.l5().offset-l1
+				label() Grupo de trabajo: 
+				input(type="text" readonly value="#{reporte.grupo_trabajo}") 
+			.col.s12.m12.l6()
+				label() Marca: 
+				input(type="text" readonly value="#{reporte.marca}") 
+			.col.s12.m12.l5.offset-l1
+				label() Modelo: 
+				input(type="text" readonly value="#{reporte.modelo}")
+			.col.s12.m12.l6()
+				label() Numero de serie: 
+				input(type="text" readonly value="#{reporte.numero_serie}") 
+			.col.s12.m12.l5.offset-l1
+				label() Clave inventarial
+				input(type="text" readonly value="#{reporte.clave_inventarial}")  
+			.col.s12.m12.l6
+				ul.collapsible(data-collapsible="accordion")
+					li
+						.collapsible-header Especificaciones tecnicas
+							i.material-icons.left laptop_mac
+						.collapsible-body
+							.row
+								.col.s12.m12.l6()
+									label() Disco duro: 
+									input(type="text" readonly value="#{reporte.disco_duro}") 
+								.col.s12.m12.l6()
+									label() Sistema operativo: 
+									input(type="text" readonly value="#{reporte.sistema_operativo}") 
+								.col.s12.m12.l6()
+									label() Memoria RAM: 
+									input(type="text" readonly value="#{reporte.memoria_ram}") 
+								.col.s12.m12.l6()
+									label() Procesador: 
+									input(type="text" readonly value="#{reporte.procesador}") 
+								.col.s12.m12.l12()
+									label() Observaciones: 
+									textarea.materialize-textarea(type="text" readonly ) #{reporte.observaciones}			
+		.row
+			.col.s12.m12.l6
+				label() Tipo de reparación
+				input(type="text" readonly value="#{reporte.tipo_reparacion}")
+			.col.s12.m12.l5.offset-l1()
+				label() Autorización de salida de equipo: 
+				img(src="../../signatures/#{reporte.firma_salida}" class="responsive-img" style="border: 2px dashed black;padding: 0.3em; ")
+
+	.row.z-depth-1.hoverable(style="margin: 2em;")
+		.row
+			h2 Datos del soporte
+			.col.s12.m12.l10.offset-l1
+				label() Nombre de quien brinda el soporte: 
+				input(type="text" readonly value="joselon nava *PENDIENTE")
+			.col.s12.m12.l10.offset-l1
+				label() Diagnostico del equipo:
+				textarea(class="materialize-textarea" readonly data-length="120")=reporte.diagnostico_equipo
+			.col.s12.m12.l6.offset-l1.input-field
+				i(class="material-icons prefix") folder
+				label() Carpeta de respaldo
+				input(type="text" readonly value="#{reporte.carpeta_respaldo}")
+	.row.z-depth-1.hoverable(style="margin: 2em;")
+		.row
+			h2 Datos de entrega del equipo
+			.col.s12.m12.l5
+				label() El equipo fue reparado: 
+				input(type="text" readonly value="#{reporte.reparado}")
+			.col.s12.m12.l5.offset-l2
+				label() El equipo se instalo en su ubucación respectiva: 
+				input(type="text" readonly value="#{reporte.instalado_en_ubicacion}")
+			.col.s12.m12.l5
+				label() Fecha de entrega: 
+				input(type="text" readonly value="#{reporte.fecha_entrega}")
+			.col.s12.m12.l5.offset-l2()
+				label() Firma de conformidad
+				img(src="../../signatures/#{reporte.firma_conformidad}" class="responsive-img" style="border: 2px dashed black;padding: 0.3em; ")
+			.col.s12.m12.l12.center
+				p Calificación del Servicio
+				h5=reporte.calificacion_servicio
+			
+

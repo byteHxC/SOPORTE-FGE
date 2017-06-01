@@ -46,6 +46,10 @@ html, body{
 	width: 60px;
 	height: 60px;
 }
+.logo-reporte{
+	width: 100px;
+	height: 100px;
+}
 
 /*forms - material*/
  .input-field label {
@@ -93,7 +97,6 @@ a.it:hover{
 	}
 }
 
-}
 @media only screen and (min-width: 993px) {
 	
 }
