@@ -56,8 +56,8 @@ block content
 			label() Fecha solicitud: 
 			input(type="text" readonly value="#{reporte.fecha_solicitud}") 
 		.col.s12.m12.l4
-			label() Oficio relacionado: 
-			input(type="text" readonly value="#{reporte.no_oficio}") 
+			label() Oficio relacionado:
+			input(type="text" readonly value="#{(reporte.no_oficio != null) ? reporte.no_oficio : ''}") 
 		.col.s12.m12.l4 
 			label() Tipo de solicitud
 			input(type="text" readonly value="#{reporte.tipo_solicitud}")
@@ -68,13 +68,13 @@ block content
 			input(type="text" readonly value="#{reporte.nombre}") 
 		.col.s12.m12.l5.offset-l1
 			label() Telefono
-			input(type="text" readonly value="#{reporte.telefono}") 
+			input(type="text" readonly value="#{(reporte.telefono != null) ? reporte.telefono : ''}") 
 		.col.s12.m12.l6()
 			label() Adscripción: 
 			input(type="text" readonly value="#{reporte.adscripcion}") 
 		.col.s12.m12.l5.offset-l1
 			label() Correo:
-			input(type="text" readonly value="#{reporte.email}") 
+			input(type="text" readonly value="#{(reporte.email != null) ? reporte.email : ''}") 
 		.col.s12.m12.l5
 			label() Servicio que solicita:
 			input(type="text" readonly value="#{reporte.servicio_solicita}") 
@@ -86,10 +86,10 @@ block content
 			h2 Datos del equipo
 			.col.s12.m12.l6()
 				label() Nombre del equipo: 
-				input(type="text" readonly value="#{reporte.nombre_equipo}") 
+				input(type="text" readonly value="#{(reporte.nombre_equipo != null) ? reporte.nombre_equipo : ''}") 
 			.col.s12.m12.l5().offset-l1
 				label() Grupo de trabajo: 
-				input(type="text" readonly value="#{reporte.grupo_trabajo}") 
+				input(type="text" readonly value="#{(reporte.grupo_de_trabajo != null) ? reporte.grupo_de_trabajo : ''}") 
 			.col.s12.m12.l6()
 				label() Marca: 
 				input(type="text" readonly value="#{reporte.marca}") 
@@ -128,10 +128,13 @@ block content
 			.col.s12.m12.l6
 				label() Tipo de reparación
 				input(type="text" readonly value="#{reporte.tipo_reparacion}")
-			.col.s12.m12.l5.offset-l1()
-				label() Autorización de salida de equipo: 
-				img(src="../../signatures/#{reporte.firma_salida}" class="responsive-img" style="border: 2px dashed black;padding: 0.3em; ")
-
+			if reporte.firma_salida != ''
+				.col.s12.m12.l5.offset-l1()
+					label() Autorización de salida de equipo de: #{reporte.nombre} 
+					img(src="../../signatures/#{reporte.firma_salida}" class="responsive-img" style="border: 2px dashed black;padding: 0.3em; ")
+			else
+				.col.s12.m12.l5.offset-l1()
+					label() No hay firma de autorización de salida de equipo.
 	.row.z-depth-1.hoverable(style="margin: 2em;")
 		.row
 			h2 Datos del soporte
@@ -157,9 +160,10 @@ block content
 			.col.s12.m12.l5
 				label() Fecha de entrega: 
 				input(type="text" readonly value="#{reporte.fecha_entrega}")
-			.col.s12.m12.l5.offset-l2()
-				label() Firma de conformidad
-				img(src="../../signatures/#{reporte.firma_conformidad}" class="responsive-img" style="border: 2px dashed black;padding: 0.3em; ")
+			if reporte.firma_conformidad != ''
+				.col.s12.m12.l5.offset-l2()
+					label() Firma de conformidad de: #{reporte.nombre}
+					img(src="../../signatures/#{reporte.firma_conformidad}" class="responsive-img" style="border: 2px dashed black;padding: 0.3em; ")
 			.col.s12.m12.l12.center
 				p Calificación del Servicio
 				h5=reporte.calificacion_servicio

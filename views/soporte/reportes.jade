@@ -13,6 +13,9 @@ block styles
 	link(rel="stylesheet" href="/../stylesheets/materialize-stepper.min.css")
 block styles_self
 block scripts_self
+	script(src="../../javascripts/base64.js")
+	script(src="../../javascripts/jspdf.min.js")
+	script(src="../../javascripts/reporte_pdf.js")
 	script(src="/../javascripts/generarReporte.js")
 	script(src="/../javascripts/reportes.js")
 block nav-desktop
@@ -90,14 +93,14 @@ block content
 								td 
 									a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Ver reporte" href="/reporte/"+reporte.folio) 
 										i.material-icons visibility
-									a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Imprimir reporte" href="/reporte_pdf/"+reporte.folio) 
+									a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Imprimir reporte" onclick="generatedPDF(#{reporte.folio});" href="#") 
 										i.material-icons picture_as_pdf
 							else if reporte.reparado == 'no reparado'
 								if reporte.nombre == 'Dictamen de baja'
 									td
 										a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Ver reporte" href="/reporte/"+reporte.folio) 
 											i.material.icons visibility
-										a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Imprimir reporte" href="/reporte_pdf/"+reporte.folio) 
+										a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Imprimir reporte" onclick="generatedPDF(#{reporte.folio});" href="#") 
 											i.material.icons picture_as_pdf
 
 

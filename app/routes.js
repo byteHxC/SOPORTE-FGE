@@ -42,7 +42,6 @@ module.exports = function(app, passport, express) {
 
     // reportes
     router.get('/reporte/:folio/', isLoggedIn, reporteCTRL.reporte);
-    router.get('/reporte_pdf/:folio/', isLoggedIn, reporteCTRL.reportePDF);
     
     router.get('/reportes/', isLoggedIn, reporteCTRL.reportes);
     router.get('/equipo/entrega/:folio', isLoggedIn, reporteCTRL.equipoEntrega);
@@ -111,6 +110,8 @@ module.exports = function(app, passport, express) {
     // api/reportes
     api.route('/reporte/:id_solicitud')
         .get(isLoggedIn, reporteCTRL.APIDetalleSolicitud);
+    api.route('/detalle_reporte/:folio')
+        .get(isLoggedIn,reporteCTRL.APIDetalleReporte);
 
     app.use('/api', api);
 

@@ -2,6 +2,13 @@
 extends ../layout.jade
 block scripts
 	script(src="/../javascripts/Chart.min.js")
+	script(src="../../javascripts/picker.js" type="text/javascript")
+	script(src="../../javascripts/picker.date.js" type="text/javascript")
+	script(src="../../javascripts/picker.time.js" type="text/javascript")
+block styles
+	link(rel="stylesheet" type="text/css" href="/../../stylesheets/default.css")
+	link(rel="stylesheet" type="text/css" href="/../../stylesheets/default.date.css")
+	link(rel="stylesheet" type="text/css" href="/../../stylesheets/default.time.css")
 block nav-desktop
 	li
 		a(class="thin it" href="/") Gestion de usuarios
@@ -25,47 +32,65 @@ block content
 			.card
 				.card-image
 					canvas#bar-chart(width="800" height="450")
-
 				.card-content
-					span.card-title.grey-text.text-darken-4 Solicitudes por mes
+					span.card-title.grey-text.text-darken-4 Solicitudes por mes y año
+					.row
+						.col.l4.m12.s12
+							.input-field
+								i.material-icons.prefix event
+								input.datepicker(type="date" name="fecha_filtro_solicitud" required="true")
 
 	script().
-		$.get('/../api/solicitudes/', function(json, status){
-			
-			labels = [];
-			data = [];
-			json.forEach(function(solicitud,index){
-				labels.push(solicitud.nombre);
-				data.push(solicitud.solicitudes_atendidas);
+		$('.datepicker').pickadate({
+			monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+			showMonthsShort: true,
+			format: 'mm/yyyy',
+			onClose: () => {
+				fecha = $('.datepicker').val().split("/");
+				if(fecha != null){
+					graficaSolicitudes(fecha[1], fecha[0]);
+				}
+			}
+		});
+		function graficaSolicitudes(anio, mes){
+			$.get(`/../api/solicitudes/${anio}/${mes}`, function(json, status){
+				labels = [];
+				data = [];
+				json.forEach(function(solicitud,index){
+					labels.push(solicitud.nombre);
+					data.push(solicitud.solicitudes_atendidas);
+				});
+				new Chart(document.getElementById("bar-chart"), {
+				type: 'pie',
+				data: {
+				labels: labels,
+				datasets: [
+					{
+					label: "Solicitudes atendidas",
+					data: data,
+					backgroundColor: [
+							"#FF6384",
+							"#36A2EB",
+							"#FFCE56"
+						],
+						hoverBackgroundColor: [
+							"#FF6384",
+							"#36A2EB",
+							"#FFCE56"
+						]
+					}
+				]
+				},
+				options: {
+				legend: { display: true },
+				title: {
+					display: true,
+					text: `Solicitudes atendidas por cada empleado en el año ${anio} mes ${mes}`
+				}
+				}
 			});
-			new Chart(document.getElementById("bar-chart"), {
-		    type: 'pie',
-		    data: {
-		      labels: labels,
-		      datasets: [
-		        {
-		          label: "Solicitudes atendidas",
-		          data: data,
-		           backgroundColor: [
-		                "#FF6384",
-		                "#36A2EB",
-		                "#FFCE56"
-		            ],
-		            hoverBackgroundColor: [
-		                "#FF6384",
-		                "#36A2EB",
-		                "#FFCE56"
-		            ]
-		        }
-		      ]
-		    },
-		    options: {
-		      legend: { display: true },
-		      title: {
-		        display: true,
-		        text: 'Solicitudes atendidas por cada empleado en el año 2017 mes Abril'
-		      }
-		    }
-		});
-		});
+			});
+		}
+		
 		

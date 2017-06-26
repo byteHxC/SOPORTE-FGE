@@ -74,11 +74,11 @@ function modalDetalleSolicitud(id_solicitud){
 			firmas = `<div class="row">
 						<div class="col s12 m12 l5 center">
 							<img src="../../signatures/${data.firma_salida}" class="responsive-img" style="border: 1px dashed black;"/>
-							<p class="thin"> Firma de salida de equipo por: Calixto Santos perez</p>
+							<p class="thin"> Firma de salida de equipo por: ${data.empleado_solicitante}</p>
 						</div>
 						<div class="col s12 m12 l5 offset-l2 center">
 							<img src="../../signatures/${data.firma_conformidad}" class="responsive-img" style="border: 1px dashed black;"/>
-							<p class="thin"> Firma de conformidad y entrega de equipo de: Calixto Santos perez</p>
+							<p class="thin"> Firma de conformidad y entrega de equipo de: ${data.empleado_solicitante}</p>
 						</div>
 				
 					</div>`;
@@ -86,7 +86,7 @@ function modalDetalleSolicitud(id_solicitud){
 			firmas = `<div class="row">
 				<div class="col s12 m12 l5 center">
 					<img src="../../signatures/${data.firma_conformidad}" class="responsive-img" style="border: 1px dashed black;"/>
-					<p class="thin"> Firma de conformidad de Calixto Santos perez</p>
+					<p class="thin"> Firma de conformidad de: ${data.empleado_solicitante}</p>
 				</div>
 			</div>`;
 		}
@@ -125,7 +125,7 @@ function modalDetalleSolicitud(id_solicitud){
 				<div class="row">
 					<div class="col s12 m12 l6 left">
 						<div class="chip left">
-							 Atendio solicitud: ${data.registro_solicitud}
+							 Atendio solicitud: ${data.usuario_encargado}
 							<img class="left responsive-img" src="../../images/user_soporte.png" alt="Contact Person">
 						</div>
 					</div>

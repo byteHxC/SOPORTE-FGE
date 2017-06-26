@@ -64,7 +64,8 @@ exports.atenderSolicitud = function(req, res){
             firma_conformidad = 'firma_conformidad_'+id_solicitud+'.png';
             
             params_en_sitio = [id_solicitud, id_equipo, id_tipo_reparacion, diagnostico_equipo, firma_conformidad, calificacion_servicio, 'reparado']
-            db.query('insert into reporte (id_solicitud, id_equipo, id_tipo_reparacion, diagnostico_equipo, firma_conformidad, calificacion_servicio, reparado) values(?, ?, ?, ?, ?, ?, ?);', params_en_sitio, function(err, result, rows){
+            // check fecha_entrega
+            db.query('insert into reporte (id_solicitud, id_equipo, id_tipo_reparacion, diagnostico_equipo, firma_conformidad, calificacion_servicio, reparado, fecha_entrega) values(?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP);', params_en_sitio, function(err, result, rows){
                 if(err){
                     req.flash('error', 'Error al registrar e reporte.')
                     console.log(err);
@@ -252,8 +253,13 @@ function getNumeroSolicitudes(id_usuario_soporte,callback){
         db.query("select id_usuario_soporte,count(id_notificacion) as numero_solicitudes from notificacion_solicitud where id_usuario_soporte=? and atendida='no' group by id_usuario_soporte;", [id_usuario_soporte], function(err, data){
             if(err)
                 callback(err);
-            else
-                callback(JSON.parse(JSON.stringify(data)));
+            else{
+                if (data != ''){
+                     callback(JSON.parse(JSON.stringify(data)));
+                }else{
+                     callback([{'numero_solicitudes': 0}]);
+                }
+            }
         });
     }
 
@@ -289,7 +295,8 @@ exports.APIBuscarSolicitud = function(req, res){
 
 // Atendio solicitud con año y mes
 exports.APISolicitudesPorFecha = function (req, res){
-    db.query("select count(solicitud.id_solicitud) as solicitudes_atendidas, solicitud.id_usuario_encargado, usuario.nombre from solicitud join usuario on solicitud.id_usuario_encargado=usuario.id_usuario WHERE YEAR(solicitud.fecha) = 2017 and MONTH(solicitud.fecha) = 4 group by solicitud.id_usuario_encargado; ", function(err, rows){
+    console.log(`APISolicitudesPorFech/${req.params.anio}/${req.params.mes}`)
+    db.query(`select count(solicitud.id_solicitud) as solicitudes_atendidas, solicitud.id_usuario_encargado, usuario.nombre from solicitud join usuario on solicitud.id_usuario_encargado=usuario.id_usuario WHERE YEAR(solicitud.fecha) = ? and MONTH(solicitud.fecha) = ? group by solicitud.id_usuario_encargado; `,[req.params.anio, req.params.mes], function(err, rows){
         if(err){
             res.status(500).json({error: 'Error al realizar la busqueda'});
         }else{
