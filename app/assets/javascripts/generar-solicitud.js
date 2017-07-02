@@ -1,7 +1,6 @@
  $(document).ready(function(){
     $('.collapsible').collapsible();
     $('.modal').modal({opacity: 0.8});
-
  });
 
         
@@ -39,9 +38,11 @@ function registrarSolicitud(form){
 function tipoSolicitud(tipoSolicitud){
 	if(tipoSolicitud.value == 2){
 		$('#for_no_oficio').html(`
-				<input type="number" class="validate" name="no_oficio" id="no_oficio" required >
+				<input type="text" class="validate" name="no_oficio" id="no_oficio" required>
 				<label for="no_oficio"> Número de oficio </label>
 			`);
+		$('#no_oficio').inputmask("aaaa/2099/9{1,4}", {"onincomplete": function(){error('Verifique la formato del oficio, ejemplo: DGTI/2017/1111')}}); 
+		// "placeholder": "DGTI/2017/01",
 	}else{
 		$('#for_no_oficio').html('');
 	}

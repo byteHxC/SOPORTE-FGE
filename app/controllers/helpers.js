@@ -23,7 +23,17 @@ exports.index = function(req, res) {
     }
 
 exports.estadisticas = function (req, res){
-    res.render('administrador/estadisticas');
+    estadisticas = []
+    db.query("select count(reporte.folio) as count  from reporte where YEAR(reporte.fecha_entrega) = YEAR(now()) and MONTH(reporte.fecha_entrega) = MONTH(now())", (err, rows) => {
+        estadisticas['reportes'] = JSON.parse(JSON.stringify(rows[0])) || 0;
+        db.query("select count(solicitud.id_solicitud) as count  from solicitud where YEAR(solicitud.fecha) = YEAR(now()) and MONTH(solicitud.fecha) = MONTH(now())", (err, rows) => {
+            estadisticas['solicitudes'] = JSON.parse(JSON.stringify(rows[0])) || 0;
+            db.query(`select count(reporte.folio) as count  from reporte where YEAR(reporte.fecha_entrega) = YEAR(now()) and MONTH(reporte.fecha_entrega) = MONTH(now()) and reporte.reparado = "reparado";`, (err, rows) => {
+                estadisticas['reparados'] = JSON.parse(JSON.stringify(rows[0])) || 0;
+                res.render('administrador/estadisticas', estadisticas);
+            });
+         });
+    });
 }
 
     

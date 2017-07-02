@@ -36,16 +36,16 @@ block content
 			h1.center.thin Estadisticas
 		.row
 			.col.s4.m4.l4
-				.card-panel.green
-					h2.white-text.center(style="margin: 0px;") 14
-					p.white-text.thin.center.center-align(style="margin: 0px;") Reportes este mes
-			.col.s4.m4.l4
-				.card-panel.green
-					h2.white-text.center(style="margin: 0px;") 3
+				.card-panel.light-blue
+					h2.white-text.center(style="margin: 0px;")=estadisticas['solicitudes'].count
 					p.white-text.thin.center.center-align(style="margin: 0px;") Solicitudes recibidas
 			.col.s4.m4.l4
-				.card-panel.green
-					h2.white-text.center(style="margin: 0px;") 8
+				.card-panel.light-blue
+					h2.white-text.center(style="margin: 0px;")=estadisticas['reportes'].count
+					p.white-text.thin.center.center-align(style="margin: 0px;") Reportes este mes
+			.col.s4.m4.l4
+				.card-panel.light-blue
+					h2.white-text.center(style="margin: 0px;")=estadisticas['reparados'].count
 					p.white-text.thin.center.center-align(style="margin: 0px;") Equipos reparados
 
 
@@ -65,6 +65,9 @@ block content
 			//- hasta aqui y cambia el nombre del canvas
 		
 	script().
+		$(document).ready(function(){
+			graficaSolicitudes(null, null);
+		});
 		$('.datepicker').pickadate({
 			monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
 			weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
@@ -78,6 +81,12 @@ block content
 			}
 		});
 		function graficaSolicitudes(anio, mes){
+			if(anio == null && mes == null){
+				now = new Date();
+				mes = now.getMonth()+1;
+				anio = now.getFullYear();
+				mes = (mes < 10) ? '0'+mes : mes;
+			}	
 			$.get(`/../api/solicitudes/${anio}/${mes}`, function(json, status){
 				labels = [];
 				data = [];

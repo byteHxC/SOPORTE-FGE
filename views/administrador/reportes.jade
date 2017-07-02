@@ -84,6 +84,7 @@ block content
 			table.highlight.z-depth-3.centered.responsive-table
 				thead
 					tr
+						th Folio
 						th ID solicitud
 						th ID equipo
 						th Diagnostico de equipo
@@ -93,6 +94,7 @@ block content
 				tbody(id="rows_reportes")
 					each reporte in reportes
 						tr
+							td=reporte.folio_formato
 							td
 								//-link para ver los datos de la solicitud
 								a( href="#" onclick="modalDetalleSolicitud(#{reporte.id_solicitud});")=reporte.id_solicitud 

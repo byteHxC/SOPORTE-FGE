@@ -132,6 +132,7 @@ function actualizarTablaDeReportes(anio, mes){
 			}
 			reportes += `
 				<tr>
+					<td>${reporte.folio_formato}</td>
 					<td>
 						<a href="#" onclick="modalDetalleSolicitud(${reporte.id_solicitud});"> ${reporte.id_solicitud} </a> 
 					</td>
