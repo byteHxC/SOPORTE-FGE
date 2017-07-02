@@ -25,14 +25,9 @@ exports.reportes = function (req, res){
 	console.log('GET /reportes/');
     // reportes que vera el admin (falta)
     if(req.user.id_rol == 1){
-        data = []
         db.query('select * from reporte join cat_tipo_reparacion on reporte.id_tipo_reparacion=cat_tipo_reparacion.id_tipo_reparacion;', function(err, rows){
             reportes = JSON.parse(JSON.stringify(rows));
-            data['reportes'] = reportes;
-            getNumeroSolicitudes(req.user.id_usuario, function(row){
-                data['notificaciones'] = row;
-                res.render('soporte/reportes', data);
-            });
+            res.render('administrador/reportes', reportes);
         });
     }else{
         data = []
@@ -152,22 +147,43 @@ exports.APIReportes = (req, res) => {
     anio = req.params.anio || null;
     mes = req.params.mes || null;
     console.log(`GET /API/reportes/${reparado}/${anio}/${mes}`);
-    if(anio && mes){        
-        db.query('select * from reporte join cat_tipo_reparacion on reporte.id_tipo_reparacion=cat_tipo_reparacion.id_tipo_reparacion join notificacion_solicitud on reporte.id_solicitud = notificacion_solicitud.id_solicitud join solicitud on reporte.id_solicitud=solicitud.id_solicitud where notificacion_solicitud.id_usuario_soporte = ? and reporte.reparado=? and YEAR(solicitud.fecha) = ? and MONTH(solicitud.fecha) = ? ;', [req.user.id_usuario, reparado, anio, mes], function(err, rows){
-            reportes = JSON.parse(JSON.stringify(rows));
-            if(err)
-                res.status(500).json(err)
-            else
-                res.status(200).json(reportes);
-        });
+    
+    if(req.user.id_rol == 1){ // reportes para el admin
+        if(anio && mes){        
+            db.query('select * from reporte join cat_tipo_reparacion on reporte.id_tipo_reparacion=cat_tipo_reparacion.id_tipo_reparacion join notificacion_solicitud on reporte.id_solicitud = notificacion_solicitud.id_solicitud join solicitud on reporte.id_solicitud=solicitud.id_solicitud where reporte.reparado=? and YEAR(solicitud.fecha) = ? and MONTH(solicitud.fecha) = ? ;', [reparado, anio, mes], function(err, rows){
+                reportes = JSON.parse(JSON.stringify(rows));
+                if(err)
+                    res.status(500).json(err)
+                else
+                    res.status(200).json(reportes);
+            });
+        }else{
+            db.query('select * from reporte join cat_tipo_reparacion on reporte.id_tipo_reparacion=cat_tipo_reparacion.id_tipo_reparacion join notificacion_solicitud on reporte.id_solicitud = notificacion_solicitud.id_solicitud where reporte.reparado=?;', [reparado], function(err, rows){
+                reportes = JSON.parse(JSON.stringify(rows));
+                if(err)
+                    res.status(500).json(err)
+                else
+                    res.status(200).json(reportes);
+            });
+        }
     }else{
-        db.query('select * from reporte join cat_tipo_reparacion on reporte.id_tipo_reparacion=cat_tipo_reparacion.id_tipo_reparacion join notificacion_solicitud on reporte.id_solicitud = notificacion_solicitud.id_solicitud where notificacion_solicitud.id_usuario_soporte = ? and reporte.reparado=?;', [req.user.id_usuario, reparado], function(err, rows){
-            reportes = JSON.parse(JSON.stringify(rows));
-            if(err)
-                res.status(500).json(err)
-            else
-                res.status(200).json(reportes);
-        });
+        if(anio && mes){        
+            db.query('select * from reporte join cat_tipo_reparacion on reporte.id_tipo_reparacion=cat_tipo_reparacion.id_tipo_reparacion join notificacion_solicitud on reporte.id_solicitud = notificacion_solicitud.id_solicitud join solicitud on reporte.id_solicitud=solicitud.id_solicitud where notificacion_solicitud.id_usuario_soporte = ? and reporte.reparado=? and YEAR(solicitud.fecha) = ? and MONTH(solicitud.fecha) = ? ;', [req.user.id_usuario, reparado, anio, mes], function(err, rows){
+                reportes = JSON.parse(JSON.stringify(rows));
+                if(err)
+                    res.status(500).json(err)
+                else
+                    res.status(200).json(reportes);
+            });
+        }else{
+            db.query('select * from reporte join cat_tipo_reparacion on reporte.id_tipo_reparacion=cat_tipo_reparacion.id_tipo_reparacion join notificacion_solicitud on reporte.id_solicitud = notificacion_solicitud.id_solicitud where notificacion_solicitud.id_usuario_soporte = ? and reporte.reparado=?;', [req.user.id_usuario, reparado], function(err, rows){
+                reportes = JSON.parse(JSON.stringify(rows));
+                if(err)
+                    res.status(500).json(err)
+                else
+                    res.status(200).json(reportes);
+            });
+        }
     }
     
 }

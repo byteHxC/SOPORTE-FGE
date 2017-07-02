@@ -21,7 +21,7 @@ block nav-desktop
 			i(class="material-icons right") playlist_add
 	li
 		a(class="thin it" href="/reportes") Ver reportes
-			i(class="material-icons right") assignment_turned_in
+			i(class="material-icons right") assignment
 	li
 		a(class="thin it" href="/") Ver solicitudes 
 			span(class="badge red white-text" data-badge-caption="pendiente(s)")=notificaciones[0].numero_solicitudes
@@ -37,7 +37,7 @@ block nav-phone
 			span(class="badge red white-text" data-badge-caption="pendientes")=notificaciones[0].numero_solicitudes
 	li
 		a(class="thin it" href="/reportes") Ver reportes
-			i(class="material-icons left") assignment_turned_in
+			i(class="material-icons left") assignment
 	
 block content
 	//- header

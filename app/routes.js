@@ -13,7 +13,7 @@ module.exports = function(app, passport, express) {
 	const router = express.Router();
 	// home page
 	router.get('/', isLoggedIn, helpersCTRL.index);
-    router.get('/reportes_graficos', isLoggedIn, isAdministrador, helpersCTRL.reportes);
+    router.get('/estadisticas', isLoggedIn, isAdministrador, helpersCTRL.estadisticas);
     // # END
     // Informacion de empleado
     router.route('/empleado/')
@@ -44,14 +44,15 @@ module.exports = function(app, passport, express) {
     router.get('/reporte/:folio/', isLoggedIn, reporteCTRL.reporte);
     
     router.get('/reportes/', isLoggedIn, reporteCTRL.reportes);
-    router.get('/equipo/entrega/:folio', isLoggedIn, reporteCTRL.equipoEntrega);
-    
-    router.post('/equipo/entrega/', isLoggedIn, reporteCTRL.equipoEntregaRegistrar);
-    
+
     // equipo
     router.route('/equipo')
         .get(isLoggedIn, equipoCTRL.equipo)
         .post(isLoggedIn, equipoCTRL.agregarEquipo);
+    router.get('/equipo/entrega/:folio', isLoggedIn, reporteCTRL.equipoEntrega);
+    
+    router.post('/equipo/entrega/', isLoggedIn, reporteCTRL.equipoEntregaRegistrar);
+    
 
 
     // inicio de sesion de los usuarios

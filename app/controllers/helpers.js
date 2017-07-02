@@ -22,8 +22,8 @@ exports.index = function(req, res) {
         });
     }
 
-exports.reportes = function (req, res){
-    res.render('administrador/reportes');
+exports.estadisticas = function (req, res){
+    res.render('administrador/estadisticas');
 }
 
     

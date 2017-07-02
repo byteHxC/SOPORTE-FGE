@@ -1,0 +1,120 @@
+//- index admistrador
+extends ../layout.jade
+block scripts
+	script(src="/../javascripts/Chart.min.js")
+	script(src="../../javascripts/picker.js" type="text/javascript")
+	script(src="../../javascripts/picker.date.js" type="text/javascript")
+	script(src="../../javascripts/picker.time.js" type="text/javascript")
+block styles
+	link(rel="stylesheet" type="text/css" href="/../../stylesheets/default.css")
+	link(rel="stylesheet" type="text/css" href="/../../stylesheets/default.date.css")
+	link(rel="stylesheet" type="text/css" href="/../../stylesheets/default.time.css")
+block nav-desktop
+	li
+		a(class="thin it" href="/") Gestion de usuarios
+			i(class="material-icons right") group_add
+	li
+		a(class="thin it" href="/estadisticas") Estadisticas
+			i(class="material-icons right") trending_up
+	li
+		a(class="thin it" href="/reportes") Reportes
+			i(class="material-icons right") assignment
+block nav-phone
+	li
+		a(class="" href="#") Gestion de usuarios
+			i(class="material-icons left") group_add
+	li
+		a(class="" href="/estadisticas") Estadisticas
+			i(class="material-icons left") trending_up
+	li
+		a(class="" href="/reportes") Reportes
+			i(class="material-icons right") assignment
+	
+block content
+	.container
+		.row
+			h1.center.thin Estadisticas
+		.row
+			.col.s4.m4.l4
+				.card-panel.green
+					h2.white-text.center(style="margin: 0px;") 14
+					p.white-text.thin.center.center-align(style="margin: 0px;") Reportes este mes
+			.col.s4.m4.l4
+				.card-panel.green
+					h2.white-text.center(style="margin: 0px;") 3
+					p.white-text.thin.center.center-align(style="margin: 0px;") Solicitudes recibidas
+			.col.s4.m4.l4
+				.card-panel.green
+					h2.white-text.center(style="margin: 0px;") 8
+					p.white-text.thin.center.center-align(style="margin: 0px;") Equipos reparados
+
+
+		.row
+			//- si quieres hacer otra copia desde aqui 
+			.col.s12.m12.l12
+				.card.medium
+					.card-content
+						.row
+							.col.s12.m12.l3
+								label.grey-text.text-darken-4() Solicitudes por mes y año
+								.input-field
+									i.material-icons.prefix event
+									input.datepicker(type="date" name="fecha_filtro_solicitud" required="true")
+							.col.s12.m12.l9
+								canvas#bar-chart(width="800" height="450")
+			//- hasta aqui y cambia el nombre del canvas
+		
+	script().
+		$('.datepicker').pickadate({
+			monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+			weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+			showMonthsShort: true,
+			format: 'mm/yyyy',
+			onClose: () => {
+				fecha = $('.datepicker').val().split("/");
+				if(fecha != null){
+					graficaSolicitudes(fecha[1], fecha[0]);
+				}
+			}
+		});
+		function graficaSolicitudes(anio, mes){
+			$.get(`/../api/solicitudes/${anio}/${mes}`, function(json, status){
+				labels = [];
+				data = [];
+				json.forEach(function(solicitud,index){
+					labels.push(solicitud.nombre);
+					data.push(solicitud.solicitudes_atendidas);
+				});
+				new Chart(document.getElementById("bar-chart"), {
+				type: 'pie',
+				data: {
+				labels: labels,
+				datasets: [
+					{
+					label: "Solicitudes atendidas",
+					data: data,
+					backgroundColor: [
+							"#FF6384",
+							"#36A2EB",
+							"#FFCE56"
+						],
+						hoverBackgroundColor: [
+							"#FF6384",
+							"#36A2EB",
+							"#FFCE56"
+						]
+					}
+				]
+				},
+				options: {
+				legend: { display: true },
+				title: {
+					display: true,
+					text: `Solicitudes atendidas por cada empleado en el año ${anio} mes ${mes}`
+				}
+				}
+			});
+			});
+		}
+		
+		

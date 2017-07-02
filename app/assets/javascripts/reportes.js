@@ -1,5 +1,13 @@
 $(document).ready(function(){
 	$('.collapsible').collapsible();
+	$('#filtro_reparado').change(() => {
+		fecha = $('.datepicker').val().split("/");
+		if(fecha != null){
+			actualizarTablaDeReportes(fecha[1], fecha[0]);
+		}else{
+			actualizarTablaDeReportes(null, null);
+		}
+	})
 	$('.datepicker').pickadate({
 		monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
 		weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
@@ -9,6 +17,8 @@ $(document).ready(function(){
 			fecha = $('.datepicker').val().split("/");
 			if(fecha != null){
 				actualizarTablaDeReportes(fecha[1], fecha[0]);
+			}else{
+				actualizarTablaDeReportes(null, null);
 			}
 		}
 	});	
@@ -93,7 +103,33 @@ function actualizarTablaDeReportes(anio, mes){
 	}
 	$.get(`/../api/reportes/${reparado}/${anio}/${mes}`, (reporte, status) => {
 		reportes = ``
+		
 		reporte.forEach((reporte, index) => {
+			tipo_reparacion = ""
+			if(reporte.nombre == 'En sitio'){
+				tipo_reparacion = `<td>${reporte.nombre}</td>`;
+			}else{
+				if(reporte.reparado == 'reparado'){
+					tipo_reparacion = `<td>${reporte.nombre}</td>`;
+				}else{
+					tipo_reparacion = `<td><a class="btn blue darken-1" href="equipo/entrega/${reporte.folio}">Entrega de equipo <i class="material-icons right">reply</i></a></td>`;
+				}
+			}
+			acciones = ""
+			if(reporte.reparado == 'reparado'){
+				acciones = `<td>
+								<a class="margin-lados tooltiped" data-position="top" data-delay="50" data-tooltip="Ver reporte" href="/reporte/${reporte.folio}"> <i class="material-icons">visibility</i></a>
+								<a class="margin-lados tooltiped" data-position="top" data-delay="50" data-tooltip="Imprimir reporte" href="/reporte/${reporte.folio}" onclick="generatedPDF(${reporte.folio});" href="#"> <i class="material-icons">picture_as_pdf</i></a>
+							</td>`;
+			}else if(reporte.reparado == 'no reparado'){
+				// mostrar imprimir dictamen de baja
+				if(reporte.nombre == 'Dictamen de baja'){
+					acciones = `<td>
+									<a class="margin-lados tooltiped" data-position="top" data-delay="50" data-tooltip="Ver reporte" href="/reporte/${reporte.folio}"> <i class="material-icons">visibility</i></a>
+									<a class="margin-lados tooltiped" data-position="top" data-delay="50" data-tooltip="Imprimir reporte" href="/reporte/${reporte.folio}" onclick="generatedPDF(${reporte.folio});" href="#"> <i class="material-icons">picture_as_pdf</i></a>
+								</td>`;
+				}
+			}
 			reportes += `
 				<tr>
 					<td>
@@ -104,8 +140,8 @@ function actualizarTablaDeReportes(anio, mes){
 					</td>
 					<td>${reporte.diagnostico_equipo}</td>
 					<td>${reporte.reparado}</td>
-					flata lo demas :c
-
+					${tipo_reparacion}
+					${acciones}
 				</tr>
 			`
 		});
