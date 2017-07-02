@@ -94,7 +94,7 @@ module.exports = function(app, passport, express) {
         .get(isLoggedIn, empleadoCTRL.APIBuscarPorNombre);
 
     // api /usuarios/
-    api.route('/usuarios/')
+    api.route('/usuarios/:id_usuario?')
         .get(isLoggedIn,usuarioCTRL.APIVerUsuarios);
 
     api.route('/usuario/:nombre/')
@@ -112,6 +112,11 @@ module.exports = function(app, passport, express) {
         .get(isLoggedIn, reporteCTRL.APIDetalleSolicitud);
     api.route('/detalle_reporte/:folio')
         .get(isLoggedIn,reporteCTRL.APIDetalleReporte);
+
+    api.route('/reportes/:reparado?/:anio?/:mes?')
+        .get(isLoggedIn, reporteCTRL.APIReportes);
+    
+    
 
     app.use('/api', api);
 

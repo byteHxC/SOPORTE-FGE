@@ -47,7 +47,7 @@ exports.actualizarPassword = function(req, res){
 // API :- USUARIO
 
 exports.APIVerUsuarios = function(req, res){
-            console.log('GET /api/usuarios/')
+            console.log('GET /api/usuarios/:id_usuario?')
             db.query("select usuario.id_usuario, usuario.nombre, usuario.estado, usuario.id_empleado,rol.id_rol, rol.nombre as rol from usuario join cat_rol as rol on usuario.id_rol = rol.id_rol where rol.nombre = 'soporte' and estado='activo';", function(err, rows){
                 var usuarios = JSON.parse(JSON.stringify(rows));
                 res.status(200).json(usuarios);

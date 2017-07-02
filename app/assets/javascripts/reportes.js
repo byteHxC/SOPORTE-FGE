@@ -1,3 +1,19 @@
+$(document).ready(function(){
+	$('.collapsible').collapsible();
+	$('.datepicker').pickadate({
+		monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+		weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+		showMonthsShort: true,
+		format: 'mm/yyyy',
+		onClose: () => {
+			fecha = $('.datepicker').val().split("/");
+			if(fecha != null){
+				actualizarTablaDeReportes(fecha[1], fecha[0]);
+			}
+		}
+	});	
+});
+
 function modalDetalleEquipo(id_equipo) {
 	$('#detalle_equipo').modal('open');
 	$.get('/../api/equipo/'+id_equipo, (data, status) => {
@@ -66,6 +82,36 @@ function modalDetalleEquipo(id_equipo) {
 	
 }
 
+function actualizarTablaDeReportes(anio, mes){
+	reparado = ($('#filtro_reparado').is(':checked')) ? 'true' : 'false';
+
+	if(anio == null && mes == null){
+		now = new Date();
+		mes = now.getMonth()+1;
+		anio = now.getFullYear();
+		mes = (mes < 10) ? '0'+mes : mes;
+	}
+	$.get(`/../api/reportes/${reparado}/${anio}/${mes}`, (reporte, status) => {
+		reportes = ``
+		reporte.forEach((reporte, index) => {
+			reportes += `
+				<tr>
+					<td>
+						<a href="#" onclick="modalDetalleSolicitud(${reporte.id_solicitud});"> ${reporte.id_solicitud} </a> 
+					</td>
+					<td>
+						<a href="#" onclick="modalDetalleEquipo(${reporte.id_equipo});">${reporte.id_equipo} </a>
+					</td>
+					<td>${reporte.diagnostico_equipo}</td>
+					<td>${reporte.reparado}</td>
+					flata lo demas :c
+
+				</tr>
+			`
+		});
+		$('#rows_reportes').html(reportes);
+	});
+}
 function modalDetalleSolicitud(id_solicitud){
 	$('#detalle_solicitud').modal('open');
 	solicitud = ``;

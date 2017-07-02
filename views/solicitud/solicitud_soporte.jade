@@ -33,8 +33,7 @@ block nav-phone
 		a(class="thin it" href="/") Ver reportes
 			i(class="material-icons left") assignment_turned_in
 	
-block content	
-
+block content
 	div(class="container")
 		.row
 			div(class="col l10 offset-l1 m12 s12 ")
@@ -49,6 +48,7 @@ block content
 					success($('#success').val());
 		.row
 			form(method="post" action="/solicitud/" name="solicitud" id="form_solicitud" onsubmit="return registrarSolicitud(this);")
+				input#user_id(type="hidden" value=user_id)
 				ul(class="stepper horizontal z-depth-3")
 					li(class="step active" id="uno")
 						div(class="step-title waves-effect") Tipo solicitud
@@ -134,7 +134,7 @@ block content
 					.col.s12.m12.l12.left
 						p
 							input(name="set_prioridad" type="radio" id="alta" value="alta" checked="true")
-							label(for="alta" class="green-text") 
+							label(for="alta" class="red-text")
 								strong Alta
 						p
 							input(name="set_prioridad" type="radio" id="media" value="media")
@@ -142,7 +142,7 @@ block content
 								strong Media
 						p
 							input(name="set_prioridad" type="radio" id="baja" value="baja")
-							label(for="baja" class="red-text") 
+							label(for="baja" class="green-text") 
 								strong Baja
 			.modal-footer
 				button(class="modal-action modal-close waves-effect waves-green btn-flat" ) Aceptar

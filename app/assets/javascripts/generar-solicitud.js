@@ -3,6 +3,7 @@
     $('.modal').modal({opacity: 0.8});
 
  });
+
         
 $(function(){
    	$('.stepper').activateStepper({
@@ -57,31 +58,40 @@ function setSolucion(checked){
 	}else{
 		// Si no se soluciono el problema dirijira se 
 		//seleccionara un usuario de soporte para que reciba el reporte
-		$.get('/../api/usuarios/', function(data, status){
-			$('#descripcion_solucion').html('<p>*Seleccione un usuario de soporte para darle seguimiento a la solicitud.</p>')
-			empleados = "<ul class='collection big-margin-bottom'>";
-			data.forEach( function(element, index) {
-				empleados += `<li class="collection-item">
-					<div class="row">
-						<div class="col s6 m6 l6">
-							<div class="chip left">
-					    		<img class="left" src="/images/user_soporte.png" alt="Contact Person">
-					    		${element.nombre}
-					    	</div>
-					  	</div>
-					  	<div class="col s6 m6 l6">
-						      <input class="right" name="usuario_soporte" type="radio" id="${element.id_usuario}" value="${element.id_usuario}" required="true"/>
-						      <label class="right" for="${element.id_usuario}">Seleccionar</label>
-					  	</div>
+		if($("#user_id").val() != undefined){
+			html = `<input name="usuario_soporte" type="hidden" id="${$("#user_id").val()}" value="${$("#user_id").val()}" required="true"/>
+					<label class="grey-text">Confirme en el registro de la solicitud.</label>`;
+			$('#opciones_solucion').html(html);	
+		}else{
+			$.get('/../api/usuarios/', function(data, status){
+				$('#descripcion_solucion').html('<p>*Seleccione un usuario de soporte para darle seguimiento a la solicitud.</p>')
+				empleados = "<ul class='collection big-margin-bottom'>";
+				
+				
+				data.forEach( function(element, index) {
+					empleados += `<li class="collection-item">
+							<div class="row">
+								<div class="col s6 m6 l6">
+									<div class="chip left">
+										<img class="left" src="/images/user_soporte.png" alt="Contact Person">
+										${element.nombre}
+									</div>
+								</div>
+								<div class="col s6 m6 l6">
+									<input class="right" name="usuario_soporte" type="radio" id="${element.id_usuario}" value="${element.id_usuario}" required="true"/>
+									<label class="right" for="${element.id_usuario}">Seleccionar</label>
+								</div>
 
-					</div>
-					 
-				</li>`;
+							</div>
+							
+						</li>`;
+				});
+				empleados += "</ul>";
+				$('#opciones_solucion').html(empleados);
+				$('.collapsible').collapsible();
 			});
-			empleados += "</ul>";
-			$('#opciones_solucion').html(empleados);
-			$('.collapsible').collapsible();
-		});
+		}
+		
 	}
 }
 function getEmpleado(input){

@@ -24,6 +24,7 @@ exports.solicitudes = function (req, res){
     
 }
 
+
 // GET /solicitud/atender/:id_solicitud
 exports.atender = function (req, res){
     console.log('GET /solicitud/atender/:id_solicitud');
