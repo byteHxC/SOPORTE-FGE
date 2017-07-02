@@ -29,7 +29,7 @@ module.exports = function(app, passport, express) {
     
     // solicitud
     router.route('/solicitud/')
-        .get(isLoggedIn,solicitudCtrl.solicitud)
+        .get(isLoggedIn,notIsAdministrador,solicitudCtrl.solicitud)
         .post(isLoggedIn, solicitudCtrl.agregarSolicitud)
 
 
@@ -134,6 +134,11 @@ module.exports = function(app, passport, express) {
         if (req.user.id_rol == 1)
             return next();
         res.render('privileges');
+    }
+    function notIsAdministrador(req, res, next){
+        if (req.user.id_rol != 1)
+            return next();
+        res.redirect('/');
     }
     // Metodos de autentificacion
     function isLoggedIn(req, res, next) {

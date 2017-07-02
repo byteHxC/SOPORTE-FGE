@@ -27,67 +27,120 @@ $(document).ready(function(){
 function modalDetalleEquipo(id_equipo) {
 	$('#detalle_equipo').modal('open');
 	$.get('/../api/equipo/'+id_equipo, (data, status) => {
+		historial_html = `<ul class="collapsible" data-collapsible="accordion">
+							<li>
+								<div class="collapsible-header color-back white-text thin"> Historial
+									<i class="material-icons left"> phonelink_setup </i>
+								</div>
+							
+							</li>
+						`;
+
+		data.historial.forEach((historial_item) => {
+			historial_html += `<li>
+									<div class="collapsible-header"><i class="material-icons">bug_reporte</i>Reporte: <a href="/reporte/${historial_item.folio}">${historial_item.folio_formato}</a></div>
+									<div class="collapsible-body">
+										<p>
+											<strong>Fecha solicitud: </strong>
+											${historial_item.solicitud_fecha}
+										</p>
+										<p>
+											<strong>Fecha entrega: </strong>
+											${historial_item.reporte_fecha_entrega || "no se ha entregado"}
+										</p>
+										<p>
+											<strong>Atendio el soporte: </strong>
+											${historial_item.nombre}
+										</p>
+										<p>
+											<strong>Descripción del problema: </strong>
+											${historial_item.descripcion_problema}
+										</p>
+										<p>
+											<strong>Diagnostico: </strong>
+											${historial_item.diagnostico_equipo}
+										</p>
+										<p>
+											<strong> El equipo fue : </strong>
+											${historial_item.reparado}
+										</p>
+										<p>
+											<strong>Se instalo en su ubicación: </strong>
+											${historial_item.instalado_en_ubicacion}
+										</p>
+										
+									</div>
+								</li>`;
+		});
+	
+    
+		historial_html += `</ul>`;
+
 		equipo = ``;
 		equipo = `
 					<h4 class="bold center"> Información de equipo </h4>
 					<div class="row">
 						<div class="col s12 m12 l4 left">
 							<label> Tipo de equipo </label>
-							<input type="text" readonly value="${data.tipo_equipo}" />
+							<input type="text" readonly value="${data['equipo'].tipo_equipo}" />
 						</div>
 					</div>
 					<div class="row">
 						<div class="col s12 m12 l4 left">
 							<label> Marca </label>
-							<input type="text" readonly value="${data.marca}" />
+							<input type="text" readonly value="${data['equipo'].marca}" />
 						</div>
 						<div class="col s12 m12 l4 right offset-l2">
 							<label> Modelo </label>
-							<input type="text" readonly value="${data.modelo}" />
+							<input type="text" readonly value="${data['equipo'].modelo}" />
 						</div>
 					</div>
 					<div class="row">
 						<div class="col s12 m12 l6 left">
 							<label> Nº de serie </label>
-							<input type="text" readonly value="${data.numero_serie}" />
+							<input type="text" readonly value="${data['equipo'].numero_serie}" />
 						</div>
 					</div>
 					<div class="row">
 						<div class="col s12 m12 l6 left">
 							<label> Clave inventarial </label>
-							<input type="text" readonly value="${data.clave_inventarial}" />
+							<input type="text" readonly value="${data['equipo'].clave_inventarial}" />
 						</div>
 					</div>
 					<h4 class="bold center"> Especificaciones técnicas </h4>
 					<div class="row">
 						<div class="col s12 m12 l4 offset-l1">
 							<label> Disco duro </label>
-							<input type="text" readonly value="${data.disco_duro}"/>
+							<input type="text" readonly value="${data['equipo'].disco_duro}"/>
 						</div>
 						<div class="col s12 m12 l4 offset-l1">
 							<label> Sistema Operativo </label>
-							<input type="text" readonly value="${data.sistema_operativo}" />
+							<input type="text" readonly value="${data['equipo'].sistema_operativo}" />
 						</div>
 					</div>
 					<div class="row">
 						<div class="col s12 m12 l4 offset-l1">
 							<label> Memoria RAM </label>
-							<input type="text" readonly value="${data.memoria_ram}"/>
+							<input type="text" readonly value="${data['equipo'].memoria_ram}"/>
 						</div>
 						<div class="col s12 m12 l4 offset-l1">
 							<label> Procesador </label>
-							<input type="text" readonly value="${data.procesador}"/>
+							<input type="text" readonly value="${data.equipo.procesador}"/>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col s12 m12 l10">
 							<label>Observaciones</label>
-							<textarea class="materialize-textarea" readonly>${data.observaciones}
+							<textarea class="materialize-textarea" readonly>${data.equipo.observaciones}
 							</textarea>
 						</div>
 					</div>
+					<div class="row">
+						 ${historial_html}
+					</div>
 				`;
 		$('#content-equipo').html(equipo);
+    	$('.collapsible').collapsible();
 	});
 	
 }

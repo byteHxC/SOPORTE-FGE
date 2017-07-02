@@ -140,7 +140,7 @@ block content
 			h2 Datos del soporte
 			.col.s12.m12.l10.offset-l1
 				label() Nombre de quien brinda el soporte: 
-				input(type="text" readonly value="joselon nava *PENDIENTE")
+				input(type="text" readonly value="#{reporte.usuario_encargado}")
 			.col.s12.m12.l10.offset-l1
 				label() Diagnostico del equipo:
 				textarea(class="materialize-textarea" readonly data-length="120")=reporte.diagnostico_equipo
