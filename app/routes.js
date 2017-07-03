@@ -44,7 +44,10 @@ module.exports = function(app, passport, express) {
     router.get('/reporte/:folio/', isLoggedIn, reporteCTRL.reporte);
     
     router.get('/reportes/', isLoggedIn, reporteCTRL.reportes);
-
+    
+    router.get('/reporte/pdf/:folio', reporteCTRL.reportePDF); // logged
+    
+    router.get('/dictamen_baja/pdf/:folio', reporteCTRL.dictamenPDF); //loged
     // equipo
     router.route('/equipo')
         .get(isLoggedIn, equipoCTRL.equipo)

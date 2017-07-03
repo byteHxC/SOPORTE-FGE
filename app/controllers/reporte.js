@@ -3,7 +3,9 @@ const db    = require('../../config/database'),
     base64Img = require('base64-img');
 var is = require( 'validator.js' ).Assert;
 var validator = require( 'validator.js' ).validator();
-var imageToURI = require('image-to-data-uri')
+var imageToURI = require('image-to-data-uri');
+
+var pdfs = require('./pdfs');
 
 
 // GET /reporte/:folio
@@ -18,6 +20,33 @@ exports.reporte = (req, res) => {
             data['notificaciones'] = row;
             res.render('soporte/detalle_reporte', data);
         });
+    });
+}
+// GET /dictamen_baja/pdf/:folio
+exports.dictamenPDF = (req, res) => {
+    console.log('GET /dictamen_baja/pdf/:folio');
+    data = []
+    query = "select usuario.nombre as usuario_soporte, reporte.folio,reporte.folio_formato, date_format(solicitud.fecha,'%e/%m/%Y') as fecha_solicitud, solicitud.no_oficio, cat_tipo_solicitud.nombre as tipo_solicitud, reporte.carpeta_respaldo, empleado_info.nombre, empleado_info.telefono, empleado_info.adscripcion, empleado_info.email, cat_tipo_servicio.nombre as servicio_solicita, solicitud.descripcion_problema, cat_equipo.nombre as nombre_equipo, cat_equipo.grupo_de_trabajo, cat_equipo.marca, cat_equipo.modelo, cat_equipo.numero_serie, cat_equipo.clave_inventarial, cat_equipo.disco_duro, cat_equipo.memoria_ram, cat_equipo.sistema_operativo, cat_equipo.procesador, cat_equipo.observaciones, cat_tipo_reparacion.nombre as tipo_reparacion, reporte.firma_salida, reporte.diagnostico_equipo, reporte.reparado, date_format(reporte.fecha_entrega,'%e/%m/%Y') as fecha_entrega, reporte.instalado_en_ubicacion, reporte.firma_conformidad, reporte.calificacion_servicio from reporte join solicitud on reporte.id_solicitud = solicitud.id_solicitud join empleado_info on solicitud.id_empleado_solicitante=empleado_info.id_empleado join cat_tipo_solicitud on solicitud.id_tipo_solicitud = cat_tipo_solicitud.id_tipo_solicitud join cat_tipo_servicio on solicitud.id_tipo_servicio=cat_tipo_servicio.id_tipo_servicio join cat_equipo on reporte.id_equipo = cat_equipo.id_equipo join notificacion_solicitud on solicitud.id_solicitud=notificacion_solicitud.id_solicitud join cat_tipo_reparacion on reporte.id_tipo_reparacion=cat_tipo_reparacion.id_tipo_reparacion join usuario on usuario.id_usuario = notificacion_solicitud.id_usuario_soporte where reporte.folio = ?;";
+    db.query(query, [req.params.folio] , (err, rows)=>{
+        reporte = JSON.parse(JSON.stringify(rows[0]));
+        if(err) 
+            res.status(500).json(err);
+        else
+            pdfs.dictamenPDF(reporte, res);
+    });
+}
+
+// GET /reporte/pdf/:folio
+exports.reportePDF = (req, res) => {
+    console.log('GET /reporte/pdf/:folio');
+    data = []
+    query = "select usuario.nombre as usuario_soporte, reporte.folio,reporte.folio_formato, date_format(solicitud.fecha,'%e/%m/%Y') as fecha_solicitud, solicitud.no_oficio, cat_tipo_solicitud.nombre as tipo_solicitud, reporte.carpeta_respaldo, empleado_info.nombre, empleado_info.telefono, empleado_info.adscripcion, empleado_info.email, cat_tipo_servicio.nombre as servicio_solicita, solicitud.descripcion_problema, cat_equipo.nombre as nombre_equipo, cat_equipo.grupo_de_trabajo, cat_equipo.marca, cat_equipo.modelo, cat_equipo.numero_serie, cat_equipo.clave_inventarial, cat_equipo.disco_duro, cat_equipo.memoria_ram, cat_equipo.sistema_operativo, cat_equipo.procesador, cat_equipo.observaciones, cat_tipo_reparacion.nombre as tipo_reparacion, reporte.firma_salida, reporte.diagnostico_equipo, reporte.reparado, date_format(reporte.fecha_entrega,'%e/%m/%Y') as fecha_entrega, reporte.instalado_en_ubicacion, reporte.firma_conformidad, reporte.calificacion_servicio from reporte join solicitud on reporte.id_solicitud = solicitud.id_solicitud join empleado_info on solicitud.id_empleado_solicitante=empleado_info.id_empleado join cat_tipo_solicitud on solicitud.id_tipo_solicitud = cat_tipo_solicitud.id_tipo_solicitud join cat_tipo_servicio on solicitud.id_tipo_servicio=cat_tipo_servicio.id_tipo_servicio join cat_equipo on reporte.id_equipo = cat_equipo.id_equipo join notificacion_solicitud on solicitud.id_solicitud=notificacion_solicitud.id_solicitud join cat_tipo_reparacion on reporte.id_tipo_reparacion=cat_tipo_reparacion.id_tipo_reparacion join usuario on usuario.id_usuario = notificacion_solicitud.id_usuario_soporte where reporte.folio = ?;";
+    db.query(query, [req.params.folio] , (err, rows)=>{
+        reporte = JSON.parse(JSON.stringify(rows[0]));
+        if(err) 
+            res.status(500).json(err);
+        else
+            pdfs.reportePDF(reporte, res);
     });
 }
 // GET /reportes

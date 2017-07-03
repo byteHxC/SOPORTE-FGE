@@ -172,14 +172,14 @@ function actualizarTablaDeReportes(anio, mes){
 			if(reporte.reparado == 'reparado'){
 				acciones = `<td>
 								<a class="margin-lados tooltiped" data-position="top" data-delay="50" data-tooltip="Ver reporte" href="/reporte/${reporte.folio}"> <i class="material-icons">visibility</i></a>
-								<a class="margin-lados tooltiped" data-position="top" data-delay="50" data-tooltip="Imprimir reporte" href="/reporte/${reporte.folio}" onclick="generatedPDF(${reporte.folio});" href="#"> <i class="material-icons">picture_as_pdf</i></a>
+								<a class="margin-lados tooltiped" data-position="top" data-delay="50" data-tooltip="Imprimir reporte" target="_blank" href="/reporte/pdf/${reporte.folio}"> <i class="material-icons">picture_as_pdf</i></a>
 							</td>`;
 			}else if(reporte.reparado == 'no reparado'){
 				// mostrar imprimir dictamen de baja
 				if(reporte.nombre == 'Dictamen de baja'){
 					acciones = `<td>
 									<a class="margin-lados tooltiped" data-position="top" data-delay="50" data-tooltip="Ver reporte" href="/reporte/${reporte.folio}"> <i class="material-icons">visibility</i></a>
-									<a class="margin-lados tooltiped" data-position="top" data-delay="50" data-tooltip="Imprimir reporte" href="/reporte/${reporte.folio}" onclick="generatedPDF(${reporte.folio});" href="#"> <i class="material-icons">picture_as_pdf</i></a>
+									<a class="margin-lados tooltiped" data-position="top" data-delay="50" data-tooltip="Imprimir reporte"  target="_blank" href="/reporte/pdf/${reporte.folio}"> <i class="material-icons">picture_as_pdf</i></a>
 								</td>`;
 				}
 			}
