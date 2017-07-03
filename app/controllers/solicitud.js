@@ -119,7 +119,36 @@ exports.atenderSolicitud = function(req, res){
             }); 
         break;
         case '3': // dictamen de baja 
-
+            id_solicitud = req.body.id_solicitud;
+            id_equipo = req.body.id_equipo;
+            diagnostico_equipo = req.body.diagnostico_equipo;
+            image = req.body.firma_img;
+            calificacion_servicio = req.body.calificacion;
+            firma_conformidad = 'firma_conformidad_'+id_solicitud+'.png';
+            
+            params_en_sitio = [id_solicitud, id_equipo, id_tipo_reparacion, diagnostico_equipo, firma_conformidad, calificacion_servicio, 'no reparado']
+            // check fecha_entrega
+            db.query('insert into reporte (id_solicitud, id_equipo, id_tipo_reparacion, diagnostico_equipo, firma_conformidad, calificacion_servicio, reparado, fecha_entrega) values(?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP);', params_en_sitio, function(err, result, rows){
+                if(err){
+                    req.flash('error', 'Error al registrar e reporte.')
+                    console.log(err);
+                }else{
+                    data = image.replace(/^data:image\/\w+;base64,/, '');
+                    fs.writeFile('app/signatures/'+firma_conformidad, data, {encoding: 'base64'}, function(err){
+                        if(err){
+                            req.flash('error', 'Error al guardar la firma');
+                            console.log(err);
+                        }else{
+                            db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
+                                console.log('err -> '+err);
+                                console.log('result -> '+result);
+                                console.log('rows ->'+rows);
+                                res.redirect('/reportes');
+                            }); 
+                        }
+                    });
+                }
+            }); 
         break;
     }
 }

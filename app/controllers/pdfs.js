@@ -14,16 +14,39 @@ var printer = new PdfPrinter(fonts);
 
 module.exports = {
     dictamenPDF: (data, res) => {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd = '0'+dd
+        } 
+
+        if(mm<10) {
+            mm = '0'+mm
+        } 
         var dd = {
             content: [
-                { 
-                    text: 'Físcalia General del Estado de Guerrero', 
-                    style: 'header', 
-                    alignment: 'center',
-                    margin: [10,0,0,0] 
+                {
+                    columns: [
+                            {
+                                width: '20%',
+                                image: __dirname + '/../assets/images/logo.png',
+                                width: 60,
+                                height: 60
+                            },
+                            { 
+                                width: '80%',
+                                text: 'Físcalia General del Estado de Guerrero', 
+                                style: 'header', 
+                                alignment: 'center',
+                                margin: [10,0,0,0] 
+                            }
+                    ]
                 },
                 {
-                    text: '\n\n\nChilpancingo, Gro., Julio 2, 2017\n\n\n\n',
+                    text: `\n\n\nChilpancingo, Gro.,  ${dd}/${mm}/${yyyy}\n\n\n\n`,
                     style: 'subheader',
                     alignment: 'right'
                 },
@@ -47,32 +70,32 @@ module.exports = {
                         {
                             width: 295,
                             text: ['Marca:  ',{
-                                text: 'HP\n', bold: true,
+                                text: `${data.marca || ''}\n`, bold: true,
                             },
                             'Disco Duro:  ',{
-                                text: '500 GB\n', bold: true,
+                                text: `${data.disco_duro || ''}\n`, bold: true,
                             },
                             'Sistema Operativo:  ',{
-                                text: 'Windows 7\n', bold: true,
+                                text: `${data.sistema_operativo || ''}\n`, bold: true,
                             },
                             'Cve Inventarial: ',{
-                                text: '1-71-4-1-61-13-01-C05-Y84-5829', bold: true,
+                                text: `${data.clave_inventarial || ''}\n`, bold: true,
                             },
                             
                         ]},
                         {
                             width: 300,
                             text: ['Memoria RAM:  ',{
-                                text: '4 GB\n', bold: true,
+                                text: `${data.memoria_ram}\n`, bold: true,
                             },
                             'Procesador:  ',{
-                                text: 'AMD\n', bold: true,
+                                text: `${data.procesador}\n`, bold: true,
                             },
                             'Modelo:  ',{
-                                text: 'HP-W17e\n', bold: true,
+                                text: `${data.modelo}\n`, bold: true,
                             },
                             'No. Serie: ',{
-                                text: 'AV-0DJ365-81182-95G-194\n\n', bold: true,
+                                text: `${data.numero_serie}\n\n`, bold: true,
                             },
                             
                         ]}
@@ -82,19 +105,19 @@ module.exports = {
                     text: [
                         '\nEl equipo pertenecía a ',
                         //Dueño del equipo
-                        { text: 'LIC. ANA LETICIA CHÁVEZ GÓMEZ', bold: true },
+                        { text: data.nombre || '', bold: true },
                         ' del área de ',
                         //Adscripcion
-                        { text: 'RECURSOS HUMANOS.', bold: true},
+                        { text: `${data.adscripcion || ''}.\n`, bold: true},
                         '\nEl servicio que se solicito fue ',
                         //Servicio solicitado
-                        {text: 'SOPORTE TECNICO', bold: true, },
+                        {text: `${data.servicio_solicita || ''}`, bold: true, },
                         ', el equipo presentaba las siguientes fallas: ',
                         //Descripcion de la falla
-                        {text: 'Se apaga constantemente', bold: true, italics: true},
+                        {text: `${data.descripcion_problema || ''}`, bold: true, italics: true},
                         '.\n\nSe realizo la revisión del equipo y el diagnostico fue: ',
                         //Diagnostico del equipo
-                        {text: 'No sirve la tarjeta madre', bold: true, italics: true},
+                        {text: `${data.diagnostico_equipo || ''}\n`, bold: true, italics: true},
                         '\n\nPor tal motivo, el equipo debe ser dado de baja ya que no tiene solución la falla presentada y este queda inservible.',
                         '\n\nSin otro particular por el momento me despido de usted enviándole un cordial saludo.\n\n\n\n\n\n\n\n\n',
                     ],
@@ -108,7 +131,7 @@ module.exports = {
                         widths: [200],
                         body : [
                         [''],
-                        ['Eva Hernandez Aparicio']
+                        [data.usuario_soporte]
                         ],
                     },
                     margin: [155,0,0,0],

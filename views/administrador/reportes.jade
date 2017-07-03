@@ -108,7 +108,8 @@ block content
 							else
 								if reporte.reparado == 'reparado'
 									td=reporte.nombre	
-								else 
+								else if reporte.nombre == "Salida de equipo"
+									td=reporte.nombre
 									td
 										a.btn.blue.darken-1(href="equipo/entrega/"+reporte.folio) Entrega equipo  
 											i(class="material-icons right") reply
@@ -121,11 +122,12 @@ block content
 										i.material-icons picture_as_pdf
 							else if reporte.reparado == 'no reparado'
 								if reporte.nombre == 'Dictamen de baja'
+									td=reporte.nombre
 									td
-										a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Ver reporte" href="/reporte/"+reporte.folio) 
-											i.material.icons visibility
-										a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Imprimir reporte"  target="_blank" href=`/reporte/pdf/${reporte.folio}`) 
-											i.material.icons picture_as_pdf
+										a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Ver dictamen de baja" href="/reporte/"+reporte.folio) 
+											i.material-icons visibility
+										a.margin-lados.tooltipped(data-position="top" data-delay="50" data-tooltip="Imprimir dictamen de baja"  target="_blank" href=`/dictamen_baja/pdf/${reporte.folio}`) 
+											i.material-icons picture_as_pdf
 						
 
 		

@@ -138,7 +138,43 @@
  }
 
  function dictamenBaja(){
- 	$('#div_tipo_reparacion').html('<h1>Dictamen de baja</h1>');
+ 	inner = `
+	 		<p class="grey-text">*Llene los siguientes datos para generar el dictamen de baja.</p>
+ 			 <div class="input-field">
+ 				<textarea id="diagnostico_equipo" name="diagnostico_equipo" class="materialize-textarea" data-length="120" required="true" ></textarea>
+ 				<label for="diagnostico_equipo">Diagnostico del equipo</label>
+ 			 </div>	
+ 			 <input type="hidden" id="firma_img" name="firma_img" required="true">
+ 			 <p>Firma de conformidad: </p>
+ 			 <div id="firma" style="margin-bottom: 3em;" class="left">
+ 			 
+ 			 </div>
+ 			 <div class="js-signature center" data-width="700" data-height="200" data-border="1px solid black" data-line-color="#272b33">
+
+ 			 </div>
+ 			 <button type="button"  class="btn-floating waves-effect waves-light red lighten-1" onclick="clearCanvas();"> <i class="material-icons">delete</i></button>
+ 			 <button type="button" id="guardarFirma" class="btn-floating waves-effect waves-light color-back" onclick="saveSignature();"> <i class="material-icons">save</i></button>
+ 			 <script>
+ 			 	$('.js-signature').jqSignature();
+				$('.js-signature').eq(0).on('jq.signature.changed', function() {
+					$('#guardarFirma').attr('disabled', false);
+				});
+				function clearCanvas() {
+					$('.js-signature').eq(0).jqSignature('clearCanvas');
+					$('#guardarFirma').attr('disabled', true);
+				}
+
+				function saveSignature() {
+					$('#firma').empty();
+					var dataUrl = $('.js-signature').eq(0).jqSignature('getDataURL');
+					$('#firma_img').val(dataUrl);
+					var img = $('<img style="width: 50%;border: dashed 1px black;">').attr('src', dataUrl);
+					$('#firma').append(img);
+					$('#modal_rating').modal('open');
+				}
+ 			 </script>
+ 			`;
+ 	$('#div_tipo_reparacion').html(inner);
  }
 
 
