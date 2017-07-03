@@ -15,13 +15,20 @@ module.exports = function(app, passport, express) {
 	router.get('/', isLoggedIn, helpersCTRL.index);
     router.get('/estadisticas', isLoggedIn, isAdministrador, helpersCTRL.estadisticas);
     // # END
+
     // Informacion de empleado
     router.route('/empleado/')
         .get(isLoggedIn,isAdministrador,empleadoCTRL.empleado)
-        .post(isLoggedIn,isAdministrador, empleadoCTRL.agregarEmpleado);
+        .post(isLoggedIn,isAdministrador, usuarioCTRL.agregarUsuario);
 
     router.get('/empleado_edit/:num_empleado', isLoggedIn, isAdministrador, empleadoCTRL.findById);
-        
+
+    router.route('/nuevo_empleado/')
+        .get(isLoggedIn, isAdministrador, empleadoCTRL.nuevoEmpleado)
+        .post(isLoggedIn, isAdministrador, empleadoCTRL.agregarEmpleado);
+
+
+
     // cambiar de estado    
     router.put('/usuario/', isLoggedIn, isAdministrador, usuarioCTRL.actualizarEstado);
     //
@@ -45,13 +52,14 @@ module.exports = function(app, passport, express) {
     
     router.get('/reportes/', isLoggedIn, reporteCTRL.reportes);
     
-    router.get('/reporte/pdf/:folio', reporteCTRL.reportePDF); // logged
+    router.get('/reporte/pdf/:folio',isLoggedIn, reporteCTRL.reportePDF); // logged
     
-    router.get('/dictamen_baja/pdf/:folio', reporteCTRL.dictamenPDF); //loged
+    router.get('/dictamen_baja/pdf/:folio',isLoggedIn, reporteCTRL.dictamenPDF); //loged
     // equipo
     router.route('/equipo')
         .get(isLoggedIn, equipoCTRL.equipo)
         .post(isLoggedIn, equipoCTRL.agregarEquipo);
+        
     router.get('/equipo/entrega/:folio', isLoggedIn, reporteCTRL.equipoEntrega);
     
     router.post('/equipo/entrega/', isLoggedIn, reporteCTRL.equipoEntregaRegistrar);

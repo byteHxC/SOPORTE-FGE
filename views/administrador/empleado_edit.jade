@@ -1,5 +1,8 @@
 extends ../layout.jade
 block nav-desktop
+	li 
+		a.thin.it(href="/nuevo_empleado") Agregar empleado
+			i(class="material-icons right") person_add
 	li
 		a(class="thin it" href="/") Gestion de usuarios
 			i(class="material-icons right") group_add
@@ -13,6 +16,9 @@ block nav-phone
 	li
 		a(class="" href="#") Gestion de usuarios
 			i(class="material-icons left") group_add
+	li 
+		a.thin.it(href="/nuevo_empleado") Agregar empleado
+			i(class="material-icons right") person_add
 	li
 		a(class="" href="/estadisticas") Estadisticas
 			i(class="material-icons left") trending_up

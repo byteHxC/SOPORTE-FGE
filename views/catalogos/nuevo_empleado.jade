@@ -1,0 +1,23 @@
+//- index agregar equipo
+extends ../layout.jade
+block content
+	.container
+		.row.z-depth-3
+			h5(class="condensed light center padding-top") Agregar un nuevo empleado
+			form(class="col l10 offset-l1 m12 s12 margin-top" method="post" action="" id="formValidate")
+			.row(style="padding-left: 1em; padding-right:1em;")
+				div.input-field.col.s12.m12.l3.offset-l2
+					input.validate(name="num_empleado" type="text" required)
+					label(for="num_empleado") Número de empleado
+				div.input-field.col.s12.m12.l8.offset-l2
+					input.validate(name="nombre" type="text" required)
+					label(for="nombre") Nombre del empleado
+				div.input-field.col.s12.m12.l4.offset-l2
+					input.validate(name="ap_paterno" type="text" required)
+					label(for="ap_paterno") Apellido paterno
+				div.input-field.col.s12.m12.l4.offset-l1
+					input.validate(name="ap_materno" type="text" required)
+					label(for="ap_materno") Apellido materno
+
+					
+

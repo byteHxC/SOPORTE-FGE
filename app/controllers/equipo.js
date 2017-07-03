@@ -3,13 +3,26 @@ const db = require('../../config/database');
 // GET /equipo
 exports.equipo = function (req, res){
 	console.log('GET /equipo');
-	res.send('En desarrollo');
+	data = [];
+	db.query("select * from cat_tipo_equipo;", function(err, rows){
+        var tipos_equipo = JSON.parse(JSON.stringify(rows));
+        data['tipos_equipo'] = tipos_equipo;
+     	res.render('catalogos/nuevo_equipo', data);
+     });
 }
 
 // POST /equipo
 exports.agregarEquipo = function (req, res){
 	console.log('POST /equipo');
-	res.send('En desarrollo');
+	db.query("insert into cat_equipo (id_equipo, numero_serie, clave_inventarial, marca, modelo, disco_duro, memoria_ram, sistema_operativo, procesador, observaciones, id_tipo_equipo, nombre, grupo_de_trabajo ) values (?,?,?,?,?,?,?,?,?,?,?,?,?);", function(err, rows){
+      if(err){
+        	req.flash('error', 'Error al registrar la solicitud.')
+        console.log(err);
+       }else{
+			req.flash('success', 'Equipo Registrado.')
+       }
+     });
+	 redirect('/');
 }
 
 

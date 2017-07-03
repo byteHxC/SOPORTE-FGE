@@ -120,4 +120,6 @@ ul.stepper.horizontal {
 	margin-right: 1em;
 }
 
-
+.hidden{
+	display: none;
+}

@@ -1,0 +1,68 @@
+//- index agregar equipo
+extends ../layout.jade
+
+block content
+	div(class="container")
+		.row
+			h4(class="center bold") Agregar Equipo
+			div(class="row padding-top padding-bottom")
+				div(class="z-depth-3 white col s12 m12 l10 offset-l1")
+					form(action="/solicitud" method="post")
+						.row(style="padding-left: 1em; padding-right: 1em;") 
+							div(class="input-field col s12 m12 l5" style="margin-top: 4em;")
+								select(name="tipo_equipo" id="tipo_equipo" onchange=" tipoEquipo(this);")
+									each equipo in data.tipos_equipo
+										option(value=equipo.id_tipo_equipo )=equipo.nombre
+								label(for="tipo_equipo") Tipo Equipo
+
+						.row(style="padding-left: 1em; padding-right: 1em;")
+							div(class="input-field col s12 m12 l5")
+								input(type="text" class="validate" id="marca" name="marca" required)
+								label(for="marca") Marca
+							div(class="input-field col s12 m12 l5 offset-l2" id="modelo")
+								input(type="text" class="validate" id="modelo" name="modelo" required)
+								label(for="modelo") Modelo
+							div(class="input-field col s12 m12 l5")
+								input(type="text" class="validate" id="numero_serie" name="numero_serie" pattern="[A-Z]{2}[-]\\d{1}[A-Z]{2}\\d{3}[-]\\d{5}[-]\\d{2}[A-Z]{1}[-]\\d{4}" required)
+								label(for="numero_serie") Número de Serie
+							div(class="input-field col s12 m12 l5 offset-l2")
+								input(type="text" class="validate" id="clave_inventarial" name="clave_inventarial" pattern="\\d[-]\\d{2}[-]\\d[-]\\d[-]\\d{2}[-]\\d{2}[-]\\d{2}[-][A-Z]\\d{2}[-][A-Z]\\d{2}[-]\\d{5}" required)
+								label(for="clave_inventarial") Clave inventarial
+							.row(style="padding-left: 1em; padding-right: 1em;")#opcionales
+								div(class="input-field col s12 m12 l5")
+									input(type="text" class="validate" id="nombre_equipo" name="nombre_equipo" required)
+									label(for="nombre_equipo") Nombre del Equipo
+								div(class="input-field col s12 m12 l5 offset-l2")
+									input(type="text" class="validate" id="grupo_trabajo" name="grupo_trabajo" required)
+									label(for="grupo_trabajo") Grupo de trabajo
+								div(class="input-field col s12 m12 l5")
+									input(type="text" class="validate" id="disco_duro" name="disco_duro" required)
+									label(for="disco_duro") Disco Duro
+								div(class="input-field col s12 m12 l5 offset-l2")
+									input(type="text" class="validate" id="sistema_operativo" name="sistema_operativo" required)
+									label(for="sistema_operativo") Sistema Operativo
+								div(class="input-field col s12 m12 l5")
+									input(type="text" class="validate" id="memoria_ram" name="memoria_ram" required)
+									label(for="memoria_ram") Memoria RAM
+								div(class="input-field col s12 m12 l5 offset-l2")
+									input(type="text" class="validate" id="procesador" name="procesador" required)
+									label(for="procesador") Procesador
+							div(class="col s12 m12 l12 input-field")
+								textarea(name="descripcion_problema" class="materialize-textarea" data-length="200" required)
+								label(for="descripcion_problema") Observaciones
+							div(class="margin-top margin-bottom col s12 m12 l12 right")
+								button(class="waves-effect waves-light right btn color-back" type="submit") Guardar
+									i(class="material-icons right") save
+	script.
+		 $(document).ready(function(){
+			 tipoEquipo($('#tipo_equipo'));
+		 });
+		function tipoEquipo(select){
+			if(select.value == 2 || select.value == 3 || select.value == 4){
+				$('#opcionales').removeClass('hidden');
+			}else{
+				$('#opcionales').addClass('hidden');
+			}
+		}
+	
+							

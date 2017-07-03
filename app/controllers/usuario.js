@@ -1,6 +1,22 @@
 const db = require('../../config/database');
 
-
+exports.agregarUsuario = function(req, res){
+			console.log('POST /empleado');
+            nombre = req.body.nombre;
+            password = req.body.password;
+            id_empleado = req.body.id_empleado;
+            rol = req.body.rol;
+            db.query('insert into usuario(id_usuario,nombre, password, estado, id_empleado, id_rol) values(default,?,?,"activo",?,?)', [nombre, password, id_empleado, rol], function(err, rows){
+                if(err){
+                    console.log("erorres => "+err);
+                }else{
+                    console.log('insert succes')
+                    res.redirect('/');
+                }
+            })
+            
+        }
+        
 exports.actualizarEstado = function(req, res){
 		console.log(' PUT /usuario/');
         id_usuario = req.body.id_usuario;

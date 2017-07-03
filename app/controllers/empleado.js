@@ -1,5 +1,18 @@
 const db = require('../../config/database');
 
+// GET /nuevo_empleado/
+exports.nuevoEmpleado = (req, res) => {
+    console.log('GET /nuevo_empleado/');
+    res.render('catalogos/nuevo_empleado')
+}
+
+// POST /nuevo_empleado/
+exports.agregarEmpleado = (req, res) => {
+    console.log('POST /nuevo_empleado/');
+    
+}
+
+
 // GET /empleado
 exports.empleado = function(req, res){
 			console.log('GET /empleado');
@@ -10,6 +23,7 @@ exports.empleado = function(req, res){
             });
         }
 
+
 exports.findById = function (req, res){
     console.log('GET /empleado_edit/:id');
     db.query('select * from empleado_info where id_empleado=?;', [req.params.num_empleado], function(err, data){
@@ -19,22 +33,7 @@ exports.findById = function (req, res){
     });
 }
 // POST /empleado
-exports.agregarEmpleado = function(req, res){
-			console.log('POST /empleado');
-            nombre = req.body.nombre;
-            password = req.body.password;
-            id_empleado = req.body.id_empleado;
-            rol = req.body.rol;
-            db.query('insert into usuario(id_usuario,nombre, password, estado, id_empleado, id_rol) values(default,?,?,"activo",?,?)', [nombre, password, id_empleado, rol], function(err, rows){
-                if(err){
-                    console.log("erorres => "+err);
-                }else{
-                    console.log('insert succes')
-                    res.redirect('/');
-                }
-            })
-            
-        }
+
 
 
 // API :- EMPLEADO
