@@ -3,12 +3,62 @@ const db = require('../../config/database');
 // GET /nuevo_empleado/
 exports.nuevoEmpleado = (req, res) => {
     console.log('GET /nuevo_empleado/');
-    res.render('catalogos/nuevo_empleado')
+    data = {}
+    db.query("select * from cat_puesto", (err, rows) => {
+        data['puestos'] = JSON.parse(JSON.stringify(rows));
+        db.query("select * from cat_adscripcion", (err, rows) => {
+            data['adscripciones'] = JSON.parse(JSON.stringify(rows))
+             res.render('catalogos/nuevo_empleado', data)
+        });
+    });
+   
+}
+
+// GET /empleado/editar/:id_empleado
+exports.verEmpleado = (req, res) => {
+    console.log('GET /empleado/editar/:id_empleado');
+    data = {}
+    db.query("select * from cat_puesto", (err, rows) => {
+        data['puestos'] = JSON.parse(JSON.stringify(rows));
+        db.query("select * from cat_adscripcion", (err, rows) => {
+            data['adscripciones'] = JSON.parse(JSON.stringify(rows))
+             db.query("select *from cat_empleado where id_empleado = ?", [req.params.id_empleado], (err, rows) => {
+                data['empleado'] = JSON.parse(JSON.stringify(rows[0]))
+                res.render('catalogos/editar_empleado', data);
+            });
+        });
+    });
+
+    
+}
+
+// PUT /empleado/editar/:id_empleado
+exports.editarEmpleado = (req, res) => {
+    console.log('PUT /empleado/editar/:id_empleado');
+    parms = [req.body.sexo,req.body.telefono, req.body.email, req.body.id_puesto, req.body.id_adscripcion, req.body.id_empleado];
+    db.query("update cat_empleado set sexo=?, telefono=?, email=?, id_puesto=?, id_adscripcion=? where id_empleado=?;", parms, (err, result )=>{
+        console.log(err);
+        console.log(result);
+        
+        
+        res.redirect('/');
+    });
 }
 
 // POST /nuevo_empleado/
 exports.agregarEmpleado = (req, res) => {
     console.log('POST /nuevo_empleado/');
+    params = [req.body.telefono, req.body.num_empleado, req.body.cuip, req.body.nombre, req.body.ap_paterno, req.body.ap_materno,req.body.sexo, req.body.email, req.body.puesto, req.body.adscripcion]
+	console.log(params);
+	db.query("insert into cat_empleado (telefono, num_empleado, cuip, nombre, apellido_paterno, apellido_materno, sexo, email, id_puesto, id_adscripcion, fecha_ingreso) values (?,?,?,?,?,?,?,?,?,?, DATE(now()));", params,function(err, rows){
+      if(err){
+        	req.flash('error', 'Error al registrar empleado.')
+        console.log(err);
+       }else{
+			req.flash('success', 'Empleado registrado')
+       }
+     });
+	 res.redirect('/');
     
 }
 

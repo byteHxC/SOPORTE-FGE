@@ -2,22 +2,54 @@
 extends ../layout.jade
 block content
 	.container
-		.row.z-depth-3
+		.row.z-depth-3(style="margin-bottom: 3em;")
 			h5(class="condensed light center padding-top") Agregar un nuevo empleado
 			form(class="col l10 offset-l1 m12 s12 margin-top" method="post" action="" id="formValidate")
-			.row(style="padding-left: 1em; padding-right:1em;")
-				div.input-field.col.s12.m12.l3.offset-l2
-					input.validate(name="num_empleado" type="text" required)
-					label(for="num_empleado") Número de empleado
-				div.input-field.col.s12.m12.l8.offset-l2
-					input.validate(name="nombre" type="text" required)
-					label(for="nombre") Nombre del empleado
-				div.input-field.col.s12.m12.l4.offset-l2
-					input.validate(name="ap_paterno" type="text" required)
-					label(for="ap_paterno") Apellido paterno
-				div.input-field.col.s12.m12.l4.offset-l1
-					input.validate(name="ap_materno" type="text" required)
-					label(for="ap_materno") Apellido materno
+				.row(style="padding-left: 1em; padding-right:1em;")
+					div.input-field.col.s12.m12.l4.offset-l1
+						input.validate(name="num_empleado" type="text" required)
+						label(for="num_empleado") Número de empleado
+					div.input-field.col.s12.m12.l4.offset-l2
+						input.validate(name="cuip" type="text" required)
+						label(for="cuip") CUIP
+					div.input-field.col.s12.m12.l10.offset-l1
+						input.validate(name="nombre" type="text" required)
+						label(for="nombre") Nombre del empleado
+					div.input-field.col.s12.m12.l4.offset-l1
+						input.validate(name="ap_paterno" type="text" required)
+						label(for="ap_paterno") Apellido paterno
+					div.input-field.col.s12.m12.l4.offset-l2
+						input.validate(name="ap_materno" type="text" required)
+						label(for="ap_materno") Apellido materno
+					.input-field.col.s12.m12.l4.offset-l1
+						select(name="sexo" required)
+							option(value="F") Femenino
+							option(value="M") Masculino
+						label(for="sexo") Seleccione su sexo
+					div.input-field.col.s12.m12.l4.offset-l2
+						input.validate(name="telefono" type="number")
+						label(for="telefono") Telefono
+				.row(style="padding-left: 1em; padding-right:1em;")
+					.input-field.col.s12.m12.l10.offset-l1
+						input.validate(name="email" type="email")
+						label(for="email") Email
+				.row(style="padding-left: 1em; padding-right:1em;")
+					.input-field.col.s12.m12.l10.offset-l1
+						select(name="puesto" required)
+							each puesto in data.puestos
+								option(value=puesto.id_puesto)=puesto.descripcion
+						label(for="puesto") Seleccione su puesto actual
+				.row(style="padding-left: 1em; padding-right:1em;")
+					.input-field.col.s12.m12.l10.offset-l1
+						select(name="adscripcion" required)
+							each adscripcion in data.adscripciones
+								option(value=adscripcion.id_adscripcion)=adscripcion.descripcion
+						label(for="adscripcion") Seleccione su puesto actual
+				.row(style="padding-left: 1em; padding-right:1em;")
+					.col.s12.m12.l10.offset-l1
+						button(class="waves-effect waves-light right btn color-back" type="submit" style="width:100%;") Guardar
+							i(class="material-icons right") save
+
 
 					
 

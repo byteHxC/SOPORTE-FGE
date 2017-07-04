@@ -24,8 +24,12 @@ module.exports = function(app, passport, express) {
     router.get('/empleado_edit/:num_empleado', isLoggedIn, isAdministrador, empleadoCTRL.findById);
 
     router.route('/nuevo_empleado/')
-        .get(isLoggedIn, isAdministrador, empleadoCTRL.nuevoEmpleado)
-        .post(isLoggedIn, isAdministrador, empleadoCTRL.agregarEmpleado);
+        .get(isLoggedIn, empleadoCTRL.nuevoEmpleado)
+        .post(isLoggedIn, empleadoCTRL.agregarEmpleado);
+    
+    router.route('/empleado/editar/:id_empleado')
+        .get(isLoggedIn, empleadoCTRL.verEmpleado)
+        .put(isLoggedIn, empleadoCTRL.editarEmpleado);
 
 
 

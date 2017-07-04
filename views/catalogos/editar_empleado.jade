@@ -1,0 +1,61 @@
+//- index agregar equipo
+extends ../layout.jade
+block content
+	.container
+		.row.z-depth-3(style="margin-bottom: 3em;")
+			h5(class="condensed light center padding-top") Editar empleado
+			form(class="col l10 offset-l1 m12 s12 margin-top" method="post" action="/empleado/editar/"+data.empleado.num_empleado+"?_method=PUT" id="formValidate")
+				input(type="hidden" name="id_empleado" value="#{data.empleado.id_empleado}")
+				.row(style="padding-left: 1em; padding-right:1em;")
+					div.input-field.col.s12.m12.l4.offset-l1
+						input(name="num_empleado" type="text" required value="#{data.empleado.num_empleado}" readonly)
+						label(for="num_empleado") Número de empleado
+					div.input-field.col.s12.m12.l4.offset-l2
+						input(name="cuip" type="text" required value="#{data.empleado.cuip}" readonly)
+						label(for="cuip") CUIP
+					div.input-field.col.s12.m12.l10.offset-l1
+						input(name="nombre" type="text" required value="#{data.empleado.nombre}" readonly)
+						label(for="nombre") Nombre del empleado
+					div.input-field.col.s12.m12.l4.offset-l1
+						input(name="ap_paterno" type="text" required value="#{data.empleado.apellido_paterno}" readonly)
+						label(for="ap_paterno") Apellido paterno
+					div.input-field.col.s12.m12.l4.offset-l2
+						input(name="ap_materno" type="text" required value="#{data.empleado.apellido_materno}" readonly)
+						label(for="ap_materno") Apellido materno
+					.input-field.col.s12.m12.l4.offset-l1
+						select(name="sexo" required)
+							option(value="F") Femenino
+							option(value="M") Masculino
+						label(for="sexo") Seleccione su sexo
+					div.input-field.col.s12.m12.l4.offset-l2
+						input.validate(name="telefono" type="number" value="#{data.empleado.telefono || ''}")
+						label(for="telefono") Telefono
+				.row(style="padding-left: 1em; padding-right:1em;")
+					.input-field.col.s12.m12.l10.offset-l1
+						input.validate(name="email" type="email" value="#{data.empleado.email || ''}" )
+						label(for="email") Email
+				.row(style="padding-left: 1em; padding-right:1em;")
+					.input-field.col.s12.m12.l10.offset-l1
+						select(name="id_puesto" required)
+							each puesto in data.puestos
+								if data.empleado.id_puesto == puesto.id_puesto
+									option(selected value=puesto.id_puesto)=puesto.descripcion
+								else
+									option(value=puesto.id_puesto)=puesto.descripcion
+						label(for="puesto") Seleccione su puesto actual
+				.row(style="padding-left: 1em; padding-right:1em;")
+					.input-field.col.s12.m12.l10.offset-l1
+						select(name="id_adscripcion" required)
+							each adscripcion in data.adscripciones
+								if data.empleado.id_adscripcion == adscripcion.id_adscripcion
+									option(selected value=adscripcion.id_adscripcion)=adscripcion.descripcion
+								else
+									option(value=adscripcion.id_adscripcion)=adscripcion.descripcion
+						label(for="adscripcion") Seleccione su puesto actual
+				.row(style="padding-left: 1em; padding-right:1em;")
+					.col.s12.m12.l10.offset-l1
+						button(class="waves-effect waves-light right btn color-back" type="submit" style="width:100%;") Actualizar
+							i(class="material-icons right") update
+
+
+					

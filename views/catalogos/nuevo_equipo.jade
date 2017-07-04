@@ -1,19 +1,20 @@
 //- index agregar equipo
 extends ../layout.jade
-
+block scripts
+	script(src="/../javascripts/jquery.inputmask.bundle.min.js")
 block content
 	div(class="container")
 		.row
 			h4(class="center bold") Agregar Equipo
 			div(class="row padding-top padding-bottom")
 				div(class="z-depth-3 white col s12 m12 l10 offset-l1")
-					form(action="/solicitud" method="post")
+					form(action="/equipo" method="post")
 						.row(style="padding-left: 1em; padding-right: 1em;") 
 							div(class="input-field col s12 m12 l5" style="margin-top: 4em;")
-								select(name="tipo_equipo" id="tipo_equipo" onchange=" tipoEquipo(this);")
+								select(name="id_tipo_equipo" id="id_tipo_equipo" onchange=" tipoEquipo(this);")
 									each equipo in data.tipos_equipo
 										option(value=equipo.id_tipo_equipo )=equipo.nombre
-								label(for="tipo_equipo") Tipo Equipo
+								label(for="id_tipo_equipo") Tipo Equipo
 
 						.row(style="padding-left: 1em; padding-right: 1em;")
 							div(class="input-field col s12 m12 l5")
@@ -30,22 +31,22 @@ block content
 								label(for="clave_inventarial") Clave inventarial
 							.row(style="padding-left: 1em; padding-right: 1em;")#opcionales
 								div(class="input-field col s12 m12 l5")
-									input(type="text" class="validate" id="nombre_equipo" name="nombre_equipo" required)
+									input(type="text" class="validate" id="nombre_equipo" name="nombre_equipo" )
 									label(for="nombre_equipo") Nombre del Equipo
 								div(class="input-field col s12 m12 l5 offset-l2")
-									input(type="text" class="validate" id="grupo_trabajo" name="grupo_trabajo" required)
+									input(type="text" class="validate" id="grupo_de_trabajo" name="grupo_de_trabajo" )
 									label(for="grupo_trabajo") Grupo de trabajo
 								div(class="input-field col s12 m12 l5")
-									input(type="text" class="validate" id="disco_duro" name="disco_duro" required)
+									input(type="text" class="validate" id="disco_duro" name="disco_duro" )
 									label(for="disco_duro") Disco Duro
 								div(class="input-field col s12 m12 l5 offset-l2")
-									input(type="text" class="validate" id="sistema_operativo" name="sistema_operativo" required)
+									input(type="text" class="validate" id="sistema_operativo" name="sistema_operativo" )
 									label(for="sistema_operativo") Sistema Operativo
 								div(class="input-field col s12 m12 l5")
-									input(type="text" class="validate" id="memoria_ram" name="memoria_ram" required)
+									input(type="text" class="validate" id="memoria_ram" name="memoria_ram" )
 									label(for="memoria_ram") Memoria RAM
 								div(class="input-field col s12 m12 l5 offset-l2")
-									input(type="text" class="validate" id="procesador" name="procesador" required)
+									input(type="text" class="validate" id="procesador" name="procesador")
 									label(for="procesador") Procesador
 							div(class="col s12 m12 l12 input-field")
 								textarea(name="descripcion_problema" class="materialize-textarea" data-length="200" required)
@@ -55,7 +56,10 @@ block content
 									i(class="material-icons right") save
 	script.
 		 $(document).ready(function(){
-			 tipoEquipo($('#tipo_equipo'));
+			tipoEquipo($('#tipo_equipo'));
+			$('#numero_serie').inputmask("AA-9AA999-99999-99A-9999", {"onincomplete": function(){error('Verifique el número de serie, ejemplo: CN-0DJ415-71616-74J-1831')}}); 
+			$('#clave_inventarial').inputmask("9-99-9-9-99-99-99-A99-A99-99999", {"onincomplete": function(){error('Verifique la clave inventarial, ejemplo: 5-32-7-9-72-01-78-I01-D11-54012')}}); 
+
 		 });
 		function tipoEquipo(select){
 			if(select.value == 2 || select.value == 3 || select.value == 4){

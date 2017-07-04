@@ -109,6 +109,12 @@ function getEmpleado(input){
 									<i class="material-icons right green-text tooltipped" onclick="seleccionarEmpleado(${element.id_empleado});" data-position="top" data-delay="50" data-tooltip="Seleccioar al empleado" >
 										add_circle
 									</i>
+									<a href="/empleado/editar/${element.id_empleado}">
+										<i class="material-icons right blue-text tooltipped"  data-position="top" data-delay="50" data-tooltip="Editar al empleado" >
+											edit
+										</i>
+									</a>
+
 								</div>
 								<div class="collapsible-body">
 									<strong> ID empleado: </strong>

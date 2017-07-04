@@ -14,7 +14,10 @@ exports.equipo = function (req, res){
 // POST /equipo
 exports.agregarEquipo = function (req, res){
 	console.log('POST /equipo');
-	db.query("insert into cat_equipo (id_equipo, numero_serie, clave_inventarial, marca, modelo, disco_duro, memoria_ram, sistema_operativo, procesador, observaciones, id_tipo_equipo, nombre, grupo_de_trabajo ) values (?,?,?,?,?,?,?,?,?,?,?,?,?);", function(err, rows){
+
+	params = [req.body.numero_serie, req.body.clave_inventarial, req.body.marca, req.body.modelo, req.body.memoria_ram,req.body.disco_duro, req.body.memoria_ram, req.body.sistema_operativo, req.body.procesador, req.body.id_tipo_equipo, req.body.nombre, req.body.grupo_de_trabajo]
+	console.log(params);
+	db.query("insert into cat_equipo (numero_serie, clave_inventarial, marca, modelo, disco_duro, memoria_ram, sistema_operativo, procesador, observaciones, id_tipo_equipo, nombre, grupo_de_trabajo ) values (?,?,?,?,?,?,?,?,?,?,?,?);", params,function(err, rows){
       if(err){
         	req.flash('error', 'Error al registrar la solicitud.')
         console.log(err);
@@ -22,7 +25,7 @@ exports.agregarEquipo = function (req, res){
 			req.flash('success', 'Equipo Registrado.')
        }
      });
-	 redirect('/');
+	 res.redirect('/');
 }
 
 
