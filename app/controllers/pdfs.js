@@ -167,7 +167,8 @@ module.exports = {
         firma_salida = {
                         colSpan: 9,
                         alignment: 'center',
-                        text: ''
+                        text: '',
+                        margin: [0,70,0,0]
                     }
         
         if(data.firma_salida){
@@ -183,7 +184,8 @@ module.exports = {
         firma_conformidad = {
                         colSpan: 9,
                         alignment: 'center',
-                        text: ''
+                        text: '',
+                        margin: [0,70,0,0]
                     }
         if(data.firma_conformidad){
             firma_conformidad = {	

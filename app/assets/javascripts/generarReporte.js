@@ -27,9 +27,9 @@
  			if(diagnostico_equipo == ''){
  				errores.push('diagnostico_equipo: Debe poner el diagnostico del equipo.')
  			}
- 			if(firma_img == ''){
- 				errores.push('firma_img: Debe ingresar la firma de conformidad.')
- 			}
+ 			// if(firma_img == ''){
+ 			// 	errores.push('firma_img: Debe ingresar la firma de conformidad.')
+ 			// }
  			break;
  		case '2': // salida de equipo
  			break;
@@ -68,7 +68,7 @@
  	inner = `
  			 <div class="input-field">
  				<textarea id="diagnostico_equipo" name="diagnostico_equipo" class="materialize-textarea" data-length="120" required="true" ></textarea>
- 				<label for="diagnostico_equipo">Diagnostico del equipo</label>
+ 				<label for="diagnostico_equipo">Describa la solución del problema</label>
  			 </div>	
  			 <input type="hidden" id="firma_img" name="firma_img" required="true">
  			 <p>Firma de conformidad: </p>

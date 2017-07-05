@@ -165,7 +165,7 @@ function actualizarTablaDeReportes(anio, mes){
 				if(reporte.reparado == 'reparado'){
 					tipo_reparacion = `<td>${reporte.nombre}</td>`;
 				}else if (reporte.nombre == "Salida de equipo"){
-					tipo_reparacion = `<td>${reporte.nombre}</td><td><a class="btn blue darken-1" href="equipo/entrega/${reporte.folio}">Entrega de equipo <i class="material-icons right">reply</i></a></td>`;
+					tipo_reparacion = `<td>${reporte.nombre}</td><td><a class="btn blue darken-1" style="padding:0px;" href="equipo/entrega/${reporte.folio}">Entrega equipo <i class="material-icons right"></i></a></td>`;
 				}
 			}
 			acciones = ""
@@ -187,10 +187,10 @@ function actualizarTablaDeReportes(anio, mes){
 				<tr>
 					<td>${reporte.folio_formato}</td>
 					<td>
-						<a href="#" onclick="modalDetalleSolicitud(${reporte.id_solicitud});"> ${reporte.id_solicitud} </a> 
+						<a href="#" class="btn btn-block blue" style="padding:0px;"  onclick="modalDetalleSolicitud(${reporte.id_solicitud});"> Solicitud: ${reporte.id_solicitud} </a> 
 					</td>
 					<td>
-						<a href="#" onclick="modalDetalleEquipo(${reporte.id_equipo});">${reporte.id_equipo} </a>
+						<a href="#" class="btn btn-block blue" style="padding:0px;" onclick="modalDetalleEquipo(${reporte.id_equipo});"> Equipo: ${reporte.id_equipo} </a>
 					</td>
 					<td>${reporte.diagnostico_equipo}</td>
 					<td>${reporte.reparado}</td>

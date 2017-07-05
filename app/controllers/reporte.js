@@ -96,27 +96,41 @@ exports.equipoEntregaRegistrar = (req, res) => {
     params.push(en_su_ubicacion);
 
     image = req.body.firma_img;
-    firma_conformidad = 'firma_conformidad_'+req.body.folio+'.png';
     
+    if(image.length > 0){
+        firma_conformidad = 'firma_conformidad_'+req.body.folio+'.png';
+    }else{
+        firma_conformidad = '';
+    }
+
     params.push(firma_conformidad);
     params.push(req.body.calificacion);
+   
+    
+    dictamen_baja = ((req.body.dictamen_baja == 'on')? 3 : 2);
+    params.push(dictamen_baja);
     params.push(req.body.folio);
     console.log(params);
-    db.query("update reporte set fecha_entrega=CURRENT_TIMESTAMP, diagnostico_equipo=?, carpeta_respaldo=?, reparado=?, instalado_en_ubicacion=?, firma_conformidad=?, calificacion_servicio=? where folio = ?;", params, function(err, result, rows){
+    db.query("update reporte set fecha_entrega=CURRENT_TIMESTAMP, diagnostico_equipo=?, carpeta_respaldo=?, reparado=?, instalado_en_ubicacion=?, firma_conformidad=?, calificacion_servicio=?, id_tipo_reparacion=? where folio = ?;", params, function(err, result, rows){
         if(err){
             req.flash('error', 'Error al guardar la firma');
             console.log(err);
         }else{
             data = image.replace(/^data:image\/\w+;base64,/, '');
-            fs.writeFile('app/signatures/'+firma_conformidad, data, {encoding: 'base64'}, function(err){
-                if(err){
-                    req.flash('error', 'Error al guardar la firma');
-                    console.log(err);
-                }else{
-                    req.flash('message', 'Entrega de equipo satisfactoria!');
-                    res.redirect('/');
-                }
-            });
+            if(firma_conformidad){
+                fs.writeFile('app/signatures/'+firma_conformidad, data, {encoding: 'base64'}, function(err){
+                    if(err){
+                        req.flash('error', 'Error al guardar la firma');
+                        console.log(err);
+                    }else{
+                        req.flash('message', 'Entrega de equipo satisfactoria!');
+                        res.redirect('/');
+                    }
+                });
+            }else{
+                req.flash('message', 'Entrega de equipo satisfactoria!');
+                res.redirect('/');
+            }
         }
     });
 }

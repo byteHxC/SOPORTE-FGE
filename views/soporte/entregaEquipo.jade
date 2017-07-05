@@ -64,7 +64,7 @@ block content
 						.step-content(style="overflow: hidden;")
 							.row
 								.input-field.col.s12.m12.l10.offset-l1
-									textarea(name="diagnostico_equipo" class="materialize-textarea" data-length="120" required="true")
+									textarea(name="diagnostico_equipo" class="materialize-textarea" data-length="500" required="true")
 									label(for="diagnostico_equipo") Diagnostico del equipo
 								.col.s12.m12.l10.offset-l1
 									.row
@@ -72,6 +72,10 @@ block content
 											input(type="checkbox" name="respaldo" id="respaldo" onchange="carpetaRespaldo();")
 											label(for="respaldo") Se realizo respaldo.
 										.input-field.col.s12.m12.l8#div_carpeta_respaldo
+									.row
+										p.input-field.col.s12.m12.l4
+											input(type="checkbox" name="dictamen_baja" id="dictamen_baja")
+											label(for="dictamen_baja") Dictamen de baja
 
 
 							.step-actions

@@ -33,9 +33,6 @@
  		}
  	}
  	firma_img = form.firma_img.value;
- 	if(firma_img == ''){
-		errores.push('firma_img: Debe ingresar la firma de conformidad.')
-	}
 	
 	if(errores.length > 0){
  		// no pasa :c

@@ -6,7 +6,7 @@
         
 $(function(){
    	$('.stepper').activateStepper({
-   		showFeedbackLoader: true,
+   		// showFeedbackLoader: true,
    		linearStepsNavigation: false
    	});
    	solucion = $('#solucion');
@@ -46,6 +46,7 @@ function tipoSolicitud(tipoSolicitud){
 	}else{
 		$('#for_no_oficio').html('');
 	}
+	tipoSolicitud.blur();
 }
 
 
@@ -53,7 +54,7 @@ function setSolucion(checked){
 	if(checked){
 		$('#descripcion_solucion').html('');
 		// si se soluciono el problema, entonces que se describa la solución
-		$('#opciones_solucion').html(`<textarea id="descripcion_solucion" name="descripcion_solucion" class="materialize-textarea" data-length="120" required="true" ></textarea>
+		$('#opciones_solucion').html(`<textarea id="descripcion_solucion" name="descripcion_solucion" class="materialize-textarea" data-length="500" required="true" ></textarea>
 										<label for="descripcion_solucion"> Describa la solución de la solicitud</label>`);
 		$('textarea#descripcion_solucion').characterCounter();
 	}else{

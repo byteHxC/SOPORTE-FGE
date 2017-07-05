@@ -62,7 +62,12 @@ exports.atenderSolicitud = function(req, res){
             diagnostico_equipo = req.body.diagnostico_equipo;
             image = req.body.firma_img;
             calificacion_servicio = req.body.calificacion;
-            firma_conformidad = 'firma_conformidad_'+id_solicitud+'.png';
+            if(image.length > 0){
+                firma_conformidad = 'firma_conformidad_'+id_solicitud+'.png';
+            }else{
+                firma_conformidad = '';
+            }
+            
             
             params_en_sitio = [id_solicitud, id_equipo, id_tipo_reparacion, diagnostico_equipo, firma_conformidad, calificacion_servicio, 'reparado']
             // check fecha_entrega
@@ -72,19 +77,27 @@ exports.atenderSolicitud = function(req, res){
                     console.log(err);
                 }else{
                     data = image.replace(/^data:image\/\w+;base64,/, '');
-                    fs.writeFile('app/signatures/'+firma_conformidad, data, {encoding: 'base64'}, function(err){
-                        if(err){
-                            req.flash('error', 'Error al guardar la firma');
-                            console.log(err);
-                        }else{
-                            db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
-                                console.log('err -> '+err);
-                                console.log('result -> '+result);
-                                console.log('rows ->'+rows);
-                                res.redirect('/');
-                            }); 
-                        }
-                    });
+                    if(firma_conformidad){
+                        fs.writeFile('app/signatures/'+firma_conformidad, data, {encoding: 'base64'}, function(err){
+                            if(err){
+                                req.flash('error', 'Error al guardar la firma');
+                                console.log(err);
+                            }else{
+                                db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
+                                    console.log('err -> '+err);
+                                    console.log('result -> '+result);
+                                    console.log('rows ->'+rows);
+                                    res.redirect('/');
+                                }); 
+                            }
+                        });
+                    }else{
+                        db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
+                            res.redirect('/');
+                        }); 
+                    }
+                    
+                    
                 }
             });   
         break;
@@ -95,6 +108,12 @@ exports.atenderSolicitud = function(req, res){
             firma_salida = 'firma_salida_'+id_solicitud+'.png';
             calificacion_servicio = req.body.calificacion;
 
+            if(image.length > 0){
+                firma_salida = 'firma_conformidad_'+id_solicitud+'.png';
+            }else{
+                firma_salida = '';
+            }
+
             params_salida_equipo = [id_solicitud, id_equipo, firma_salida, calificacion_servicio, id_tipo_reparacion, 'no reparado'];
             db.query('insert into reporte (id_solicitud, id_equipo, firma_salida, calificacion_servicio, id_tipo_reparacion, reparado) values(?, ?, ?, ?, ?, ?);', params_salida_equipo, function(err, result, rows){
                 if(err){
@@ -102,19 +121,29 @@ exports.atenderSolicitud = function(req, res){
                     console.log(err);
                 }else{
                     data = image.replace(/^data:image\/\w+;base64,/, '');
-                    fs.writeFile('app/signatures/'+firma_salida, data, {encoding: 'base64'}, function(err){
-                        if(err){
-                            req.flash('error', 'Error al guardar la firma');
-                            console.log(err);
-                        }else{
-                            db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
-                                console.log('err -> '+err);
-                                console.log('result -> '+result);
-                                console.log('rows ->'+rows);
-                                res.redirect('/');
-                            }); 
-                        }
-                    });
+                    if(firma_salida){
+                        fs.writeFile('app/signatures/'+firma_salida, data, {encoding: 'base64'}, function(err){
+                            if(err){
+                                req.flash('error', 'Error al guardar la firma');
+                                console.log(err);
+                            }else{
+                                db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
+                                    console.log('err -> '+err);
+                                    console.log('result -> '+result);
+                                    console.log('rows ->'+rows);
+                                    res.redirect('/');
+                                }); 
+                            }
+                        });
+                    }else{
+                        db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
+                            console.log('err -> '+err);
+                            console.log('result -> '+result);
+                            console.log('rows ->'+rows);
+                            res.redirect('/');
+                        }); 
+                    }
+                    
                 }
             }); 
         break;
@@ -124,8 +153,13 @@ exports.atenderSolicitud = function(req, res){
             diagnostico_equipo = req.body.diagnostico_equipo;
             image = req.body.firma_img;
             calificacion_servicio = req.body.calificacion;
-            firma_conformidad = 'firma_conformidad_'+id_solicitud+'.png';
+            if(image.length > 0){
+                firma_conformidad = 'firma_conformidad_'+id_solicitud+'.png';
+            }else{
+                firma_conformidad = '';
+            }
             
+
             params_en_sitio = [id_solicitud, id_equipo, id_tipo_reparacion, diagnostico_equipo, firma_conformidad, calificacion_servicio, 'no reparado']
             // check fecha_entrega
             db.query('insert into reporte (id_solicitud, id_equipo, id_tipo_reparacion, diagnostico_equipo, firma_conformidad, calificacion_servicio, reparado, fecha_entrega) values(?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP);', params_en_sitio, function(err, result, rows){
@@ -134,19 +168,28 @@ exports.atenderSolicitud = function(req, res){
                     console.log(err);
                 }else{
                     data = image.replace(/^data:image\/\w+;base64,/, '');
-                    fs.writeFile('app/signatures/'+firma_conformidad, data, {encoding: 'base64'}, function(err){
-                        if(err){
-                            req.flash('error', 'Error al guardar la firma');
-                            console.log(err);
-                        }else{
-                            db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
-                                console.log('err -> '+err);
-                                console.log('result -> '+result);
-                                console.log('rows ->'+rows);
-                                res.redirect('/reportes');
-                            }); 
-                        }
-                    });
+                    if(firma_conformidad){
+                        fs.writeFile('app/signatures/'+firma_conformidad, data, {encoding: 'base64'}, function(err){
+                            if(err){
+                                req.flash('error', 'Error al guardar la firma');
+                                console.log(err);
+                            }else{
+                                db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
+                                    console.log('err -> '+err);
+                                    console.log('result -> '+result);
+                                    console.log('rows ->'+rows);
+                                    res.redirect('/reportes');
+                                }); 
+                            }
+                        });
+                    }else{
+                        db.query('update notificacion_solicitud set atendida="si" where id_solicitud = ?', [id_solicitud], function(err, result, rows){
+                            console.log('err -> '+err);
+                            console.log('result -> '+result);
+                            console.log('rows ->'+rows);
+                            res.redirect('/reportes');
+                        }); 
+                    }
                 }
             }); 
         break;
@@ -194,6 +237,8 @@ exports.agregarSolicitud = function(req, res){
 
             id_tipo_solicitud = req.body.tipo_solicitud || null;
             no_oficio = req.body.no_oficio || null;
+            console.log(req.body);
+            
 
             id_empleado_solicitante = req.body.empleado_solicitante || null;
 
