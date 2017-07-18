@@ -81,7 +81,7 @@ block content
 				li
 					.collapsible-header Por fecha
 					.collapsible-body(style="padding:10px;")
-						p.grey-text Seleccione un mes para mostrar reportes
+						p.grey-text Seleccione la fecha de solicitud
 						.input-field
 							i.material-icons.prefix event
 							input.datepicker(type="date" id="filtro_fecha" required="true")
@@ -90,8 +90,8 @@ block content
 				thead
 					tr
 						th Folio
-						th ID solicitud
-						th ID equipo
+						th Detalle solicitud
+						th Detalle equipo
 						th Diagnostico de equipo
 						th Reparado
 						th Tipo de reparación
@@ -102,9 +102,9 @@ block content
 							td=reporte.folio_formato
 							td
 								//-link para ver los datos de la solicitud
-								a( href="#" onclick="modalDetalleSolicitud(#{reporte.id_solicitud});")=reporte.id_solicitud 
+								a.btn.btn-block.blue(style="padding:0px;" href="#" onclick="modalDetalleSolicitud(#{reporte.id_solicitud});") Solicitud: #{reporte.id_solicitud} 
 							td
-								a(href="#" onclick="modalDetalleEquipo(#{reporte.id_equipo});")=reporte.id_equipo
+								a.btn.btn-block.blue(style="padding:0px;" href="#" onclick="modalDetalleEquipo(#{reporte.id_equipo});") Equipo: #{reporte.id_equipo}
 							//-link para ver la informacion del equipo
 							td=reporte.diagnostico_equipo
 							td=reporte.reparado

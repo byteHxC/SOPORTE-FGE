@@ -381,3 +381,30 @@ exports.APISolicitudesPorFecha = function (req, res){
     });
 }
 
+
+// MELO PASO YARE
+// Atendio solicitud con año y mes
+exports.APISolicitudesSolucionadas = function (req, res){
+    console.log(`APISolicitudesPorFech/${req.params.anio}/${req.params.mes}`)
+    db.query('select count(solicitud.id_solicitud) as Solucionados, MONTH(solicitud.fecha) as Mes from solicitud where YEAR(solicitud.fecha) = YEAR(now()) and solucion="si" group by Mes;', function(err, rows){
+        if(err){
+            res.status(500).json({error: 'Error al realizar la busqueda'});
+        }else{
+            var solicitudes = JSON.parse(JSON.stringify(rows));
+            res.status(200).json(solicitudes);
+        }
+    });
+}
+
+// solicitudes por tipo de servicio
+exports.APISolicitudesServicio = (req, res)=>{
+    
+    db.query('select count(solicitud.`id_solicitud`) as servicio, cat_tipo_servicio.nombre as nombre from solicitud join cat_tipo_servicio where solicitud.id_tipo_servicio=cat_tipo_servicio.id_tipo_servicio and YEAR(solicitud.fecha)=YEAR(now()) group by nombre;', function(err, rows){
+        if(err){
+            res.status(500).json({error: 'Error al realizar la busqueda'});
+        }else{
+            var solicitudes = JSON.parse(JSON.stringify(rows));
+            res.status(200).json(solicitudes);
+        }
+    })    
+}

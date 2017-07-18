@@ -79,7 +79,7 @@ block content
 				li
 					.collapsible-header Por fecha
 					.collapsible-body(style="padding:10px;")
-						p.grey-text Seleccione un mes para mostrar reportes
+						p.grey-text Seleccione la fecha de solicitud
 						.input-field
 							i.material-icons.prefix event
 							input.datepicker(type="date" id="filtro_fecha" required="true")
@@ -117,6 +117,7 @@ block content
 									td
 										a.btn.btn-block.blue.darken-1(style="padding:0px;" href="equipo/entrega/"+reporte.folio) Entrega equipo  
 											i(class="material-icons left") 
+											
 							
 							if reporte.reparado == 'reparado'
 								td 

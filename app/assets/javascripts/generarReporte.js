@@ -34,6 +34,11 @@
  		case '2': // salida de equipo
  			break;
  		case '3': // dictamen de baja
+		 	diagnostico_equipo = form.diagnostico_equipo.value;
+ 			firma_img = form.firma_img.value;
+ 			if(diagnostico_equipo == ''){
+ 				errores.push('diagnostico_equipo: Debe poner el diagnostico del equipo.')
+ 			}
  			break;
  	}
 	if(errores.length > 0){
@@ -44,6 +49,7 @@
  		// pasa validacion
  		if($('#calificacion_servicio').val() == 0){
 	 		$('#modal_rating').modal('open');
+			 return false;
 	 	}
 	 	$('#calificacion').val($('#calificacion_servicio').val());
  		return true;

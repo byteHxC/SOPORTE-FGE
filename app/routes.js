@@ -131,6 +131,13 @@ module.exports = function(app, passport, express) {
 
     api.route('/reportes/:reparado?/:anio?/:mes?')
         .get(isLoggedIn, reporteCTRL.APIReportes);
+
+    // yare
+    api.route('/solicitudess/solucionadas')
+        .get(isLoggedIn, solicitudCtrl.APISolicitudesSolucionadas);
+
+    api.route('/solicitud/tipo/servicio')
+        .get(isLoggedIn, solicitudCtrl.APISolicitudesServicio);
     
     
 
